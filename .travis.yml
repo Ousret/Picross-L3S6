@@ -1,0 +1,37 @@
+#
+# LuaDist Travis-CI Hook
+#
+
+# We assume Ruby environments
+language: Ruby
+
+rvm:
+  - 2.0.0-p247
+
+before_install:
+  - gem update --system
+  - gem --version
+
+# Install dependencies
+install:
+  - sudo apt-get update -qq
+  - gem install opengl
+  - gem install ruby-units
+  - gem install sqlite 
+
+# Build the module
+script:
+  - ruby run_tests.rb
+
+# Only watch the master branch
+branches:
+  only:
+    - master
+
+# Notify the LuaDist Dev group if needed
+#notifications:
+#  recipients:
+#    - luadist-dev@googlegroups.com
+#  email:
+#    on_success: change
+#    on_failure: always
