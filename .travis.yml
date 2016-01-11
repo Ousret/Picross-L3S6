@@ -19,6 +19,7 @@ install:
   - gem install test
   - gem install test-unit
   - gem install minitest
+  - gem install codeclimate-test-reporter
 
 # Build the module
 script:
@@ -28,6 +29,10 @@ script:
 branches:
   only:
     - master
+
+addons:
+  code_climate:
+    repo_token: e11ac50d26a935e7e20a07859592c06f17871672fc2f6466b2a1fdcf1143c503
 
 # Notify the LuaDist Dev group if needed
 #notifications:
