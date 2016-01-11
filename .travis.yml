@@ -17,6 +17,8 @@ install:
   - gem install sqlite3
   - gem install rake 
   - gem install test
+  - gem install test-unit
+  - gem install minitest
 
 # Build the module
 script:
