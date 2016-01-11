@@ -14,7 +14,7 @@ install:
   - sudo apt-get update -qq
   - gem install opengl
   - gem install ruby-units
-  - gem install sqlite
+  - gem install sqlite3
   - gem install rake 
 
 # Build the module
