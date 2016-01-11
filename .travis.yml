@@ -16,6 +16,7 @@ install:
   - gem install ruby-units
   - gem install sqlite3
   - gem install rake 
+  - gem install test
 
 # Build the module
 script:
