@@ -17,11 +17,12 @@ install:
   - sudo apt-get update -qq
   - gem install opengl
   - gem install ruby-units
-  - gem install sqlite 
+  - gem install sqlite
+  - gem install rake 
 
 # Build the module
 script:
-  - ruby run_tests.rb
+  - rake test:all
 
 # Only watch the master branch
 branches:
