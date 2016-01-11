@@ -1,0 +1,6 @@
+#Ne pas toucher
+require 'rake/testtask'
+
+Rake::TestTask.new("test:all") do |t|
+  t.pattern = "rbunits/*.class.rb"
+end
