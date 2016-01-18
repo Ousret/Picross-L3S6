@@ -1,8 +1,10 @@
 #Ne pas toucher
 require 'rake/testtask'
 require "codeclimate-test-reporter"
+require 'simplecov'
 
-CodeClimate::TestReporter.start
+SimpleCov.command_name 'test:units'
+#CodeClimate::TestReporter.start
 
 Rake::TestTask.new("test:all") do |t|
   t.pattern = "rbunits/*.class.rb"
