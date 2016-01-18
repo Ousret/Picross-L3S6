@@ -8,10 +8,14 @@ load 'class/crypt.class.rb'
 class MyTest < Test::Unit::TestCase
 
 	def test_new_crypt
-		kCrypt = Crypt.new()
-		assert_equal("operationnel", kCrypt.state)
+		kCrypt = Crypt.new("multipass")
+		assert_equal("Newborn", kCrypt.state)
 	end
 
+	def test_crypt_decrypt
+		
+		assert_equal("bla", kCrypt.decrypt(kCrypt.crypt("bla")) )
+	end
 end
 
 #puts "Début des tests pour class crypt.class.rb .."
