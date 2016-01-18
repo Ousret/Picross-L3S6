@@ -13,7 +13,7 @@ class MyTest < Test::Unit::TestCase
 	end
 
 	def test_crypt_decrypt
-		
+		kCrypt = Crypt.new("multipass")
 		assert_equal("bla", kCrypt.decrypt(kCrypt.crypt("bla")) )
 	end
 end
