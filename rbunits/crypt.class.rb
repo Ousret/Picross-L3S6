@@ -7,7 +7,7 @@ load 'class/crypt.class.rb'
 
 class MyTest < Test::Unit::TestCase
 
-	def test_alpha
+	def test_new_crypt
 		kCrypt = Crypt.new()
 		assert_equal("operationnel", kCrypt.state)
 	end
