@@ -1,5 +1,5 @@
 require 'test/unit'
-load 'class/LecteurSon.class.rb'
+load 'class/lecteurSon.class.rb'
 
 #Vos tests dans ce fichier
 #https://github.com/olbrich/ruby-units
