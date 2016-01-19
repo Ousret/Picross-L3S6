@@ -1,11 +1,10 @@
-class lecteurSon
+class LecteurSon
 	
-	@@id = 0
-	@val	
+	@state	
 	attr_reader :val
 	
-	def initialize(uneVal)
-		@val = uneVal
+	def initialize()
+		@state = "op"
 	end
 
 end
