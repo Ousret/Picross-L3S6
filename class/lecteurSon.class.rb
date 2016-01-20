@@ -1,7 +1,7 @@
 class LecteurSon
 	
 	@state	
-	attr_reader :val
+	attr_reader :state
 	
 	def initialize()
 		@state = "op"

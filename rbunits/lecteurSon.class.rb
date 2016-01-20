@@ -7,9 +7,9 @@ load 'class/lecteurSon.class.rb'
 
 class MyTest < Test::Unit::TestCase
 
-	def test_alpha
-		kDef = LecteurSon.new()
-		assert_equal("op", kDef.state)
+	def test_new_LecteurSon
+		kLecteur = LecteurSon.new()
+		assert_equal("op", kLecteur.state)
 	end
 
 end
