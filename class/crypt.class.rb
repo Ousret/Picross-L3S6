@@ -1,14 +1,19 @@
 require 'openssl'
 
-'''
-Créer une instance de cette classe, en donnant en paramètre un mot de passe déterminé par l'utilisateur,
-utilise le PKCS5 pour sécuriser le mot de passe.
-Appeler une instance de cette classe avec les méthodes encrypt(data) et decrypt(data) cryptera ou décryptera
-les données fournies en paramètre grace à de l'AES 128bits GCM en se servant du mot de passe crypté par le PKCS5
-en clé de cryptage.
-'''
+# Author::    Bien-CV https://github.com/Bien-CV
+# License::   MIT Licence
+#
+# https://github.com/Ousret/Picross-L3S6
+#
+#*Créer une instance de cette classe, en donnant en paramètre un mot de passe déterminé par lutilisateur,
+#*utilise le PKCS5 pour sécuriser le mot de passe.
+#*Appeler une instance de cette classe avec les méthodes encrypt(data) et decrypt(data) cryptera ou décryptera
+#*les données fournies en paramètre grace à de l AES 128bits GCM en se servant du mot de passe crypté par le PKCS5
+#*en clé de cryptage.
+#
+
 class Crypt
-	
+
 	#Indique le nombre de fois que la méthode encrypt a été utilisée
 	@nbOfEncrypt
 	#Indique le nombre de fois que la méthode decrypt a été utilisée
@@ -17,36 +22,75 @@ class Crypt
 	@psw
 	#Contient le hash du mot de passe 
 	@processedPsw
+	#Type d'encryptage choisi, AES 128 bits GCM par défault : Attention, certains encryptages ne seront pas supportés
+	@cipherType
+	#Vecteur d'initialisation de l'algorithme de cryptage, contient une valeur par défaut.
 	@iv
-	attr_reader :state
-	attr_reader :id
 
-	def initialize(password)
-		@psw=password
-		@processedPsw = self.determinate_key
-		@iv="NikeAdidasDiorPhilips "
-		@nbOfEncrypt=0
-		@nbOfDecrypt=0
+	#Accesseurs
+	attr_reader :nbOfEncrypt
+	attr_reader :nbOfDecrypt
+
+	#Prévoir de rendre privé la méthode hashLeMotDePasse
+
+	#Empêche l'utilisation de la méthode new pour payer nos hommages à monsieur Jacoboni
+	private_class_method :new
+
+
+	#Méthode de création d'instance de la classe Crypt.
+	#
+	# * *Arguments*    :
+	#   - +unPassword+ -> le mot de passe utilisé comme clé
+	#   - +encryptionMethod+ -> La méthode d'encryption à utiliser, toutes ne sont pas supportées. ( cf https://docs.google.com/document/d/1Hdzg2B-U0fL_KFjIpdfWqLR6xUaBIzQuEXP7pZsM3V4/pub )
+	#   - +chosenIv+ -> Le vecteur d'initialisation à utiliser.
+	# * *Valeurs de retour* :
+	#   - Une nouvelle instance de la classe Crypt.
+	def Crypt.creerEncodeurDecodeur(unPassword,encryptionMethod='aes-128-gcm',chosenIv="NikeAdidasDiorPhilips")
+		new(unPassword,encryptionMethod,chosenIv)
 	end
 
-	def determinate_key
-		salt = "RoiDemonDu72"
+	#Méthode d'initialisation utilisée lors de la création d'instance.
+	#
+	# * *Arguments*    :
+	#   - +unPassword+ -> le mot de passe utilisé comme clé
+	#   - +encryptionMethod+ -> La méthode d'encryption à utiliser, toutes ne sont pas supportées. ( cf https://docs.google.com/document/d/1Hdzg2B-U0fL_KFjIpdfWqLR6xUaBIzQuEXP7pZsM3V4/pub )
+	#   - +chosenIv+ -> Le vecteur d'initialisation à utiliser.
+	# * *Valeurs de retour* :
+	#   - Une nouvelle instance de la classe Crypt.
+	def initialize(password,encryptionMethod,chosenIv)
+
+		@psw = password
+
+		@processedPsw = self.hashLeMotDePasse
+		@cipherType = encryptionMethod
+		@iv = chosenIv
+
+		@nbOfEncrypt=0
+		@nbOfDecrypt=0
+
+	end
+
+	#Methode qui hash le mot de passe en utilisant un sel aléatoire et PBKDF2
+	#Est uniquement appelée lors de l'initialisation d'une nouvelle instance.
+	#
+	# * *Valeurs de retour* :
+	#   - La clé de cryptage calculée selon le 
+	def hashLeMotDePasse
+		#Le salt ajoute une composante aléatoire évitant de casser l'algo d'encryption par Rainbow Tables.
+		salt = OpenSSL::Random.random_bytes(24)
 		iter = 17158
 		key_len = 128
 		key = OpenSSL::PKCS5.pbkdf2_hmac_sha1(@psw, salt, iter, key_len)
 		return key
 	end
 
+	#
 	def encrypt(dataToEncrypt)
-		cipher = OpenSSL::Cipher.new('aes-128-gcm')
+		cipher = OpenSSL::Cipher.new(@cipherType)
 		cipher.encrypt
 		cipher.key = @processedPsw
 		cipher.iv = @iv
-		if (ENV['USER'] != nil ) then
-			cipher.auth_data = ENV['USER']
-		else
-			cipher.auth_data = ""
-		end
+	
 		encrypted = cipher.update(dataToEncrypt)
 		#tag = cipher.auth_tag
 		
@@ -55,16 +99,10 @@ class Crypt
 	end
 
 	def decrypt(dataToDecrypt)
-		decipher = OpenSSL::Cipher.new('aes-128-gcm')
+		decipher = OpenSSL::Cipher.new(@cipherType)
 		decipher.decrypt
 		decipher.key = @processedPsw
 		decipher.iv = @iv
-		decipher.auth_tag = ENV['USER']
-		if (ENV['USER'] != nil ) then
-			decipher.auth_data = ENV['USER']
-		else
-			decipher.auth_data = ""
-		end
 
 		plain = decipher.update(dataToDecrypt)
 		@nbOfDecrypt=@nbOfDecrypt=+1
