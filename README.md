@@ -5,7 +5,7 @@
 [![Test Coverage](https://codeclimate.com/github/Ousret/Picross-L3S6/badges/coverage.svg)](https://codeclimate.com/github/Ousret/Picross-L3S6/coverage)<br/>
 Jeu picross en ruby par une équipe de développement L3 SPI du Mans.
 
-Gems nécessaires :
--require 'sqlite3'
--require 'openssl'
--require 'faker'
+##Gems nécessaires :
+ -require 'sqlite3'
+ -require 'openssl'
+ -require 'faker'
