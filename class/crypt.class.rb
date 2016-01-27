@@ -1,5 +1,6 @@
 require 'openssl'
 require 'faker'
+require 'yaml'
 
 # Author::    Bien-CV https://github.com/Bien-CV
 # License::   MIT Licence
@@ -86,49 +87,50 @@ class Crypt
 		return key
 	end
 
-	#Methode qui encrypte une chaine en utilisant le type d'encryption précisé lors de la création d'instance,
+	#Methode qui encrypte une donnée en utilisant le type d'encryption précisé lors de la création d'instance,
 	#le hash du mot de passe précisé lors de la création d'instance,
 	#le IV du mot de passe précisé lors de la création d'instance.
 	#
 	#Incrémente la variable d'instance nbOfEncrypt, qui compte le nombre d'encryptions effectuées par l'encodeur/décodeur.
 	#
 	# * *Arguments*    :
-	#   - +stringToEncrypt+ -> la chaîne à encrypter
+	#   - +dataToEncrypt+ -> la donnée à encrypter, qui est ensuite traduite en YAML
 	# * *Valeurs de retour* :
 	#   - La chaîne encryptée
-	def encrypt(stringToEncrypt)
+	def encrypt(dataToEncrypt)
+		yamlString=dataToEncrypt.to_yaml
 		cipher = OpenSSL::Cipher.new(@cipherType)
 		cipher.encrypt
 		cipher.key = @processedPsw
 		cipher.iv = @iv
 	
-		encrypted = cipher.update(stringToEncrypt)
+		encrypted = cipher.update(yamlString)
 		#tag = cipher.auth_tag
 		
 		@nbOfEncrypt=@nbOfEncrypt+1
 		return encrypted
 	end
 
-	#Methode qui décrypte une chaine en utilisant le type d'encryption précisé lors de la création d'instance,
+	#Methode qui décrypte une donnée YAML encryptée en utilisant le type d'encryption précisé lors de la création d'instance,
 	#le hash du mot de passe précisé lors de la création d'instance,
 	#le IV du mot de passe précisé lors de la création d'instance.
 	#
 	#Incrémente la variable d'instance nbOfDecrypt, qui compte le nombre de décryptions effectuées par l'encodeur/décodeur.
 	#
 	# * *Arguments*    :
-	#   - +stringToDecrypt+ -> la chaîne à décrypter
+	#   - +dataToDecrypt+ -> l'objet YAML encrypté à décrypter
 	# * *Valeurs de retour* :
-	#   - La chaîne décryptée
-	def decrypt(stringToDecrypt)
+	#   - L'objet décrypté
+	def decrypt(dataToDecrypt)
 		decipher = OpenSSL::Cipher.new(@cipherType)
 		decipher.decrypt
 		decipher.key = @processedPsw
 		decipher.iv = @iv
 
-		plain = decipher.update(stringToDecrypt)
+		plain = decipher.update(dataToDecrypt)
 		@nbOfDecrypt=@nbOfDecrypt=+1
-		return plain
+		return YAML.load(plain)
 	end
 
-	
+
 end
