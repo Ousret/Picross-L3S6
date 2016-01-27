@@ -6,6 +6,6 @@
 Jeu picross en ruby par une équipe de développement L3 SPI du Mans.
 
 ##Gems nécessaires :
-- require 'sqlite3'
-- require 'openssl'
-- require 'faker'
+- gem install 'sqlite3'
+- gem install 'openssl'
+- gem install 'faker'
