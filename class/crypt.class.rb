@@ -1,4 +1,5 @@
 require 'openssl'
+require 'faker'
 
 # Author::    Bien-CV https://github.com/Bien-CV
 # License::   MIT Licence
@@ -51,6 +52,7 @@ class Crypt
 
 	#Méthode d'initialisation utilisée lors de la création d'instance.
 	#
+	#
 	# * *Arguments*    :
 	#   - +unPassword+ -> le mot de passe utilisé comme clé
 	#   - +encryptionMethod+ -> La méthode d'encryption à utiliser, toutes ne sont pas supportées. ( cf https://docs.google.com/document/d/1Hdzg2B-U0fL_KFjIpdfWqLR6xUaBIzQuEXP7pZsM3V4/pub )
@@ -84,28 +86,49 @@ class Crypt
 		return key
 	end
 
+	#Methode qui encrypte une chaine en utilisant le type d'encryption précisé lors de la création d'instance,
+	#le hash du mot de passe précisé lors de la création d'instance,
+	#le IV du mot de passe précisé lors de la création d'instance.
 	#
-	def encrypt(dataToEncrypt)
+	#Incrémente la variable d'instance nbOfEncrypt, qui compte le nombre d'encryptions effectuées par l'encodeur/décodeur.
+	#
+	# * *Arguments*    :
+	#   - +stringToEncrypt+ -> la chaîne à encrypter
+	# * *Valeurs de retour* :
+	#   - La chaîne encryptée
+	def encrypt(stringToEncrypt)
 		cipher = OpenSSL::Cipher.new(@cipherType)
 		cipher.encrypt
 		cipher.key = @processedPsw
 		cipher.iv = @iv
 	
-		encrypted = cipher.update(dataToEncrypt)
+		encrypted = cipher.update(stringToEncrypt)
 		#tag = cipher.auth_tag
 		
-		@nbOfDecrypt=@nbOfDecrypt+1
+		@nbOfEncrypt=@nbOfEncrypt+1
 		return encrypted
 	end
 
-	def decrypt(dataToDecrypt)
+	#Methode qui décrypte une chaine en utilisant le type d'encryption précisé lors de la création d'instance,
+	#le hash du mot de passe précisé lors de la création d'instance,
+	#le IV du mot de passe précisé lors de la création d'instance.
+	#
+	#Incrémente la variable d'instance nbOfDecrypt, qui compte le nombre de décryptions effectuées par l'encodeur/décodeur.
+	#
+	# * *Arguments*    :
+	#   - +stringToDecrypt+ -> la chaîne à décrypter
+	# * *Valeurs de retour* :
+	#   - La chaîne décryptée
+	def decrypt(stringToDecrypt)
 		decipher = OpenSSL::Cipher.new(@cipherType)
 		decipher.decrypt
 		decipher.key = @processedPsw
 		decipher.iv = @iv
 
-		plain = decipher.update(dataToDecrypt)
+		plain = decipher.update(stringToDecrypt)
 		@nbOfDecrypt=@nbOfDecrypt=+1
 		return plain
 	end
+
+	
 end
