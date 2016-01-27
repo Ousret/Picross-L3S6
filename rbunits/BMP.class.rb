@@ -29,7 +29,8 @@ class MyTest < Test::Unit::TestCase
 
 			0.upto(bmp.width-1) do |i|
 				0.upto(bmp.height-1) do |j|
-					assert_equal(bmp[i,j])
+					#assert_equal(bmp[i,j],0||1)
+					#je ne sais pas comment tester si le pixel en question sera un 1 ou un 0
 				end
 			end
 		}
