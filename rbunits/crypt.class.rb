@@ -38,4 +38,3 @@ class MyTest < Test::Unit::TestCase
 	end
 
 end
-
