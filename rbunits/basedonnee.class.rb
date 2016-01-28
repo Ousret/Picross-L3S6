@@ -2,7 +2,7 @@
 
 # Test unitaire Basedonnee.rb
 # Auteur : Grude Victorien
-# Version : 1.0
+# Version : 1.1
 # Date : 22/01/16
 
 require 'test/unit'
@@ -16,8 +16,21 @@ class Testbasedonnee < Test::Unit::TestCase
 
 	def Test_base_de_donnee_1
 		kBase = Basedonnee.Creer('test.rb')
-		kBase.ajouteParam('test1','adcb')
-		assert_equal('abcd',kBase.lireParam('test2'))
+
+		kBase.ajouteParamBlob('test1','adcb')
+		assert_equal('abcd',kBase.lireParamBlob('test1'))
+
+		kBase.ajouteParamInt('test2',3)
+		assert_equal(3,kBase.lireParamInt('test2'))
+
+		kBase.ajouteParamBool('test3',True)
+		assert_equal(True,kBase.lireParamBool(True))
+
+		kBase.ajouteParamFloat('test4',3.5)
+		assert_equal(3.5,kBase.lireParamFloat('test4'))
+
+		kBase.ajouteParamString('test5','efgh')
+		assert_equal('efgh',kBase.lireParamString('test5'))
 	end
 
 end
