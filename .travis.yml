@@ -12,6 +12,7 @@ before_install:
 # Install dependencies
 install:
   - sudo apt-get update -qq
+  - gem install faker
   - gem install opengl
   - gem install ruby-units
   - gem install sqlite3
