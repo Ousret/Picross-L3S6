@@ -47,7 +47,7 @@ class Crypt
 	#   - +chosenIv+ -> Le vecteur d'initialisation à utiliser.
 	# * *Valeurs de retour* :
 	#   - Une nouvelle instance de la classe Crypt.
-	def Crypt.creerEncodeurDecodeur(unPassword,encryptionMethod='aes-128-gcm',chosenIv="NikeAdidasDiorPhilips")
+	def Crypt.creer(unPassword,encryptionMethod='aes-128-gcm',chosenIv="NikeAdidasDiorPhilips")
 		new(unPassword,encryptionMethod,chosenIv)
 	end
 
