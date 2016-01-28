@@ -13,6 +13,7 @@ before_install:
 install:
   - sudo apt-get update -qq
   - gem install faker
+  - gem install openssl
   - gem install opengl
   - gem install ruby-units
   - gem install sqlite3
