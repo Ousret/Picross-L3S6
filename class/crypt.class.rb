@@ -45,7 +45,7 @@ class Crypt
 	#   - +unPassword+ -> le mot de passe utilisé comme clé
 	#   - +encryptionMethod+ -> La méthode d'encryption à utiliser, toutes ne sont pas supportées. ( cf https://docs.google.com/document/d/1Hdzg2B-U0fL_KFjIpdfWqLR6xUaBIzQuEXP7pZsM3V4/pub )
 	#   - +chosenIv+ -> Le vecteur d'initialisation à utiliser.
-	# * *Valeurs de retour* :
+	# * *Returns* :
 	#   - Une nouvelle instance de la classe Crypt.
 	def Crypt.creer(unPassword,encryptionMethod='aes-128-gcm',chosenIv="NikeAdidasDiorPhilips")
 		new(unPassword,encryptionMethod,chosenIv)
@@ -58,7 +58,7 @@ class Crypt
 	#   - +unPassword+ -> le mot de passe utilisé comme clé
 	#   - +encryptionMethod+ -> La méthode d'encryption à utiliser, toutes ne sont pas supportées. ( cf https://docs.google.com/document/d/1Hdzg2B-U0fL_KFjIpdfWqLR6xUaBIzQuEXP7pZsM3V4/pub )
 	#   - +chosenIv+ -> Le vecteur d'initialisation à utiliser.
-	# * *Valeurs de retour* :
+	# * *Returns* :
 	#   - Une nouvelle instance de la classe Crypt.
 	def initialize(password,encryptionMethod,chosenIv)
 
@@ -76,7 +76,7 @@ class Crypt
 	#Methode qui hash le mot de passe en utilisant un sel aléatoire et PBKDF2
 	#Est uniquement appelée lors de l'initialisation d'une nouvelle instance.
 	#
-	# * *Valeurs de retour* :
+	# * *Returns* :
 	#   - La clé de cryptage calculée selon le 
 	def hashLeMotDePasse
 		#Le salt ajoute une composante aléatoire évitant de casser l'algo d'encryption par Rainbow Tables.
@@ -95,7 +95,7 @@ class Crypt
 	#
 	# * *Arguments*    :
 	#   - +dataToEncrypt+ -> la donnée à encrypter, qui est ensuite traduite en YAML
-	# * *Valeurs de retour* :
+	# * *Returns* :
 	#   - La chaîne encryptée
 	def encrypt(dataToEncrypt)
 		yamlString=dataToEncrypt.to_yaml
@@ -119,7 +119,7 @@ class Crypt
 	#
 	# * *Arguments*    :
 	#   - +dataToDecrypt+ -> l'objet YAML encrypté à décrypter
-	# * *Valeurs de retour* :
+	# * *Returns* :
 	#   - L'objet décrypté
 	def decrypt(dataToDecrypt)
 		decipher = OpenSSL::Cipher.new(@cipherType)
@@ -128,7 +128,7 @@ class Crypt
 		decipher.iv = @iv
 
 		plain = decipher.update(dataToDecrypt)
-		@nbOfDecrypt=@nbOfDecrypt=+1
+		@nbOfDecrypt=@nbOfDecrypt+1
 		return YAML.load(plain)
 	end
 
