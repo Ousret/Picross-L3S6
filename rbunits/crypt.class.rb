@@ -1,6 +1,6 @@
 require 'test/unit'
 require 'Faker'
-load '../class/crypt.class.rb'
+load './class/crypt.class.rb'
 
 class MyTest < Test::Unit::TestCase
 
