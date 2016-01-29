@@ -6,7 +6,7 @@
 # Date : 22/01/16
 
 require 'test/unit'
-load 'class/basedonnee.class.rb'
+load '../basedonnee.class.rb'
 
 #Vos tests dans ce fichier
 #https://github.com/olbrich/ruby-units
@@ -34,4 +34,3 @@ class Testbasedonnee < Test::Unit::TestCase
 	end
 
 end
-
