@@ -25,7 +25,7 @@ install:
   - gem install test-unit
   - gem install minitest
   - gem install codeclimate-test-reporter
-  - gem install gosu
+#- gem install gosu
 
 # Build the module
 script:
