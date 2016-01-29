@@ -7,7 +7,7 @@
 #
 
 require 'test/unit'
-load '../class/grille.class.rb'
+load './class/grille.class.rb'
 
 class TestGrille < Test::Unit::TestCase
 	
