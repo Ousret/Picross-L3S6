@@ -17,6 +17,7 @@ build/
 ## OS Specific
 ._*
 .DS_Store
+*~
 
 ## Documentation cache and generated files:
 /.yardoc/
