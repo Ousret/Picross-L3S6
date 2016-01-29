@@ -5,24 +5,24 @@ class MyTest < Test::Unit::TestCase
 
 	def test_bmp_new_bmp_1
 		2.times{
-			bmp = BMP::Reader.new("../ressources/bmp1.bmp")		
+			bmp = BMP::Reader.new("../ressources/images/bmp1.bmp")		
 		}
 	end
 
 	def test_bmp_new_bmp_2
 		2.times{
-			bmp = BMP::Reader.new("../ressources/bmp2.bmp")		
+			bmp = BMP::Reader.new("../ressources/images/bmp2.bmp")		
 		}
 	end
 
 	def test_bmp_new_bmp_3
 		2.times{
-			bmp = BMP::Reader.new("../ressources/bmp3.bmp")		
+			bmp = BMP::Reader.new("../ressources/images/bmp3.bmp")		
 		}
 	end
 
 	def test_bmp_matrice_1
-		bmp = BMP::Reader.new("../ressources/bmp1.bmp")
+		bmp = BMP::Reader.new("../ressources/images/bmp1.bmp")
 		2.times{
 			p bmp.width  #=> 2
 			p bmp.height #=> 2
