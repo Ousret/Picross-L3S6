@@ -84,13 +84,3 @@ class BMP
 	end
 end
 
-bmp = BMP::Reader.new("./bmp2.bmp")
-p bmp.width  #=> 2
-p bmp.height #=> 2
-
-0.upto(bmp.width-1) do |i|
-	0.upto(bmp.height-1) do |j|
-		print bmp[i,j]
-	end
-	puts ""
-end
