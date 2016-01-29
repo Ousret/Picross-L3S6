@@ -1,8 +1,8 @@
 
 require 'gosu'
 require 'test/unit'
-load './lecteurSon.class.rb'
-load './fenetre.class.rb'
+load './class/lecteurSon.class.rb'
+load './class/fenetre.class.rb'
 
 
 
