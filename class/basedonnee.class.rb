@@ -18,7 +18,7 @@ require 'sqlite3'
 class Basedonnee
 
 	#Indique la valeur de la base de donnee
-	@db
+	#@db
 
 	#Empêche l'utilisation de la méthode new
 	private_class_method :new
