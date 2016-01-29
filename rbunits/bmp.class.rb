@@ -29,7 +29,8 @@ class MyTest < Test::Unit::TestCase
 
 			0.upto(bmp.width-1) do |i|
 				0.upto(bmp.height-1) do |j|
-					#assert_equal(bmp[i,j]) tester si =1 ou 0
+					flag = (bmp[i,j]==1||bmp[i,j]==0) ? 1 : 0
+					assert_equal(flag,1)
 				end
 			end
 		}
