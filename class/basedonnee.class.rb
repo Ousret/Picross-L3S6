@@ -90,7 +90,7 @@ class Basedonnee
 	# - +param+ -> parametre a ajouter dans la table
 	# - +valeur+ -> valeur a ajouter dans la table
 	# * *Returns* :
-	# - La valeur ajouter dans la table.
+	# - Vrai si l'ajout a etais realiser avec succes faux sinon
 	def ajouteParamBlob(param,valeur)
 		return ajouteParam(CoupleValParamBlob,param,valeur)
 	end
@@ -111,7 +111,7 @@ class Basedonnee
 	# - +param+ -> parametre a ajouter dans la table
 	# - +valeur+ -> valeur a ajouter dans la table
 	# * *Returns* :
-	# - La valeur ajouter dans la table.
+	# - Vrai si l'ajout a etais realiser avec succes faux sinon
 	def ajouteParamInt(param,valeur)
 		return ajouteParam(CoupleValParamInt,param,valeur)
 	end
@@ -132,7 +132,7 @@ class Basedonnee
 	# - +param+ -> parametre a ajouter dans la table
 	# - +valeur+ -> valeur a ajouter dans la table
 	# * *Returns* :
-	# - La valeur ajouter dans la table.
+	# - Vrai si l'ajout a etais realiser avec succes faux sinon
 	def ajouteParamString(param,valeur)
 		return ajouteParam(CoupleValParamString,param,valeur)
 	end
@@ -153,7 +153,7 @@ class Basedonnee
 	# - +param+ -> parametre a ajouter dans la table
 	# - +valeur+ -> valeur a ajouter dans la table
 	# * *Returns* :
-	# - La valeur ajouter dans la table.
+	# - Vrai si l'ajout a etais realiser avec succes faux sinon
 	def ajouteParamBool(param,valeur)
 		return ajouteParam(CoupleValParamBool,param,valeur)
 	end
@@ -174,7 +174,7 @@ class Basedonnee
 	# - +param+ -> parametre a ajouter dans la table
 	# - +valeur+ -> valeur a ajouter dans la table
 	# * *Returns* :
-	# - La valeur ajouter dans la table.
+	# - Vrai si l'ajout a etais realiser avec succes faux sinon
 	def ajouteParamFloat(param,valeur)
 		return ajouteParam(CoupleValParamFloat,param,valeur)
 	end
