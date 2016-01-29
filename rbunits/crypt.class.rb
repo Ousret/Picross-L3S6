@@ -1,14 +1,37 @@
 require 'test/unit'
 require 'faker'
-load './class/crypt.class.rb'
+load '../class/crypt.class.rb'
 
 class MyTest < Test::Unit::TestCase
 
-	def test_new_crypt
-		2.times{
-			kCrypt = Crypt.creer(Faker::Hipster.sentence(15))
+	def test_new_cryptOneParameter
+		20.times{
+			Crypt.creer(Faker::Hipster.sentence(15))
 		}
 		
+	end
+	def test_new_cryptTwoParameters
+		20.times{
+			Crypt.creer(Faker::Hipster.sentence(15),Faker::Hipster.sentence(15))
+		}
+		
+	end
+	def test_new_cryptThreeParameters
+		20.times{
+			Crypt.creer(Faker::Hipster.sentence(15),Faker::Hipster.sentence(15),Faker::Hipster.sentence(15))
+		}
+		
+	end
+	def test_new_cryptAes128OneParameters
+		20.times{
+			Crypt.creerAes128(Faker::Hipster.sentence(15))
+		}
+		
+	end
+	def test_new_cryptAes128TwoParameters
+		20.times{
+			Crypt.creerAes128(Faker::Hipster.sentence(15),Faker::Hipster.sentence(15))
+		}
 	end
 
 

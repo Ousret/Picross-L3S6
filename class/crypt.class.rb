@@ -45,10 +45,27 @@ class Crypt
 	#   - +unPassword+ -> le mot de passe utilisé comme clé
 	#   - +encryptionMethod+ -> La méthode d'encryption à utiliser, toutes ne sont pas supportées. ( cf https://docs.google.com/document/d/1Hdzg2B-U0fL_KFjIpdfWqLR6xUaBIzQuEXP7pZsM3V4/pub )
 	#   - +chosenIv+ -> Le vecteur d'initialisation à utiliser.
-	# * *Returns* :
+	# * *Return* :
 	#   - Une nouvelle instance de la classe Crypt.
+	# * *Example code* :
+	#   - myCipher = Cypt.creer("passwordThing")
+	#   - myCipher = Cypt.creer("passwordThing",'aes-128-gcm',"myOwnIV")
 	def Crypt.creer(unPassword,encryptionMethod='aes-128-gcm',chosenIv="NikeAdidasDiorPhilips")
 		new(unPassword,encryptionMethod,chosenIv)
+	end
+
+	#Méthode de création d'instance de la classe Crypt.
+	#
+	# * *Arguments*    :
+	#   - +unPassword+ -> le mot de passe utilisé comme clé
+	#   - +chosenIv+ -> Le vecteur d'initialisation à utiliser.
+	# * *Return* :
+	#   - Une nouvelle instance de la classe Crypt.
+	# * *Example code* :
+	#   - myCipher = Cypt.creerAes128("passwordThing")
+	#   - myCipher = Cypt.creerAes128("passwordThing","myOwnIV")
+	def Crypt.creerAes128(unPassword,chosenIv="NikeAdidasDiorPhilips")
+		new(unPassword,'aes-128-gcm',chosenIv)
 	end
 
 	#Méthode d'initialisation utilisée lors de la création d'instance.
@@ -58,7 +75,7 @@ class Crypt
 	#   - +unPassword+ -> le mot de passe utilisé comme clé
 	#   - +encryptionMethod+ -> La méthode d'encryption à utiliser, toutes ne sont pas supportées. ( cf https://docs.google.com/document/d/1Hdzg2B-U0fL_KFjIpdfWqLR6xUaBIzQuEXP7pZsM3V4/pub )
 	#   - +chosenIv+ -> Le vecteur d'initialisation à utiliser.
-	# * *Returns* :
+	# * *Return* :
 	#   - Une nouvelle instance de la classe Crypt.
 	def initialize(password,encryptionMethod,chosenIv)
 
@@ -76,8 +93,8 @@ class Crypt
 	#Methode qui hash le mot de passe en utilisant un sel aléatoire et PBKDF2
 	#Est uniquement appelée lors de l'initialisation d'une nouvelle instance.
 	#
-	# * *Returns* :
-	#   - La clé de cryptage calculée selon le 
+	# * *Return* :
+	#   - La clé de cryptage calculée selon le mot de passe
 	def hashLeMotDePasse
 		#Le salt ajoute une composante aléatoire évitant de casser l'algo d'encryption par Rainbow Tables.
 		salt = OpenSSL::Random.random_bytes(24)
@@ -95,8 +112,11 @@ class Crypt
 	#
 	# * *Arguments*    :
 	#   - +dataToEncrypt+ -> la donnée à encrypter, qui est ensuite traduite en YAML
-	# * *Returns* :
+	# * *Return* :
 	#   - La chaîne encryptée
+	#
+	# * *Example code* :
+	#   - myCryptInstance.encrypt(objectToBeEncrypted)
 	def encrypt(dataToEncrypt)
 		yamlString=dataToEncrypt.to_yaml
 		cipher = OpenSSL::Cipher.new(@cipherType)
@@ -119,8 +139,10 @@ class Crypt
 	#
 	# * *Arguments*    :
 	#   - +dataToDecrypt+ -> l'objet YAML encrypté à décrypter
-	# * *Returns* :
+	# * *Return* :
 	#   - L'objet décrypté
+	# * *Example code* :
+	#   - myCryptInstance.decrypt(encryptedObject)
 	def decrypt(dataToDecrypt)
 		decipher = OpenSSL::Cipher.new(@cipherType)
 		decipher.decrypt
