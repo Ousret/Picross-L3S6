@@ -17,17 +17,17 @@ require 'yaml'
 class Crypt
 
 	#Indique le nombre de fois que la méthode encrypt a été utilisée
-	@nbOfEncrypt
+	##@nbOfEncrypt
 	#Indique le nombre de fois que la méthode decrypt a été utilisée
-	@nbOfDecrypt
+	##@nbOfDecrypt
 	#Est le mot de passe choisi et utilisé comme clé de cryptage, il est choisi lors de la création d'instance.
-	@psw
+	##@psw
 	#Contient le hash du mot de passe 
-	@processedPsw
+	##@processedPsw
 	#Type d'encryptage choisi, AES 128 bits GCM par défault : Attention, certains encryptages ne seront pas supportés
-	@cipherType
+	##@cipherType
 	#Vecteur d'initialisation de l'algorithme de cryptage, contient une valeur par défaut.
-	@iv
+	##@iv
 
 	#Accesseurs
 	attr_reader :nbOfEncrypt

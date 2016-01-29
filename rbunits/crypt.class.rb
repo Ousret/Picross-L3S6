@@ -1,6 +1,6 @@
 require 'test/unit'
 require 'faker'
-load '../class/crypt.class.rb'
+load './class/crypt.class.rb'
 
 class MyTest < Test::Unit::TestCase
 
@@ -36,9 +36,11 @@ class MyTest < Test::Unit::TestCase
 
 
 	def test_crypt_decrypt
-		kCrypt = Crypt.creer(Faker::Hipster.sentence(15))
-		testString=Faker::Hipster.sentence(15)
-		assert_equal(testString, kCrypt.decrypt(kCrypt.encrypt(testString)) )
+		15.times{
+			kCrypt = Crypt.creer(Faker::Hipster.sentence(15))
+			testString=Faker::Hipster.sentence(15)
+			assert_equal(testString, kCrypt.decrypt(kCrypt.encrypt(testString)) )
+		}
 	end
 
 
