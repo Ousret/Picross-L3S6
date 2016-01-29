@@ -60,10 +60,11 @@ class Basedonnee
 	# - +param+ -> parametre a ajouter dans la table
 	# - +valeur+ -> valeur a ajouter dans la table
 	# * *Returns* :
-	# - La valeur ajouter dans la table.
+	# - Vrai si l'ajout a etais realiser avec succes faux sinon
 	def ajouteParam(uneBase,param,valeur)
 		@db.execute "INSERT INTO #{uneBase} (Parametre,Valeur) VALUES (\"#{param}\", \"#{valeur}\")"
-		return valeur
+		value = db.last_insert_row_Valeur
+		return value == valeur
 	end
 
 	#Méthode d'acces en lecture a la base de donnee
