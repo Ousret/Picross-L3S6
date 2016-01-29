@@ -2,11 +2,13 @@
 
 class BMP
 	class Reader
+#variables
 		PIXEL_ARRAY_OFFSET =54
-		BITS_PER_PIXEL     = 24
-		DIB_HEADER_SIZE    = 40
+		BITS_PER_PIXEL     = 24 #défini le nombre de bit pour un pixel
+		DIB_HEADER_SIZE    = 40 #défini la taille du header
 
-		def initialize(bmp_filename) 
+		def initialize(bmp_filename)
+#ouvre une image, lit son header et défini la matrice binaire
 			File.open(bmp_filename, "rb") do |file|
 				read_bmp_header(file)
 				read_dib_header(file)
@@ -15,12 +17,14 @@ class BMP
 	    end
 
 		def [](x,y)
+#renvoie le boolean qui défini un pixel : le pixel est défini en fonction d'un x et d'un y
 			@pixels[y][x]=="ffffff"?0:1
 		end
-
+#permet de récupérer les dimensions de l'image et donc de la matrice
 		attr_reader :width, :height
 
 		def read_pixels(file)
+#défini la matrice
 			@pixels = Array.new(@height) { Array.new(@width) }
 
 			(@height-1).downto(0) do |y|
@@ -38,6 +42,7 @@ class BMP
 		end
 	
 		def read_bmp_header(file)
+#défini le hearder du file : nécessaire
 			header = file.read(14)
 			magic_number, file_size, reserved1,
 			reserved2, array_location = header.unpack("A2Vv2V")
@@ -54,6 +59,11 @@ class BMP
 		end
 	
 		def read_dib_header(file)
+#test si l'url est bonne
+#test si l'image est convenable :
+#	l'image doit être codée avec du 24bit par pixel
+
+
 			header = file.read(40)
 	
 			header_size, width, height, planes, bits_per_pixel, 
