@@ -16,9 +16,9 @@ class Grille
 	
 	
 	#=== Variables d'instance ===
-	@matrice		#matrice de jeu 
-	@indicesHaut	#indices logique du haut de la grille
-	@indicesCote	#indices logique du coté de la grille
+	#@matrice		#matrice de jeu 
+	#@indicesHaut	#indices logique du haut de la grille
+	#@indicesCote	#indices logique du coté de la grille
 	#============================
 
 	#la methode new() est private pour cette classe
