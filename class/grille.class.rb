@@ -26,13 +26,16 @@ class Grille
 
 	def initialize(matrice)#:nodoc:
 	
+		if matrice==nil
+			raise "Grille:initialize : la matrice recu est vide"
+
+		elsif matrice.length != matrice[0].length
+			raise "Grille:initialize : la matrice recu n'est pas carré"
+		end 
+
 		@matrice		= matrice
 		@indicesHaut 	= Array.new(@matrice.length) { Array.new() }
 		@indicesCote	= Array.new(@matrice.length) { Array.new() }
-		print(@indicesHaut)
-		print("\n")
-		print(@indicesCote)
-		print("\n")
 		
 		self.calculeIndiceCote()
 		self.calculeIndiceHaut()
@@ -46,7 +49,7 @@ class Grille
 	#* <b>matrice</b>  : matrice de jeu
 	def Grille.grille(matrice)
 
-		new(matrice )
+		new(matrice)
 		
 	end
 
