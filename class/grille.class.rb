@@ -27,10 +27,10 @@ class Grille
 	def initialize(matrice)#:nodoc:
 	
 		if matrice==nil
-			raise "Grille:initialize : la matrice recu est vide"
+			raise TypeError.new("Grille:initialize : la matrice recu est vide")
 
 		elsif matrice.length != matrice[0].length
-			raise "Grille:initialize : la matrice recu n'est pas carré"
+			raise TypeError.new("Grille:initialize : la matrice recu n'est pas carré")
 		end 
 
 		@matrice		= matrice

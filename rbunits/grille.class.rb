@@ -13,13 +13,16 @@ class TestGrille < Test::Unit::TestCase
 
 	#test de creation d'une grille 	avec nil comme paramètre
 	def test_grille_nil()
-			assert_raise(Exeption.new("Grille:initialize : la matrice recu est vide")){Grille.grille(nil)}
+
+			exception = assert_raise(TypeError){Grille.grille(nil)}
+			assert_equal("Grille:initialize : la matrice recu est vide", exception.message)
 	end
 
 	#test de creation d'une grille 	avec une matrice non carree
 	def test_grille_non_carree()
 			matrice_non_carre = [[false,false,true,false,true],[true,true,false,true,false]]
-			assert_raise(Exeption.new("Grille:initialize : la matrice recu n'est pas carré")){Grille.grille(matrice_non_carre)}
+			exception = assert_raise(TypeError){Grille.grille(matrice_non_carre)}
+			assert_equal("Grille:initialize : la matrice recu n'est pas carré", exception.message)
 	end
 
 	#test de creation d'une grille 	avec une martrice 5*5
