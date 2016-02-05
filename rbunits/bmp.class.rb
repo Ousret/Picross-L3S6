@@ -1,33 +1,40 @@
 require 'test/unit'
 load 'class/bmp.class.rb'
+load 'class/basedonnee.class.rb'
 
 class MyTest < Test::Unit::TestCase
 
 	def test_bmp_new_bmp_1
-#test si l'initialisation avec l'image bmp.bmp fonctionnne ou non
+	#test si l'initialisation avec l'image bmp.bmp fonctionnne ou non
 		2.times{
-			bmp = BMP::Reader.new("ressources/images/bmp.bmp")		
+			bmp = BMP::Reader.creer("ressources/images/bmp.bmp")		
 		}
 	end
 
 	def test_bmp_new_bmp_2
-#test si l'initialisation avec l'image bmp2.bmp fonctionnne ou non
+	#test si l'initialisation avec l'image bmp2.bmp fonctionnne ou non
 		2.times{
-			bmp = BMP::Reader.new("ressources/images/bmp2.bmp")		
+			bmp = BMP::Reader.creer("ressources/images/bmp2.bmp")		
 		}
 	end
-
 	def test_bmp_new_bmp_3
-#test si l'initialisation avec l'image bmp3.bmp fonctionnne ou non
+	#test si l'initialisation avec l'image bmp3.bmp fonctionnne ou non
 		2.times{
-			bmp = BMP::Reader.new("ressources/images/bmp3.bmp")		
+			bmp = BMP::Reader.creer("ressources/images/bmp3.bmp")		
 		}
 	end
+def test_bmp_new_bmp_4
+	#test si l'initialisation avec l'image bmp4.bmp fonctionnne ou non
+		2.times{
+			bmp = BMP::Reader.creer("ressources/images/bmp4.bmp")		
+		}
+	end
+	
 
 	def test_bmp_matrice_1
 	#test si la matrice récupérée est bien binaire
 	#test si les dimensions sont des entiers supérieur à 0
-		bmp = BMP::Reader.new("ressources/images/bmp.bmp")
+		bmp = BMP::Reader.creer("ressources/images/bmp.bmp")
 		2.times{
 			#premier test : vérifie les dimensions
 			flag = bmp.width>0?1:0
@@ -43,6 +50,8 @@ class MyTest < Test::Unit::TestCase
 			end
 		}
 	end
+
+
 end
 	
 
