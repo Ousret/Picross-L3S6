@@ -1,36 +1,73 @@
 # coding: binary
 
+# Author::    mariusmaxetselina https://github.com/mariusmaxetselina
+# License::   MIT Licence
+#
+# https://github.com/Ousret/Picross-L3S6
+#
+#*Créer une instance de cette classe, en donnant en paramètre l'adresse url d'une image bmp,
+#*Utiliser une instance de cette classe avec en paramètre entre crochets les coordonnées du pixel pour obtenir sa valeur binaire (1 si noir, 0 si blanc
+#
 class BMP
 	class Reader
-#variables
-		PIXEL_ARRAY_OFFSET =54
+		#variables de classes
+		PIXEL_ARRAY_OFFSET = 54
 		BITS_PER_PIXEL     = 24 #défini le nombre de bit pour un pixel
 		DIB_HEADER_SIZE    = 40 #défini la taille du header
+		
+		private_class_method:new
+		#la méthode initialize est privatisée pour être renommée
 
+		#Méthode de création d'instance de la classe Crypt.
+		#
+		# * *Arguments*    :
+		#   - l'url d'une image bmp
+		# * *Return value* :
+		#   - Une nouvelle instance de la classe BMP.
+		# * *Sample code* :
+		#   - bmp = BMP::Reader.new("ressources/images/	bmp.bmp")
+		def Reader.creer(bmp_filename)
+			new(bmp_filename)	
+		end
+		#Méthode de création d'instance de la classe Crypt.
+		#
+		# * *Arguments*    :
+		#   - l'url d'une image bmp
+		# * *Return value* :
+		#   - Une nouvelle instance de la classe BMP.
+		# * *Sample code* :
+		#   - bmp = BMP::Reader.new("ressources/images/bmp.bmp")
 		def initialize(bmp_filename)
-#constructeur
-#ouvre une image, lit son header et défini la matrice binaire
-#fait trois fonctions pour traiter le header, les exceptions et les pixels
+		#constructeur
+		#ouvre une image, lit son header et défini la matrice 			binaire
+		#fait trois méthodes pour traiter le header, les 			exceptions et les pixels
 			File.open(bmp_filename, "rb") do |file|
 				read_bmp_header(file)
+				#methode qui défini le header ainsi 					que les dimensions de l'image
 				read_dib_header(file)
+				#vérifie si toutes l'image correspond
 				read_pixels(file)
+				#fait le traitement sur les pixel
 			end
-	    end
+		end
 
 		def [](x,y)
-#fonction qui permet de ressortir le boolean correspondant à un pixel
+#méthode qui permet de ressortir le boolean correspondant à un pixel
 #arguments : deux entiers comme des coordonnées
-#retourne le boolean qui défini un pixel : le pixel est défini en #fonction d'un x et d'un y
+#retourne le boolean qui défini un pixel : le pixel est défini en 
+#fonction d'un x et d'un y
 #convertie de l'hexa en binaire
+#exemple :
+# bmp = BMP::Reader.new("ressources/images/bmp.bmp"
+# p bmp[14,15]
 			@pixels[y][x]=="ffffff"?0:1
 		end
-#getters
+#Accesseurs
 #permet de récupérer les dimensions de l'image et donc de la matrice
 		attr_reader :width, :height
 
 		def read_pixels(file)
-#fonction qui défini la matrice
+#méthode qui défini la matrice
 #initialisation de la matrice
 			@pixels = Array.new(@height) { Array.new(@width) }
 #parcours le tableau ligne par ligne
@@ -44,7 +81,7 @@ class BMP
 		end
 
 		def advance_to_next_row(file)
-#fonction qui défini les colonnes d'un fichier
+#méthode qui défini les colonnes d'un fichier
 #utiliser plus haut
 			padding_bytes = @width % 4
 			return if padding_bytes == 0
@@ -52,7 +89,7 @@ class BMP
 		end
 	
 		def read_bmp_header(file)
-#fonction qui vérifie le header du file : 
+#méthode qui vérifie le header du file : 
 #permet de vérifier si le header correspond à notre traitement
 
 			header = file.read(14)
@@ -71,13 +108,13 @@ class BMP
 		end
 	
 		def read_dib_header(file)
-#fonction qui effectue des tests pour les exceptions :
+#méthode qui effectue des tests pour les exceptions :
 #test si l'url est bonne
 #test si l'image est convenable :
 #	l'image doit être codée avec du 24bit par pixel
 			header = file.read(40)
 	
-			header_size, width, height, planes, bits_per_pixel, 
+			header_size, width, height, planes, bits_per_pixel,
 			compression_method, image_size, hres, 
 			vres, n_colors, i_colors = header.unpack("Vl<2v2V2l<2V2") 
 #test si la taille du header convient	
@@ -105,6 +142,3 @@ class BMP
 		end
 	end
 end
-#cette classe s'instancie de la façon suivante : BMP::Reader.new()
-#une fois l'instance faite, on peut récupérer chaque bit grace au tableau
-#on peut aussi récupérer les dimensions
