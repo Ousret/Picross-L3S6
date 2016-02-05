@@ -38,4 +38,36 @@ class TestGrille < Test::Unit::TestCase
 			assert_equal(grille.indicesCote(),indice_cote)
 	end
 
+    #test de si une case est noir sur une case noir
+	def test_estNoir?_1()
+	#matrice 5*5
+	matrice =[[false,false,true,false,true],[true,true,false,true,false],[false,false,true,false,false],[true,true,false,true,false],[false,true,true,true,true]]
+			grille = Grille.grille(matrice)
+			assert_equal(grille.estNoir?(1,3),true)
+	end
+
+     #test de si une case est noir sur une case non noir
+	def test_estNoir?_2()
+	#matrice 5*5
+	matrice =[[false,false,true,false,true],[true,true,false,true,false],[false,false,true,false,false],[true,true,false,true,false],[false,true,true,true,true]]
+			grille = Grille.grille(matrice)
+			assert_equal(grille.estNoir?(2,3),false)
+	end
+
+    #test de si une case est noir avec dépassement de la taille du tableau sur x
+	def test_estNoir?_3_x()
+	matrice =[[false,false,true,false,true],[true,true,false,true,false],[false,false,true,false,false],[true,true,false,true,false],[false,true,true,true,true]]
+            grille = Grille.grille(matrice)
+			exception = assert_raise(RangeError){grille.estNoir?(8,3)}
+			assert_equal("coordonée x en dehors de la matrice", exception.message)
+	end
+
+     #test de si une case est noir avec dépassement de la taille du tableau sur y
+	def test_estNoir?_3_x()
+	matrice =[[false,false,true,false,true],[true,true,false,true,false],[false,false,true,false,false],[true,true,false,true,false],[false,true,true,true,true]]
+            grille = Grille.grille(matrice)
+			exception = assert_raise(RangeError){grille.estNoir?(8,3)}
+			assert_equal("coordonée y en dehors de la matrice", exception.message)
+	end
+
 end

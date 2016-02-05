@@ -22,7 +22,7 @@ class Grille
 	#============================
 
 	#la methode new() est private pour cette classe
-	private_class_method :new
+	private_class_method :new,:calculeIndiceHaut,:calculeIndiceCote
 
 	def initialize(matrice)#:nodoc:
 	
@@ -150,4 +150,24 @@ class Grille
 			end
 
 	end
+
+    
+    #=== Methode qui permet de savoir si une case est noir 
+	#
+	#=== Paramètres :
+	#* <b>x</b>:coordonée x : la ligne
+    #* <b>x</b>:coordonée y : la colonne
+    #=== Paramètres :
+    #return true si la case [x][y] est noir si non false
+    def estNoir?(x,y)
+        x=x-1   #on decrémente les indices de -1 parce que le tableau commence à l'indice 0
+        y=y-1
+        if x > matrice.length
+			raise RangeError.new("coordonée x en dehors de la matrice")
+        end
+        if y > matrice.length
+			raise RangeError.new("coordonée y en dehors de la matrice")
+        end
+        return @matrice[x][y]
+    end
 end
