@@ -42,8 +42,8 @@ class Crypt
 	# * *Return value* :
 	#   - Une nouvelle instance de la classe Crypt.
 	# * *Sample code* :
-	#   - myCipher = Cypt.creer("passwordThing")
-	#   - myCipher = Cypt.creer("passwordThing",'aes-128-gcm',"myOwnIV")
+	#   - myCipher = Crypt.creer("passwordThing")
+	#   - myCipher = Crypt.creer("passwordThing",'aes-128-gcm',"myOwnIV")
 	def Crypt.creer(unPassword,encryptionMethod='aes-128-gcm',chosenIv="NikeAdidasDiorPhilips")
 		new(unPassword,encryptionMethod,chosenIv)
 	end
@@ -56,8 +56,8 @@ class Crypt
 	# * *Return value* :
 	#   - Une nouvelle instance de la classe Crypt.
 	# * *Usage* :
-	#   - myCipher = Cypt.creerAes128("passwordThing")
-	#   - myCipher = Cypt.creerAes128("passwordThing","myOwnIV")
+	#   - myCipher = Crypt.creerAes128("passwordThing")
+	#   - myCipher = Crypt.creerAes128("passwordThing","myOwnIV")
 	def Crypt.creerAes128(unPassword,chosenIv="NikeAdidasDiorPhilips")
 		new(unPassword,'aes-128-gcm',chosenIv)
 	end
