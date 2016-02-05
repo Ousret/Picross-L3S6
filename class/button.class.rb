@@ -1,7 +1,9 @@
+load 'interfaceObject.class.rb'
+
 class Button < InterfaceObject
 
-	def initialize
-		#super
+	def initialize(nom,option)
+		super("test",0)
 		#state=false
 	end
 

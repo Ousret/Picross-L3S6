@@ -2,7 +2,7 @@
 
 
 
-class fenetreabs
+class Fenetreabs
 	def initialize(width, height, options)
 	end
 

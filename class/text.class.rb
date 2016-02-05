@@ -1,5 +1,7 @@
+load 'interfaceObject.class.rb'
+
 class Text < InterfaceObject
-	def initialize(content)
+	def initialize(nom,options,content)
 		
 	end
 
