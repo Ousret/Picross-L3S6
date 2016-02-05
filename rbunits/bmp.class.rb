@@ -25,12 +25,16 @@ class MyTest < Test::Unit::TestCase
 	end
 
 	def test_bmp_matrice_1
-#test si la matrice récupérée est bien binaire
+	#test si la matrice récupérée est bien binaire
+	#test si les dimensions sont des entiers supérieur à 0
 		bmp = BMP::Reader.new("ressources/images/bmp.bmp")
 		2.times{
-			p bmp.width  #=> 2
-			p bmp.height #=> 2
-
+			#premier test : vérifie les dimensions
+			flag = bmp.width>0?1:0
+			assert_equal(flag,1)
+			flag = bmp.height>0?1:0
+			assert_equal(flag,1)
+			#test chaque pixel : chaque pixel doit être égal à 0 ou 1
 			0.upto(bmp.width-1) do |i|
 				0.upto(bmp.height-1) do |j|
 					flag = (bmp[i,j]==1||bmp[i,j]==0) ? 1 : 0

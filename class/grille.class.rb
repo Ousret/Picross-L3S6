@@ -16,9 +16,9 @@ class Grille
 	
 	
 	#=== Variables d'instance ===
-	@matrice		#matrice de jeu 
-	@indicesHaut	#indices logique du haut de la grille
-	@indicesCote	#indices logique du coté de la grille
+	#@matrice		#matrice de jeu 
+	#@indicesHaut	#indices logique du haut de la grille
+	#@indicesCote	#indices logique du coté de la grille
 	#============================
 
 	#la methode new() est private pour cette classe
@@ -26,13 +26,16 @@ class Grille
 
 	def initialize(matrice)#:nodoc:
 	
+		if matrice==nil
+			raise TypeError.new("Grille:initialize : la matrice recu est vide")
+
+		elsif matrice.length != matrice[0].length
+			raise TypeError.new("Grille:initialize : la matrice recu n'est pas carré")
+		end 
+
 		@matrice		= matrice
 		@indicesHaut 	= Array.new(@matrice.length) { Array.new() }
 		@indicesCote	= Array.new(@matrice.length) { Array.new() }
-		print(@indicesHaut)
-		print("\n")
-		print(@indicesCote)
-		print("\n")
 		
 		self.calculeIndiceCote()
 		self.calculeIndiceHaut()
@@ -46,7 +49,7 @@ class Grille
 	#* <b>matrice</b>  : matrice de jeu
 	def Grille.grille(matrice)
 
-		new(matrice )
+		new(matrice)
 		
 	end
 

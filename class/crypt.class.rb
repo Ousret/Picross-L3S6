@@ -16,18 +16,12 @@ require 'yaml'
 
 class Crypt
 
-	#Indique le nombre de fois que la méthode encrypt a été utilisée
-	##@nbOfEncrypt
-	#Indique le nombre de fois que la méthode decrypt a été utilisée
-	##@nbOfDecrypt
-	#Est le mot de passe choisi et utilisé comme clé de cryptage, il est choisi lors de la création d'instance.
-	##@psw
-	#Contient le hash du mot de passe 
-	##@processedPsw
-	#Type d'encryptage choisi, AES 128 bits GCM par défault : Attention, certains encryptages ne seront pas supportés
-	##@cipherType
-	#Vecteur d'initialisation de l'algorithme de cryptage, contient une valeur par défaut.
-	##@iv
+	#@nbOfEncrypt
+	#@nbOfDecrypt
+	#@psw
+	#@processedPsw
+	#@cipherType
+	#@iv
 
 	#Accesseurs
 	attr_reader :nbOfEncrypt
@@ -45,9 +39,9 @@ class Crypt
 	#   - +unPassword+ -> le mot de passe utilisé comme clé
 	#   - +encryptionMethod+ -> La méthode d'encryption à utiliser, toutes ne sont pas supportées. ( cf https://docs.google.com/document/d/1Hdzg2B-U0fL_KFjIpdfWqLR6xUaBIzQuEXP7pZsM3V4/pub )
 	#   - +chosenIv+ -> Le vecteur d'initialisation à utiliser.
-	# * *Return* :
+	# * *Return value* :
 	#   - Une nouvelle instance de la classe Crypt.
-	# * *Example code* :
+	# * *Sample code* :
 	#   - myCipher = Cypt.creer("passwordThing")
 	#   - myCipher = Cypt.creer("passwordThing",'aes-128-gcm',"myOwnIV")
 	def Crypt.creer(unPassword,encryptionMethod='aes-128-gcm',chosenIv="NikeAdidasDiorPhilips")
@@ -59,9 +53,9 @@ class Crypt
 	# * *Arguments*    :
 	#   - +unPassword+ -> le mot de passe utilisé comme clé
 	#   - +chosenIv+ -> Le vecteur d'initialisation à utiliser.
-	# * *Return* :
+	# * *Return value* :
 	#   - Une nouvelle instance de la classe Crypt.
-	# * *Example code* :
+	# * *Usage* :
 	#   - myCipher = Cypt.creerAes128("passwordThing")
 	#   - myCipher = Cypt.creerAes128("passwordThing","myOwnIV")
 	def Crypt.creerAes128(unPassword,chosenIv="NikeAdidasDiorPhilips")
@@ -75,14 +69,18 @@ class Crypt
 	#   - +unPassword+ -> le mot de passe utilisé comme clé
 	#   - +encryptionMethod+ -> La méthode d'encryption à utiliser, toutes ne sont pas supportées. ( cf https://docs.google.com/document/d/1Hdzg2B-U0fL_KFjIpdfWqLR6xUaBIzQuEXP7pZsM3V4/pub )
 	#   - +chosenIv+ -> Le vecteur d'initialisation à utiliser.
-	# * *Return* :
+	# * *Return value* :
 	#   - Une nouvelle instance de la classe Crypt.
 	def initialize(password,encryptionMethod,chosenIv)
 
+		#Est le mot de passe choisi et utilisé comme clé de cryptage, il est choisi lors de la création d'instance.
 		@psw = password
 
+		#Contient le hash du mot de passe 
 		@processedPsw = self.hashLeMotDePasse
+		#Type d'encryptage choisi, AES 128 bits GCM par défault : Attention, certains encryptages ne seront pas supportés
 		@cipherType = encryptionMethod
+		#Vecteur d'initialisation de l'algorithme de cryptage, contient une valeur par défaut.
 		@iv = chosenIv
 
 		@nbOfEncrypt=0
@@ -93,7 +91,7 @@ class Crypt
 	#Methode qui hash le mot de passe en utilisant un sel aléatoire et PBKDF2
 	#Est uniquement appelée lors de l'initialisation d'une nouvelle instance.
 	#
-	# * *Return* :
+	# * *Return value* :
 	#   - La clé de cryptage calculée selon le mot de passe
 	def hashLeMotDePasse
 		#Le salt ajoute une composante aléatoire évitant de casser l'algo d'encryption par Rainbow Tables.
@@ -112,10 +110,10 @@ class Crypt
 	#
 	# * *Arguments*    :
 	#   - +dataToEncrypt+ -> la donnée à encrypter, qui est ensuite traduite en YAML
-	# * *Return* :
+	# * *Return value* :
 	#   - La chaîne encryptée
 	#
-	# * *Example code* :
+	# * *Usage* :
 	#   - myCryptInstance.encrypt(objectToBeEncrypted)
 	def encrypt(dataToEncrypt)
 		yamlString=dataToEncrypt.to_yaml
@@ -127,6 +125,7 @@ class Crypt
 		encrypted = cipher.update(yamlString)
 		#tag = cipher.auth_tag
 		
+		#Indique le nombre de fois que la méthode encrypt a été utilisée
 		@nbOfEncrypt=@nbOfEncrypt+1
 		return encrypted
 	end
@@ -139,9 +138,9 @@ class Crypt
 	#
 	# * *Arguments*    :
 	#   - +dataToDecrypt+ -> l'objet YAML encrypté à décrypter
-	# * *Return* :
+	# * *Return value* :
 	#   - L'objet décrypté
-	# * *Example code* :
+	# * *Usage* :
 	#   - myCryptInstance.decrypt(encryptedObject)
 	def decrypt(dataToDecrypt)
 		decipher = OpenSSL::Cipher.new(@cipherType)
@@ -150,6 +149,7 @@ class Crypt
 		decipher.iv = @iv
 
 		plain = decipher.update(dataToDecrypt)
+		#Indique le nombre de fois que la méthode decrypt a été utilisée
 		@nbOfDecrypt=@nbOfDecrypt+1
 		return YAML.load(plain)
 	end
