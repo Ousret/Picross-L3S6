@@ -168,6 +168,7 @@ class Grille
         if y > matrice.length
 			raise RangeError.new("coordonée y en dehors de la matrice")
         end
+
         return @matrice[x][y]
     end
 end
