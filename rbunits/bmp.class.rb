@@ -1,6 +1,6 @@
 require 'test/unit'
 load 'class/bmp.class.rb'
-load 'class/basedonnee.class.rb'
+
 
 class MyTest < Test::Unit::TestCase
 
@@ -51,7 +51,28 @@ def test_bmp_new_bmp_4
 		}
 	end
 
-
+	def test_bmp_vs_bmp
+	#test si la matrice récupérée est bien binaire
+	#test si les dimensions sont des entiers supérieur à 0
+		
+		2.times{
+			bmp2 = BMP::Reader.creer("ressources/images/bmp.bmp")	
+			p bmp2.height
+			p bmp2.width			
+			bmp1 = BMP::Reader.creer("ressources/images/bmp.bmp")
+			p bmp1.height
+			p bmp1.width
+						
+			assert_equal(bmp1.height,bmp2.height)
+			assert_equal(bmp1.width,bmp2.width)
+			#test chaque pixel : chaque pixel doit être identique pour deux instance d'une meme image
+			0.upto(bmp1.width-1) do |i|
+				0.upto(bmp1.height-1) do |j|
+					assert_equal(bmp1[i,j],bmp2[i,j])
+				end
+			end
+		}
+	end
 end
 	
 
