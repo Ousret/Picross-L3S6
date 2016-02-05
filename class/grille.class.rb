@@ -22,7 +22,7 @@ class Grille
 	#============================
 
 	#la methode new() est private pour cette classe
-	private_class_method :new,:calculeIndiceHaut,:calculeIndiceCote
+	private_class_method :new
 
 	def initialize(matrice)#:nodoc:
 	
