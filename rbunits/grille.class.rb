@@ -39,7 +39,7 @@ class TestGrille < Test::Unit::TestCase
 	end
 
     #test de si une case est noir sur une case noir
-	def test_estNoir?_1()
+	def test_estNoir_1()
 	#matrice 5*5
 	matrice =[[false,false,true,false,true],[true,true,false,true,false],[false,false,true,false,false],[true,true,false,true,false],[false,true,true,true,true]]
 			grille = Grille.grille(matrice)
@@ -47,7 +47,7 @@ class TestGrille < Test::Unit::TestCase
 	end
 
      #test de si une case est noir sur une case non noir
-	def test_estNoir?_2()
+	def test_estNoir_2()
 	#matrice 5*5
 	matrice =[[false,false,true,false,true],[true,true,false,true,false],[false,false,true,false,false],[true,true,false,true,false],[false,true,true,true,true]]
 			grille = Grille.grille(matrice)
@@ -55,7 +55,7 @@ class TestGrille < Test::Unit::TestCase
 	end
 
     #test de si une case est noir avec dépassement de la taille du tableau sur x
-	def test_estNoir?_3_x()
+	def test_estNoir_3_x()
 	matrice =[[false,false,true,false,true],[true,true,false,true,false],[false,false,true,false,false],[true,true,false,true,false],[false,true,true,true,true]]
             grille = Grille.grille(matrice)
 			exception = assert_raise(RangeError){grille.estNoir?(8,3)}
@@ -63,7 +63,7 @@ class TestGrille < Test::Unit::TestCase
 	end
 
      #test de si une case est noir avec dépassement de la taille du tableau sur y
-	def test_estNoir?_3_x()
+	def test_estNoir_3_x()
 	matrice =[[false,false,true,false,true],[true,true,false,true,false],[false,false,true,false,false],[true,true,false,true,false],[false,true,true,true,true]]
             grille = Grille.grille(matrice)
 			exception = assert_raise(RangeError){grille.estNoir?(8,3)}
