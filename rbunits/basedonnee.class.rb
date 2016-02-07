@@ -2,11 +2,10 @@
 
 # Test unitaire Basedonnee.rb
 # Auteur : Grude Victorien
-# Version : 1.1
-# Date : 22/01/16
+
 
 require 'test/unit'
-load 'class/basedonnee.class.rb'
+load '../class/basedonnee.class.rb'
 
 #Vos tests dans ce fichier
 #https://github.com/olbrich/ruby-units
@@ -14,23 +13,50 @@ load 'class/basedonnee.class.rb'
 
 class Testbasedonnee < Test::Unit::TestCase
 
-	def Test_base_de_donnee_1
-		kBase = Basedonnee.Creer('test.rb')
+	def test_bdd_creation
+		20.times{
+			kBase = Basedonnee.creer('test.db')
+		}
+	end
 
-		assert(kBase.ajouteParamBlob('test1','adcb'))
-		assert_equal('abcd',kBase.lireParamBlob('test1'))
+	def test_bdd_blob
+		20.times{
+			kBase = Basedonnee.creer('test.db')
+			assert(kBase.ajouteParamBlob('test1','Blabla'))
+			assert_equal('Blabla',kBase.lireParamBlob('test1'))
+		}
+	end
 
-		assert(kBase.ajouteParamInt('test2',3))
-		assert_equal(3,kBase.lireParamInt('test2'))
+	def test_bdd_int
+		20.times{
+			kBase = Basedonnee.creer('test.db')
+			assert(kBase.ajouteParamInt('test2',5))
+			assert_equal(5,kBase.lireParamInt('test2'))
+		}
+	end
 
-		assert(kBase.ajouteParamBool('test3',True))
-		assert_equal(True,kBase.lireParamBool(True))
+	def test_bdd_bool
+		20.times{
+			kBase = Basedonnee.creer('test.db')
+			assert(kBase.ajouteParamBool('test3',true))
+			assert_equal(true,kBase.lireParamBool('test3'))
+		}
+	end
 
-		assert(kBase.ajouteParamFloat('test4',3.5))
-		assert_equal(3.5,kBase.lireParamFloat('test4'))
+	def test_bdd_float
+		20.times{
+			kBase = Basedonnee.creer('test.db')
+			assert(kBase.ajouteParamFloat('test4',3.7))
+			assert_equal(3.7,kBase.lireParamFloat('test4'))
+		}
+	end
 
-		assert(kBase.ajouteParamString('test5','efgh'))
-		assert_equal('efgh',kBase.lireParamString('test5'))
+	def test_bdd_string
+		20.times{
+			kBase = Basedonnee.creer('test.db')
+			assert(kBase.ajouteParamString('test5','efgh'))
+			assert_equal('efgh',kBase.lireParamString('test5'))
+		}
 	end
 
 end
