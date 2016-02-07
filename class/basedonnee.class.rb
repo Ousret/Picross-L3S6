@@ -165,8 +165,8 @@ class Basedonnee
 	def lireParamBool(param)
 		str = lireParam('CoupleValParamBool',param)
 		return true if str=="true"
-     	return false if str=="false"
-     	return nil
+		return false if str=="false"
+	 	return nil
 	end
 
 	#MÃ©thode d'encapsulation d'ecriture pour une table de reel
