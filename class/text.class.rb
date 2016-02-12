@@ -1,4 +1,4 @@
-load 'interfaceObject.class.rb'
+load './class/interfaceObject.class.rb'
 
 class Text < InterfaceObject
 	def initialize(nom,options,content)

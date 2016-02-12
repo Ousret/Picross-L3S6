@@ -1,4 +1,4 @@
-load 'interfaceObject.class.rb'
+load './class/interfaceObject.class.rb'
 
 class Button < InterfaceObject
 
