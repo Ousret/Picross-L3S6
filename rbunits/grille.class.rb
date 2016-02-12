@@ -93,7 +93,7 @@ class TestGrille < Test::Unit::TestCase
 
 
 	#test de noisir une case sur une mauvaise case
-	def test_noisirCase_1()
+	def test_noisirCase_2()
 	#matrice 5*5
 	matrice =[[false,false,true,false,true],[true,true,false,true,false],[false,false,true,false,false],[true,true,false,true,false],[false,true,true,true,true]]
 			grille = Grille.grille(matrice)
