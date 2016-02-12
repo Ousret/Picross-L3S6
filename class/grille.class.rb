@@ -167,10 +167,10 @@ class Grille
     def estNoir?(x,y)
         x=x-1   #on decrémente les indices de -1 parce que le tableau commence à l'indice 0
         y=y-1
-        if x > matrice.length
+        if x > matriceComparaison.length
 			raise RangeError.new("coordonée x en dehors de la matrice ")
         end
-        if y > matrice.length
+        if y > matriceComparaison.length
 			raise RangeError.new("coordonée y en dehors de la matrice ")
         end
 
