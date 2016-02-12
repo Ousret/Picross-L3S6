@@ -14,11 +14,14 @@
 #*des booleans ou des blobs
 #
 require 'sqlite3'
+load './class/crypt.class.rb'
 
 class Basedonnee
 
 	#Indique la valeur de la base de donnee
 	#@db
+	#Indique la valeur de la cle de criptage
+	#@myCrypt
 
 	#EmpÃªche l'utilisation de la mÃ©thode new
 	private_class_method :new
@@ -41,8 +44,9 @@ class Basedonnee
 	# - Une nouvelle instance de la classe Basedonnee.
 	def initialize(unNom)
 		if unNom.class == String
+			@myCrypt = Crypt.creer("Password")
     		@db = SQLite3::Database.open unNom
-    		@db.execute "CREATE TABLE IF NOT EXISTS CoupleValParamBlob(Id INTEGER PRIMARY KEY, Parametre TEXT,Valeur BLOB)"
+    		@db.execute "CREATE TABLE IF NOT EXISTS CoupleValParamBlob(Id INTEGER PRIMARY KEY, Parametre TEXT,Valeur TEXT)"
     		@db.execute "CREATE TABLE IF NOT EXISTS CoupleValParamInt(Id INTEGER PRIMARY KEY, Parametre TEXT,Valeur INTEGER)"
     		@db.execute "CREATE TABLE IF NOT EXISTS CoupleValParamFloat(Id INTEGER PRIMARY KEY, Parametre TEXT,Valeur REAL)"
     		@db.execute "CREATE TABLE IF NOT EXISTS CoupleValParamString(Id INTEGER PRIMARY KEY, Parametre TEXT,Valeur VAR_CHAR(100))"
@@ -90,7 +94,9 @@ class Basedonnee
 	# * *Returns* :
 	# - Vrai si l'ajout a etais realiser avec succes faux sinon
 	def ajouteParamBlob(param,valeur)
-		return ajouteParam('CoupleValParamBlob',param,valeur)
+		cryptvalue = @myCrypt.encrypt(valeur)
+		yamlvalue = YAML.dump(cryptvalue)
+		return ajouteParam('CoupleValParamBlob',param,yamlvalue)
 	end
 
 	#MÃ©thode d'encapsulation de lecture pour une table de blob
@@ -100,7 +106,12 @@ class Basedonnee
 	# * *Returns* :
 	# - La valeur lu dans la table.
 	def lireParamBlob(param)
-    	return lireParam('CoupleValParamBlob',param)
+
+
+    	yamlvalue = lireParam('CoupleValParamBlob',param)
+		cryptvalue = YAML.load(yamlvalue)
+		valeur = @myCrypt.decrypt(cryptvalue)
+    	return valeur
 	end
 
 	#MÃ©thode d'encapsulation d'ecriture pour une table d'entier
