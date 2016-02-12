@@ -16,9 +16,11 @@ class Grille
 	
 	
 	#=== Variables d'instance ===
-	#@matrice		#matrice de jeu 
+	#@matriceComparaison	#matrice de comparaison ,on y coche aucune case
+    #@matriceDeJeu  #matrice sur laquelle le joueur interagit
 	#@indicesHaut	#indices logique du haut de la grille
 	#@indicesCote	#indices logique du coté de la grille
+    #@nbErreur      #compte le nombre d'erreur du joueur
 	#============================
 
 	#la methode new() est private pour cette classe
@@ -33,12 +35,15 @@ class Grille
 			raise TypeError.new("Grille:initialize : la matrice recu n'est pas carré")
 		end 
 
-		@matrice		= matrice
-		@indicesHaut 	= Array.new(@matrice.length) { Array.new() }
-		@indicesCote	= Array.new(@matrice.length) { Array.new() }
-		
+		@matriceComparaison	= matrice
+		@indicesHaut 	= Array.new(@matriceComparaison.length) { Array.new() }
+		@indicesCote	= Array.new(@matriceComparaison.length) { Array.new() }
+		@matriceDeJeu   = Array.new(@matriceComparaison.length,false) { Array.new(@matriceComparaison.length),false}
+
 		self.calculeIndiceCote()
 		self.calculeIndiceHaut()
+
+		@nbErreur=0
 		
 	end
 
@@ -54,7 +59,7 @@ class Grille
 	end
 
 	#Définition des methodes d'accèes en lecture
-	attr_reader :matrice  ,:indicesHaut  ,:indicesCote
+	attr_reader :matriceComparaison ,:matriceDeJeu  ,:indicesHaut  ,:indicesCote ,:nbErreur 
 
 
 	#=== Methode qui permet de calculer les indices logique du haut 
@@ -65,10 +70,10 @@ class Grille
 
 		nbCaseNoirConsecutif = 0 #variable qui permet de gerer les cases noir consecutifs
 		x=0
-		while x < @matrice.length #--------------------------------------on parcours chaque ligne
+		while x < @matriceComparaison.length #--------------------------------------on parcours chaque ligne
 			y=0
-			while (y < @matrice.length) #----------------------------------colonne par colonne
-				if(@matrice[x][y]) then #---------------------------------------si on tombe sur une case noir
+			while (y < @matriceComparaison.length) #----------------------------------colonne par colonne
+				if(@matriceComparaison[x][y]) then #---------------------------------------si on tombe sur une case noir
 					nbCaseNoirConsecutif +=1 #--------------------------------------on incremente `nbCaseNoirConsecutif`
 				elsif(nbCaseNoirConsecutif != 0 ) then #-----------------------si non si `nbCaseNoirConsecutif` est differant de zero
 						@indicesCote[x].push(nbCaseNoirConsecutif) #------------------on rajoute le nombre de case noir dans le tableau des indices du coté
@@ -95,10 +100,10 @@ class Grille
 		
 		nbCaseNoirConsecutif = 0 #variable qui permet de gerer les cases noir consecutifs
 		y=0
-		while y < @matrice.length #------------------------------------on parcours chaque colonne
+		while y < @matriceComparaison.length #------------------------------------on parcours chaque colonne
 			x=0
-			while x < @matrice.length #----------------------------------ligne par ligne
-				if(@matrice[x][y]) then #---------------------------------------si on tombe sur une case noir
+			while x < @matriceComparaison.length #----------------------------------ligne par ligne
+				if(@matriceComparaison[x][y]) then #---------------------------------------si on tombe sur une case noir
 					nbCaseNoirConsecutif +=1 #--------------------------------------on incremente `nbCaseNoirConsecutif`
 				elsif(nbCaseNoirConsecutif != 0 ) then #-----------------------si non si `nbCaseNoirConsecutif` est differant de zero
 						@indicesHaut[y].push(nbCaseNoirConsecutif) #------------------on rajoute le nombre de case noir dans le tableau des indices du haut
@@ -135,8 +140,8 @@ class Grille
 		x=0
 		#affichage de la matrice
 		print("---------------------------affichage de la matrice---------------------------\n")
-			while x < @matrice.length
-				print(@matrice[x])
+			while x < @matriceComparaison.length
+				print(@matriceComparaison[x])
 				print("\n")
 				x+=1
 			end
@@ -157,7 +162,7 @@ class Grille
 	#=== Paramètres :
 	#* <b>x</b>:coordonée x : la ligne
     #* <b>x</b>:coordonée y : la colonne
-    #=== Paramètres :
+    #=== Return :
     #return true si la case [x][y] est noir si non false
     def estNoir?(x,y)
         x=x-1   #on decrémente les indices de -1 parce que le tableau commence à l'indice 0
@@ -169,6 +174,24 @@ class Grille
 			raise RangeError.new("coordonée y en dehors de la matrice ")
         end
 
-        return @matrice[x][y]
+        return @matriceComparaison[x][y]
     end
-end
+
+    #=== Methode qui permet de noircire une case 
+	#
+	#=== Paramètres :
+	#* <b>x</b>:coordonée x : la ligne
+    #* <b>x</b>:coordonée y : la colonne
+    #=== Return :
+    #return true si la case [x][y] été noirsi si non false
+    def noirsirCase(x,y)
+
+        if estNoir?(x,y)==false		#si la case selectionné n'est pas correcte
+        	@nbErreur += 1 			#on incremente le nombre d'erreur du joueur
+        	return false			#on retourne false
+    	else						#si non si la case selectionné est coreecte 
+
+    		@matriceDeJeu[x-1][y-1] = true 	# on noirsi la case selectionné
+    		return true					#retourn true
+    	end
+    end
