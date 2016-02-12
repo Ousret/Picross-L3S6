@@ -195,4 +195,21 @@ class Grille
     		return true					#retourn true
     	end
     end
+
+
+    #=== Methode qui permet de savoir si la grille est terminé
+	#
+	#=== Paramètres :
+    #=== Return :
+    #return true si la grille est terminé si non false
+    def terminer?()
+    	x=0
+        while x < @matriceComparaison.length
+				if (@matriceComparaison[x] != @matriceDeJeu[x])
+						return false
+				end
+				x+=1
+		end
+		return true
+    end
 end

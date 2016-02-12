@@ -104,6 +104,17 @@ class TestGrille < Test::Unit::TestCase
 			assert_equal(grille.matriceDeJeu[2][1],false)#test si la case n'a pas été noirsi
 	end
 
-
+	#test si une grille est terminé 
+	def test_terminer()
+			#matrice 2*2
+			matrice = [[true,false],[false,true]]
+			grille  = Grille.grille(matrice)
+			assert_equal(grille.terminer?(),false)#test si la grille est terminé avant tout jeu
+			grille.noirsirCase(1,1)
+			assert_equal(grille.terminer?(),false)#test si la grille est terminé apres noirsissement de la 1er case
+			grille.noirsirCase(2,2)
+			assert_equal(grille.terminer?(),true)#test si la grille est terminé apres noirsissement de toute les bonnes cases
+			
+	end
 
 end
