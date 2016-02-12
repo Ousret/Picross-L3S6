@@ -38,7 +38,7 @@ class Grille
 		@matriceComparaison	= matrice
 		@indicesHaut 	= Array.new(@matriceComparaison.length) { Array.new() }
 		@indicesCote	= Array.new(@matriceComparaison.length) { Array.new() }
-		@matriceDeJeu   = Array.new(@matriceComparaison.length,false){Array.new(@matriceComparaison.length)}
+		@matriceDeJeu   = Array.new(@matriceComparaison.length,false){Array.new(@matriceComparaison.length,false)}
 
 		self.calculeIndiceCote()
 		self.calculeIndiceHaut()
