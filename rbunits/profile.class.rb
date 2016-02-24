@@ -25,9 +25,9 @@ class TestGrille < Test::Unit::TestCase
 	def test_modification()
 
 			profile = Profile.creer("codeKiller","AL-KASSOUM" ,"Houssam",227)
-			profile.pseudo("rafiki")
+			profile.pseudo="rafiki"
 			assert_equal("rafiki",profile.pseudo)
-			profile.argent(2000)
+			profile.argent=2000
 			assert_equal(2000,profile.argent)
 
 	end
