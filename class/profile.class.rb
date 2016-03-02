@@ -1,7 +1,7 @@
 # encoding: UTF-8
 
 ##
-# Auteur HOUSSAM KHALID AL-KASSOUM
+# Auteur HOUSSAM KHALID ALKASSOUM
 # Projet L3 SPI : picross
 # Version 0.1 : Date : 24/02/2016
 #
