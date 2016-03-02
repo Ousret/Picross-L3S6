@@ -25,6 +25,7 @@ class Profile
 	#Définition des methodes d'accèes en ecriture
 	attr_writer :pseudo ,:argent
 
+
 	def initialize(pseudo,nom ,prenom,id)#:nodoc:
 	
 		@pseudo	= pseudo
@@ -43,7 +44,7 @@ class Profile
 	#* <b>prenom</b>  	: prenom du joueur
 	#* <b>id</b>  		: id du joueur
 	def Profile.creer(pseudo,nom ,prenom,id)
-		new(pseudo,nom ,prenom,id)
+		new(pseudo,nom,prenom,id)
 	end
 
 end
