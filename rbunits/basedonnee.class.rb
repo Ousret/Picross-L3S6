@@ -5,7 +5,7 @@
 
 
 require 'test/unit'
-load '../class/basedonnee.class.rb'
+load './class/basedonnee.class.rb'
 
 #Vos tests dans ce fichier
 #https://github.com/olbrich/ruby-units
