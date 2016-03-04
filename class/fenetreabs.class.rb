@@ -6,62 +6,26 @@
 #
 #*Classe créant les instances répresentant la fenetre physique
 
+class Fenetreabs < InterfaceObject
 
-class Fenetreabs
+	@listeComposant = Array.new
 
-	#Méthode d'initialisation
-	#
-	#
-	# * *Arguments*    :
-	#   - +width+ -> largeur de la fenetre
-	#   - +height+ -> hauteur de la fenetre
-	#   - +title+ -> titre de la fenetre
-	#   - +options+ -> option supplementaire, ex:fullscreen , ou autre
-	def initialize(width, height, title, options)
+	attr_reader :listeComposant
+	private_class_method :new
+
+	def initialize(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
+		super(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
 	end
 
-	#Methode permettant de fermer la fenetre physique ainsi que stopper la boucle de l'instance
-	def close()
+	def creer(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
+		new(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
 	end
 
-	#Methode permettant de changer le titre de la fenetre
-	#
-	# * *Arguments*    :
-	#   - +title+ -> titre de la fenetre
-	def title(name)
+	def ajoutComposant(unComposantGUI)
+		Array.push(unComposantGUI)
 	end
 
-	#Methode permettant d'afficher physiquement la fenetre
-	#
-	#* *Arguments* :
-	#   - +option+ -> option supplementaire, ex:fullscreen, choix de l'ecran où l'afficher...
-	def show(options)
-	end
-
-
-	def isActive?
-	end
-
-	def state
-	end
-
-	def sound
-	end
-
-	def isMuted?
-	end
-
-	def fullscreen
-	end
-
-	def isFullScreen?
-	end
-
-	def showFps
-	end
-
-	#background ?
-	def draw
+	def retireComposant(unComposantCible)
 	end
 
 end
