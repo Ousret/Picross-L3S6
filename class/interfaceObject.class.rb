@@ -12,18 +12,6 @@
 
 class InterfaceObject
 
-<<<<<<< HEAD
-	attr_accessor :width, :height, :title
-
-	#Méthode d'initialisation
-	#
-	#
-	# * *Arguments*    :
-	#   - +name+ -> nom de l'objet
-	#   - +plan+ -> plan auquel l'objet est associé
-	#   - +options+ -> option supplementaire, transparence , ou autre
-=======
->>>>>>> c97fabbc0acbf9778f819d5c2524fa372e48a985
 
 	attr_writer :designation, :posx, :posy, :posz, :taillex, :tailley
 	attr_reader :visible, :etat
