@@ -12,6 +12,7 @@
 
 class InterfaceObject
 
+<<<<<<< HEAD
 	attr_accessor :width, :height, :title
 
 	#Méthode d'initialisation
@@ -21,40 +22,29 @@ class InterfaceObject
 	#   - +name+ -> nom de l'objet
 	#   - +plan+ -> plan auquel l'objet est associé
 	#   - +options+ -> option supplementaire, transparence , ou autre
+=======
+>>>>>>> c97fabbc0acbf9778f819d5c2524fa372e48a985
 
-	def initialize(name, plan, option)
-	end
+	attr_writer :designation, :posx, :posy, :posz, :taillex, :tailley
+	attr_reader :visible, :etat
 
+	private_class_method :new
 
-	#Methode retournant le parent de l'objet, ou le plan associé ?
+	#Méthode d'initialisation
 	#
-	# * *Return value* :
-	#   - Instance parente
-	def parent
-	end
-
-	#Supprime l'objet
-	def destroy
-	end
-
-	#Comme Array.each
 	#
 	# * *Arguments*    :
-	#   - +option+ -> critere de recherche
-	def InterfaceObject.each(options)
+	#   - +uneDesignation+ -> nom de l'objet
+	#   - +unePositionX+ -> X
+	#   - +unePositionY+ -> Y
+
+	def initialize(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
+		@designation, @posx, @posy, @posz, @taillex, @tailley = uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY
 	end
 
-	#Methode pour connaitre toute les instances
-	#
-	# * *Arguments*    :
-	#   - +option+ -> critere de recherche
-	#
-	# * *Return value* :
-	#   - Tableau des intances
-	def InterfaceObject.all(options)
+	def creer(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
+		new(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
 	end
-
-
 
 
 end

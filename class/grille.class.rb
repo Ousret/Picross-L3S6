@@ -9,22 +9,22 @@
 
 class Grille
 
-	# la Classe GrilleDeJeu ajoute des attributs et des fonctionnalitées à une matrice simple
-	#class qui renvoi une grille jouable à partir d'une matrice de boolean
-	#cette classe ne gère que les matrice carre
+	# la Classe Grille permet d'encapsuler une matrice de boolean et de lui ajouter des fonctionnalitées
+	# class qui renvoi une grille jouable à partir d'une matrice de boolean
+	# cette classe ne gère que les matrice carre
 
 	
 	
 	#=== Variables d'instance ===
 	#@matriceComparaison	#matrice de comparaison ,on y coche aucune case
-    #@matriceDeJeu  #matrice sur laquelle le joueur interagit
-	#@indicesHaut	#indices logique du haut de la grille
-	#@indicesCote	#indices logique du coté de la grille
-    #@nbErreur      #compte le nombre d'erreur du joueur
+    #@matriceDeJeu  		#matrice sur laquelle le joueur interagit
+	#@indicesHaut			#indices logique du haut de la grille
+	#@indicesCote			#indices logique du coté de la grille
+    #@nbErreur      		#compte le nombre d'erreur du joueur
 	#============================
 
 	#la methode new() est private pour cette classe
-	private_class_method :new
+	private_class_method :new 
 
 	def initialize(matrice)#:nodoc:
 	
@@ -122,13 +122,15 @@ class Grille
 
 	end
 
+	#cette ligne doit resté en commentaire durant le devellopement
+	#private_class_method :calculeIndiceCote ,:calculeIndiceHaut
 
 
 	#=== Methode qui permet d'afficher une grille
 	#
 	#=== Paramètres :
 	#* <b>pas de paramètres</b>
-	def afficher()
+	def afficher(mat)
 		x=0
 		#affichache de la grille du haut
 			print("---------------------------affichache de la grille du haut---------------------------\n")
@@ -140,8 +142,8 @@ class Grille
 		x=0
 		#affichage de la matrice
 		print("---------------------------affichage de la matrice---------------------------\n")
-			while x < @matriceComparaison.length
-				print(@matriceComparaison[x])
+			while x < mat.length
+				print(mat[x])
 				print("\n")
 				x+=1
 			end
@@ -189,7 +191,7 @@ class Grille
         if estNoir?(x,y)==false		#si la case selectionné n'est pas correcte
         	@nbErreur += 1 			#on incremente le nombre d'erreur du joueur
         	return false			#on retourne false
-    	else						#si non si la case selectionné est coreecte 
+    	else						#si non si la case selectionné est corecte 
 
     		@matriceDeJeu[x-1][y-1] = true 	# on noirsi la case selectionné
     		return true					#retourn true
@@ -201,7 +203,7 @@ class Grille
 	#
 	#=== Paramètres :
     #=== Return :
-    #return true si la grille est terminé si non false
+    #return true si la grille est terminé(toutes les bonnes cases ont été noirsi) si non false
     def terminer?()
     	x=0
         while x < @matriceComparaison.length

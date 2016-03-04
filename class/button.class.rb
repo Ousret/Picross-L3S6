@@ -4,15 +4,17 @@
 #
 # https://github.com/Ousret/Picross-L3S6
 #
-#* Classe créant un bouton héritant de interfaceObject. 
+#* Classe créant un bouton héritant de interfaceObject.
 #* Objet de l'interface du plan pouvant être cliqué
 
 
-#load './class/interfaceObject.class.rb'
+load './class/interfaceObject.class.rb'
 
 class Button < InterfaceObject
 
+	private_class_method :new
 
+<<<<<<< HEAD
 	attr_accessor :name, :width, :height, :posX, :posY
 
 	#Méthode d'initialisation
@@ -42,3 +44,14 @@ class Button < InterfaceObject
 
 
 end
+=======
+	def initialize(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
+		super(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
+	end
+
+	def creer(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
+		new(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
+	end
+
+end
+>>>>>>> c97fabbc0acbf9778f819d5c2524fa372e48a985

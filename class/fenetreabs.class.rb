@@ -6,9 +6,11 @@
 #
 #*Classe créant les instances répresentant la fenetre physique
 
+class Fenetreabs < InterfaceObject
 
-class Fenetreabs
+	@listeComposant = Array.new
 
+<<<<<<< HEAD
 	
 	attr_accessor :width, :height, :title
 
@@ -53,18 +55,24 @@ class Fenetreabs
 
 	def isMuted?
 	end
+=======
+	attr_reader :listeComposant
+	private_class_method :new
+>>>>>>> c97fabbc0acbf9778f819d5c2524fa372e48a985
 
-	def fullscreen
+	def initialize(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
+		super(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
 	end
 
-	def isFullScreen?
+	def creer(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
+		new(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
 	end
 
-	def showFps
+	def ajoutComposant(unComposantGUI)
+		Array.push(unComposantGUI)
 	end
 
-	#background ?
-	def draw
+	def retireComposant(unComposantCible)
 	end
 
 end
