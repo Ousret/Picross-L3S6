@@ -10,6 +10,8 @@
 
 class Plan
 
+	
+	attr_accessor :name
 	#Méthode d'initialisation
 	#
 	#

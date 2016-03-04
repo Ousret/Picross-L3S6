@@ -6,6 +6,8 @@ class Text < InterfaceObject
 
 	private_class_method :new
 
+	attr_accessor :nom, :content
+
 	#Méthode d'initialisation
 	#
 	#

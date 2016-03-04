@@ -14,7 +14,7 @@
 #*des booleans ou des blobs
 #
 require 'sqlite3'
-load './class/crypt.class.rb'
+load './crypt.class.rb'
 
 class Basedonnee
 
@@ -60,32 +60,50 @@ class Basedonnee
 	#MÃ©thode d'ajout de couple parametre valeur dans une base de donnee
 	#
 	# * *Arguments* :
-	# - +uneBase+ -> nom de la table de la base de donnee dans laquel ajouter les valeurs
+	# - +uneTable+ -> nom de la table de la table dans laquel ajouter les valeurs
 	# - +param+ -> parametre a ajouter dans la table
 	# - +valeur+ -> valeur a ajouter dans la table
 	# * *Returns* :
 	# - Vrai si l'ajout a etais realiser avec succes faux sinon
-	def ajouteParam(uneBase,param,valeur)
-		@db.execute "INSERT INTO \'#{uneBase}\' (Parametre,Valeur) VALUES (\"#{param}\", \"#{valeur}\")"
+	def ajouteParamSimple(uneTable,param,valeur)
+		stm = @db.prepare "INSERT INTO \'#{uneTable}\' (Parametre, Valeur) VALUES (?, \"#{valeur}\")"
+		stm.bind_param 1, param
+		stm.execute
 		#value = @db.last_insert_row_Valeur
-		return true;
+		return true
+	end
+
+	def ajouteParamDouble(uneTable,param,valeur)
+		stm = @db.prepare "UPDATE \'#{uneTable}\' SET Valeur =  \"#{valeur}\" WHERE Parametre = ?"
+		stm.bind_param 1, param
+		stm.execute
+		return true
 	end
 
 	#MÃ©thode d'acces en lecture a la base de donnee
 	#
 	# * *Arguments* :
-	# - +uneBase+ -> nom de la table de la base de donnee dans laquel on lis les valeurs
+	# - +uneTable+ -> nom de la table de la table dans laquel on lis les valeurs
 	# - +param+ -> lis la valeur oÃ¹ son parametre vaut param
 	# * *Returns* :
 	# - La valeur lu dans la table.
-	def lireParam(uneBase,param)
+	def lireParam(uneTable,param)
 		result = nil
-		rs = @db.get_first_row "SELECT Valeur FROM \'#{uneBase}\' WHERE Parametre = \"#{param}\""
-		result = rs[0]
+		rs = @db.get_first_row "SELECT Valeur FROM \'#{uneTable}\' WHERE Parametre = \"#{param}\""
+		if rs != nil
+			return rs[0]
+		end
 		return result
 
 	end
 
+	def ajouteParam(uneTable,param,valeur)
+		if self.lireParam(uneTable,param) == nil
+			return ajouteParamSimple(uneTable,param,valeur)
+		else
+			return ajouteParamDouble(uneTable,param,valeur)
+		end
+	end
 	#MÃ©thode d'encapsulation d'ecriture pour une table de blob
 	#
 	# * *Arguments* :
