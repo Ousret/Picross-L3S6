@@ -9,6 +9,9 @@
 
 class Fenetreabs
 
+	
+	attr_accessor :width, :height, :title
+
 	#Méthode d'initialisation
 	#
 	#

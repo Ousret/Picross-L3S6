@@ -13,29 +13,24 @@
 class Button < InterfaceObject
 
 
+	attr_accessor :name, :width, :height, :posX, :posY
+
 	#Méthode d'initialisation
 	#
 	#
 	# * *Arguments*    :
 	#   - +name+ -> nom de l'objet
 	#   - +plan+ -> plan auquel l'objet est associé
-	#   - +options+ -> option supplementaire, transparence , ou autre
-	def initialize(name, plan, option)
-		super("test",0)
-	end
-
-	
-	#Méthode permettant de placer l'objet dans le plan
-	#
-	#
-	# * *Arguments*    :
 	#   - +width+ -> largeur de l'objet
 	#   - +height+ -> hauteur de l'objet
 	#   - +posX+ -> position horizontale à partir du coin gauche de l'objet
 	#   - +posY+ -> position verticale à partir du coin gauche de l'objet	
 	#   - +options+ -> option supplementaire, transparence , ou autre
-	def setup(width, height, posX, posY, option)
+	def initialize(name, plan, width, height, posX, posY, option)
+		super("test",0)
 	end
+
+	
 
 	#Méthode permettant de savoir l'état de l'objet
 	#

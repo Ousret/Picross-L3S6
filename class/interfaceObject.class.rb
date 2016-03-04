@@ -12,6 +12,8 @@
 
 class InterfaceObject
 
+	attr_accessor :width, :height, :title
+
 	#Méthode d'initialisation
 	#
 	#

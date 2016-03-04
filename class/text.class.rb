@@ -3,6 +3,8 @@ load './class/interfaceObject.class.rb'
 class Text < InterfaceObject
 	
 
+	attr_accessor :nom, :content
+
 	#Méthode d'initialisation
 	#
 	#
