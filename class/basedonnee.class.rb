@@ -14,7 +14,7 @@
 #*des booleans ou des blobs
 #
 require 'sqlite3'
-load './crypt.class.rb'
+load './class/crypt.class.rb'
 
 class Basedonnee
 
