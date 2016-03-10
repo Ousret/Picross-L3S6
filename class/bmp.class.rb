@@ -62,6 +62,9 @@ class BMP
 # p bmp[14,15]
 			@pixels[y][x]=="ffffff"?0:1
 		end
+		def getMatrice()
+			@pixels
+		end
 #Accesseurs
 #permet de récupérer les dimensions de l'image et donc de la matrice
 		attr_reader :width, :height
