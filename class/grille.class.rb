@@ -32,13 +32,14 @@ class Grille
 			raise TypeError.new("Grille:initialize : la matrice recu est vide")
 
 		elsif matrice.length != matrice[0].length
+			print("\n longeur : "+matrice.length.to_s+" largeur : "+matrice[0].length.to_s+"\n");
 			raise TypeError.new("Grille:initialize : la matrice recu n'est pas carré")
 		end 
 
 		@matriceComparaison	= matrice
 		@indicesHaut 	= Array.new(@matriceComparaison.length) { Array.new() }
 		@indicesCote	= Array.new(@matriceComparaison.length) { Array.new() }
-		@matriceDeJeu   = Array.new(@matriceComparaison.length,false){Array.new(@matriceComparaison.length,false)}
+		@matriceDeJeu   = Array.new(@matriceComparaison.length,0){Array.new(@matriceComparaison.length,0)}
 
 		self.calculeIndiceCote()
 		self.calculeIndiceHaut()
@@ -73,7 +74,7 @@ class Grille
 		while x < @matriceComparaison.length #--------------------------------------on parcours chaque ligne
 			y=0
 			while (y < @matriceComparaison.length) #----------------------------------colonne par colonne
-				if(@matriceComparaison[x][y]) then #---------------------------------------si on tombe sur une case noir
+				if(@matriceComparaison[x][y]==1) then #---------------------------------------si on tombe sur une case noir
 					nbCaseNoirConsecutif +=1 #--------------------------------------on incremente `nbCaseNoirConsecutif`
 				elsif(nbCaseNoirConsecutif != 0 ) then #-----------------------si non si `nbCaseNoirConsecutif` est differant de zero
 						@indicesCote[x].push(nbCaseNoirConsecutif) #------------------on rajoute le nombre de case noir dans le tableau des indices du coté
@@ -103,7 +104,7 @@ class Grille
 		while y < @matriceComparaison.length #------------------------------------on parcours chaque colonne
 			x=0
 			while x < @matriceComparaison.length #----------------------------------ligne par ligne
-				if(@matriceComparaison[x][y]) then #---------------------------------------si on tombe sur une case noir
+				if(@matriceComparaison[x][y] == 1) then #---------------------------------------si on tombe sur une case noir
 					nbCaseNoirConsecutif +=1 #--------------------------------------on incremente `nbCaseNoirConsecutif`
 				elsif(nbCaseNoirConsecutif != 0 ) then #-----------------------si non si `nbCaseNoirConsecutif` est differant de zero
 						@indicesHaut[y].push(nbCaseNoirConsecutif) #------------------on rajoute le nombre de case noir dans le tableau des indices du haut
@@ -176,7 +177,7 @@ class Grille
 			raise RangeError.new("coordonée y en dehors de la matrice ")
         end
 
-        return @matriceComparaison[x][y]
+        return @matriceComparaison[x][y] == 1
     end
 
     #=== Methode qui permet de noircire une case 
@@ -193,7 +194,7 @@ class Grille
         	return false			#on retourne false
     	else						#si non si la case selectionné est corecte 
 
-    		@matriceDeJeu[x-1][y-1] = true 	# on noirsi la case selectionné
+    		@matriceDeJeu[x-1][y-1] = 1 	# on noirsi la case selectionné
     		return true					#retourn true
     	end
     end
