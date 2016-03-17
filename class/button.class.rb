@@ -10,7 +10,7 @@
 
 load './class/interfaceObject.class.rb'
 
-class Button < InterfaceObject
+class Button < ObjetGUI
 
 	private_class_method :new
 
@@ -34,7 +34,7 @@ class Button < InterfaceObject
 	#   - +width+ -> largeur de l'objet
 	#   - +height+ -> hauteur de l'objet
 	#   - +posX+ -> position horizontale à partir du coin gauche de l'objet
-	#   - +posY+ -> position verticale à partir du coin gauche de l'objet	
+	#   - +posY+ -> position verticale à partir du coin gauche de l'objet
 	#   - +options+ -> option supplementaire, transparence , ou autre
 	def initialize(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
 		super(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
