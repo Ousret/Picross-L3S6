@@ -51,19 +51,14 @@ class BMP
 			end
 		end
 
-		def [](x,y)
-#méthode qui permet de ressortir le boolean correspondant à un pixel
-#arguments : deux entiers comme des coordonnées
-#retourne le boolean qui défini un pixel : le pixel est défini en 
-#fonction d'un x et d'un y
-#convertie de l'hexa en binaire
-#exemple :
-# bmp = BMP::Reader.new("ressources/images/bmp.bmp"
-# p bmp[14,15]
-			@pixels[y][x]=="ffffff"?0:1
-		end
-		def getMatrice()
-			@pixels
+		def getMatrice()			
+			@pixelsbin= Array.new(@height) { Array.new(@width) }
+			0.upto(@height-1) do |y|
+				0.upto(@width-1) do |x|
+					@pixelsbin[y][x] = ((@pixels[y][x]=="ffffff")?0:1)
+				end
+				
+			end
 		end
 #Accesseurs
 #permet de récupérer les dimensions de l'image et donc de la matrice
