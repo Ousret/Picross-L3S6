@@ -37,6 +37,7 @@ def test_bmp_new_bmp_4
 		bmp = BMP::Reader.creer("ressources/images/bmp.bmp")
 		2.times{
 			#premier test : vérifie les dimensions
+			mat=bmp.getMatrice()
 			flag = bmp.width>0?1:0
 			assert_equal(flag,1)
 			flag = bmp.height>0?1:0
@@ -44,7 +45,8 @@ def test_bmp_new_bmp_4
 			#test chaque pixel : chaque pixel doit être égal à 0 ou 1
 			0.upto(bmp.width-1) do |i|
 				0.upto(bmp.height-1) do |j|
-					flag = (bmp[i,j]==1||bmp[i,j]==0) ? 1 : 0
+					
+					flag = (mat[i][j]==1||mat[i][j]==0) ? 1 : 0
 					assert_equal(flag,1)
 				end
 			end
@@ -62,13 +64,14 @@ def test_bmp_new_bmp_4
 			bmp1 = BMP::Reader.creer("ressources/images/bmp.bmp")
 			p bmp1.height
 			p bmp1.width
-						
+			mat1=bmp1.getMatrice()
+			mat2=bmp2.getMatrice()		
 			assert_equal(bmp1.height,bmp2.height)
 			assert_equal(bmp1.width,bmp2.width)
 			#test chaque pixel : chaque pixel doit être identique pour deux instance d'une meme image
 			0.upto(bmp1.width-1) do |i|
 				0.upto(bmp1.height-1) do |j|
-					assert_equal(bmp1[i,j],bmp2[i,j])
+					assert_equal(mat1[i][j],mat2[i][j])
 				end
 			end
 		}
