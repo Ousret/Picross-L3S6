@@ -43,10 +43,11 @@ def test_bmp_new_bmp_4
 			flag = bmp.height>0?1:0
 			assert_equal(flag,1)
 			#test chaque pixel : chaque pixel doit être égal à 0 ou 1
+			p 'kawai',bmp.width,bmp.height			
 			0.upto(bmp.width-1) do |i|
 				0.upto(bmp.height-1) do |j|
-					
-					flag = (mat[i][j]==1||mat[i][j]==0) ? 1 : 0
+					p mat[i][j]
+					flag = (mat[i][j]==1||mat[j][i]==0) ? 1 : 0
 					assert_equal(flag,1)
 				end
 			end
