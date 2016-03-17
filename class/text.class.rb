@@ -1,6 +1,6 @@
 load './class/interfaceObject.class.rb'
 
-class Text < InterfaceObject
+class Text < ObjetGUI
 
 	attr_writer :contenu, :police
 
