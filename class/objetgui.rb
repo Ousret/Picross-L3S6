@@ -10,8 +10,7 @@
 #load('plan.class.rb')
 
 
-class InterfaceObject
-
+class ObjetGUI
 
 	attr_writer :designation, :posx, :posy, :posz, :taillex, :tailley
 	attr_reader :visible, :etat

@@ -8,9 +8,8 @@
 #* c'est ce que nous voyons. Contient tous les objets de l'interface
 
 
-class FenetreAbs < InterfaceObject
+class Fenetre < ObjetGUI
 
-	
 	attr_accessor :name
 
 	private_class_method :new
@@ -26,36 +25,6 @@ class FenetreAbs < InterfaceObject
 		super(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
 	end
 
-
-	# Methode permettant de récuperer la touche qui vient d'etre levé
-	#* *Returns* :
-	# - Code correspondant a la touche
-	def keyUp
-	end
-
-	# Methode permettant de récuperer la touche qui vient d'etre appuyé
-	#* *Returns* :
-	# - Code correspondant a la touche
-	def keyDown
-	end
-
-	# Methode permettant de récuperer le clique de la souris
-	#* *Returns* :
-	# - Code correspondant au click gauche
-	def click
-	end
-
-	#background ?
-	def draw
-	end
-
-	# Methode permettant de récuperer la position de la souris
-	#* *Returns* :
-	# - Axe x et y
-	def cursor
-	end
-
-	
 	def creer(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
 		new(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
 	end
@@ -65,6 +34,7 @@ class FenetreAbs < InterfaceObject
 	end
 
 	def retireComposant(unComposantCible)
+		
 	end
 
 end
