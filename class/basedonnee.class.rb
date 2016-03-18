@@ -45,22 +45,33 @@ class Basedonnee
 	def initialize(unNom)
 		if unNom.class == String
 			@myCrypt = Crypt.creer("Password")
-    	@db = SQLite3::Database.open unNom
+    	@db = nil
+			@fileName = unNom
 			verify
 		else
 			puts "Nom invalide"
 		end
 	end
 
+	def connect
+		SQLite3::Database.open @fileName
+	end
+
+	def release
+		@db.close
+	end
+
 	def verify
+		connect
 		@db.execute "CREATE TABLE IF NOT EXISTS CoupleValParamBlob(Id INTEGER PRIMARY KEY, Parametre TEXT,Valeur TEXT)"
 		@db.execute "CREATE TABLE IF NOT EXISTS CoupleValParamInt(Id INTEGER PRIMARY KEY, Parametre TEXT,Valeur INTEGER)"
 		@db.execute "CREATE TABLE IF NOT EXISTS CoupleValParamFloat(Id INTEGER PRIMARY KEY, Parametre TEXT,Valeur REAL)"
 		@db.execute "CREATE TABLE IF NOT EXISTS CoupleValParamString(Id INTEGER PRIMARY KEY, Parametre TEXT,Valeur VAR_CHAR(100))"
 		@db.execute "CREATE TABLE IF NOT EXISTS CoupleValParamBool(Id INTEGER PRIMARY KEY, Parametre TEXT,Valeur BOOLEAN)"
+		release
 	end
 
-	private :verify
+	private :verify, :release, :connect
 
 	#MÃ©thode d'ajout de couple parametre valeur dans une base de donnee
 	#
@@ -71,6 +82,7 @@ class Basedonnee
 	# * *Returns* :
 	# - Vrai si l'ajout a etais realiser avec succes faux sinon
 	def ajouteParamSimple(uneTable,param,valeur)
+		connect
 		stm = @db.prepare "INSERT INTO \'#{uneTable}\' (Parametre, Valeur) VALUES (?, ?)"
 
 		stm.bind_param 1, param
@@ -78,16 +90,19 @@ class Basedonnee
 
 		stm.execute
 		#value = @db.last_insert_row_Valeur
+		release
 		return true
 	end
 
 	def ajouteParamDouble(uneTable,param,valeur)
+		connect
 		stm = @db.prepare "UPDATE \'#{uneTable}\' SET Valeur =  ? WHERE Parametre = ?"
 
 		stm.bind_param 1, valeur
 		stm.bind_param 2, param
 
 		stm.execute
+		release
 		return true
 	end
 
@@ -99,7 +114,7 @@ class Basedonnee
 	# * *Returns* :
 	# - La valeur lu dans la table.
 	def lireParam(uneTable,param)
-
+		connect
 		stm = @db.prepare "SELECT Valeur FROM \'#{uneTable}\' WHERE Parametre = ?"
 		stm.bind_param 1, param
 
@@ -116,7 +131,7 @@ class Basedonnee
 
 		# On ferme l'instance stm pour débloquer la base
 		stm.close
-		
+		release
 		# On renvoie le résultat
 		return res
 
