@@ -24,8 +24,8 @@ class Fenetre < ObjetGUI
 	def initialize(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
 		super(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
 	end
-
-	def creer(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
+	
+	def Fenetre.creer(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
 		new(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
 	end
 
@@ -34,7 +34,7 @@ class Fenetre < ObjetGUI
 	end
 
 	def retireComposant(unComposantCible)
-		
+
 	end
 
 end

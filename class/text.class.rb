@@ -9,7 +9,7 @@ class Text < ObjetGUI
 		@contenu, @police = unContenu, uneTaillePolice
 	end
 
-	def creer(uneDesignation, unContenu, uneTaillePolice, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
+	def Text.creer(uneDesignation, unContenu, uneTaillePolice, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
 		new(uneDesignation, unContenu, uneTaillePolice, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
 	end
 

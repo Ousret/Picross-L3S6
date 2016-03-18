@@ -7,9 +7,6 @@
 #*Classe abstraite répresentant les objets de l'interface, un objet générique
 #*Tous les objets comme boutons ou textes héritent de InterfaceObject
 
-#load('plan.class.rb')
-
-
 class ObjetGUI
 
 	attr_writer :designation, :posx, :posy, :posz, :taillex, :tailley
