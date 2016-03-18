@@ -7,15 +7,14 @@
 #*Classe créant les instances répresentant un plan de la fenetre physique
 #* c'est ce que nous voyons. Contient tous les objets de l'interface
 
-
 class Fenetre < ObjetGUI
 
-	attr_writer :objs
+	attr_writer :listeComposant
 	private_class_method :new
 
 	def initialize(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
 		super(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
-		@objs = Array.new
+		@listeComposant = Array.new
 	end
 
 	def Fenetre.creer(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
@@ -23,11 +22,11 @@ class Fenetre < ObjetGUI
 	end
 
 	def ajouterComposant(unComposantGUI)
-		@objs.push(unComposantGUI)
+		@listeComposant.push(unComposantGUI)
 	end
 
 	def retirerComposant(unComposantCible)
-		@objs.delete(unComposantCible)
+		@listeComposant.delete(unComposantCible)
 	end
 
 end
