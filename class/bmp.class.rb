@@ -50,7 +50,15 @@ class BMP
 				#fait le traitement sur les pixel
 			end
 		end
-
+		#Méthode qui retourne une matrice binaire.
+		#
+		# * *Arguments*    :
+		#   - nothing
+		# * *Return value* :
+		#   - Une matrice correspondant à une image
+		# * *Sample code* :
+		#   - bmp = BMP::Reader.new("ressources/images/bmp.bmp")
+		#   - bmp = bmp.getMatrice()
 		def getMatrice()			
 			@pixelsbin= Array.new(@width) { Array.new(@height) }
 			0.upto(@height-1) do |y|
