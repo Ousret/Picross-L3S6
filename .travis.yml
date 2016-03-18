@@ -25,6 +25,7 @@ install:
   - gem install test-unit
   - gem install minitest
   - gem install codeclimate-test-reporter
+  - gem install activerecord
 #- gem install gosu
 
 # Build the module
