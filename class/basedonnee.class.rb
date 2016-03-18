@@ -135,8 +135,6 @@ class Basedonnee
 	# * *Returns* :
 	# - La valeur lu dans la table.
 	def lireParamBlob(param)
-
-
     	yamlvalue = lireParam('CoupleValParamBlob',param)
 		cryptvalue = YAML.load(yamlvalue)
 		valeur = @myCrypt.decrypt(cryptvalue)
@@ -183,30 +181,6 @@ class Basedonnee
 	# - La valeur lu dans la table.
 	def lireParamString(param)
 		return lireParam('CoupleValParamString',param)
-	end
-
-	#MÃ©thode d'encapsulation d'ecriture pour une table de boolean
-	#
-	# * *Arguments* :
-	# - +param+ -> parametre a ajouter dans la table
-	# - +valeur+ -> valeur a ajouter dans la table
-	# * *Returns* :
-	# - Vrai si l'ajout a etais realiser avec succes faux sinon
-	def ajouteParamBool(param,valeur)
-		return ajouteParam('CoupleValParamBool',param,valeur)
-	end
-
-	#MÃ©thode d'encapsulation de lecture pour une table de boolean
-	#
-	# * *Arguments* :
-	# - +param+ -> lis la valeur oÃ¹ son parametre vaut param
-	# * *Returns* :
-	# - La valeur lu dans la table.
-	def lireParamBool(param)
-		str = lireParam('CoupleValParamBool',param)
-		return true if str=="true"
-		return false if str=="false"
-	 	return nil
 	end
 
 	#MÃ©thode d'encapsulation d'ecriture pour une table de reel
