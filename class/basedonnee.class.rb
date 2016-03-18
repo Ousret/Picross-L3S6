@@ -106,11 +106,14 @@ class Basedonnee
 		row = stm.execute
 		rs = row.next
 
-		if rs != nil
-			return rs[0]
+		if rs.length > 0
+			res = rs[0]
+		else
+			res = nil
 		end
 
-		return rs
+		stm.close
+		return res
 
 	end
 
