@@ -16,15 +16,6 @@ class Button < ObjetGUI
 
 	attr_accessor :name, :width, :height, :posX, :posY
 
-
-	#Méthode permettant de savoir l'état de l'objet
-	#
-	# * *Return value* :
-	#   - state : boolean pour savoir si il est actif
-	def state
-	end
-
-
 	#Méthode d'initialisation
 	#
 	#

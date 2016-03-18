@@ -33,5 +33,9 @@ class ObjetGUI
 		new(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
 	end
 
+	def setEtat(unNouvelEtat)
+		@etat = unNouvelEtat
+	end
+
 
 end
