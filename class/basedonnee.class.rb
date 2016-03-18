@@ -103,12 +103,13 @@ class Basedonnee
 		stm = @db.prepare "SELECT Valeur FROM \'#{uneTable}\' WHERE Parametre = ?"
 		stm.bind_param 1, param
 
-		rs = stm.execute
+		row = stm.execute
+		rs = row.next
 
 		if rs != nil
 			return rs[0]
 		end
-		
+
 		return rs
 
 	end
