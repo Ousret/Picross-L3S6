@@ -24,7 +24,7 @@ class Basedonnee
 	#@myCrypt
 
 	#EmpÃªche l'utilisation de la mÃ©thode new
-	private_class_method :new, :verify
+	private_class_method :new
 
 	#MÃ©thode de crÃ©ation d'instance de la classe Basedonnee.
 	#
@@ -52,13 +52,15 @@ class Basedonnee
 		end
 	end
 
-	def verify()
+	def verify
 		@db.execute "CREATE TABLE IF NOT EXISTS CoupleValParamBlob(Id INTEGER PRIMARY KEY, Parametre TEXT,Valeur TEXT)"
 		@db.execute "CREATE TABLE IF NOT EXISTS CoupleValParamInt(Id INTEGER PRIMARY KEY, Parametre TEXT,Valeur INTEGER)"
 		@db.execute "CREATE TABLE IF NOT EXISTS CoupleValParamFloat(Id INTEGER PRIMARY KEY, Parametre TEXT,Valeur REAL)"
 		@db.execute "CREATE TABLE IF NOT EXISTS CoupleValParamString(Id INTEGER PRIMARY KEY, Parametre TEXT,Valeur VAR_CHAR(100))"
 		@db.execute "CREATE TABLE IF NOT EXISTS CoupleValParamBool(Id INTEGER PRIMARY KEY, Parametre TEXT,Valeur BOOLEAN)"
 	end
+
+	private :verify
 
 	#MÃ©thode d'ajout de couple parametre valeur dans une base de donnee
 	#
