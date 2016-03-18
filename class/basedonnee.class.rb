@@ -89,6 +89,7 @@ class Basedonnee
 		stm.bind_param 2, valeur
 
 		stm.execute
+		stm.close
 		#value = @db.last_insert_row_Valeur
 		release
 		return true
@@ -102,6 +103,7 @@ class Basedonnee
 		stm.bind_param 2, param
 
 		stm.execute
+		stm.close
 		release
 		return true
 	end
