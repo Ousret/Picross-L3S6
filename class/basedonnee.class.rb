@@ -52,7 +52,7 @@ class Basedonnee
 		end
 	end
 
-	def verify
+	def verify()
 		@db.execute "CREATE TABLE IF NOT EXISTS CoupleValParamBlob(Id INTEGER PRIMARY KEY, Parametre TEXT,Valeur TEXT)"
 		@db.execute "CREATE TABLE IF NOT EXISTS CoupleValParamInt(Id INTEGER PRIMARY KEY, Parametre TEXT,Valeur INTEGER)"
 		@db.execute "CREATE TABLE IF NOT EXISTS CoupleValParamFloat(Id INTEGER PRIMARY KEY, Parametre TEXT,Valeur REAL)"
