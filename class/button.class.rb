@@ -7,9 +7,6 @@
 #* Classe créant un bouton héritant de interfaceObject.
 #* Objet de l'interface du plan pouvant être cliqué
 
-
-load './class/interfaceObject.class.rb'
-
 class Button < ObjetGUI
 
 	private_class_method :new
