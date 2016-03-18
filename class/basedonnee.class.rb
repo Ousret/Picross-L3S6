@@ -106,13 +106,18 @@ class Basedonnee
 		row = stm.execute
 		rs = row.next
 
-		if rs.length > 0
-			res = rs[0]
-		else
-			res = nil
+		# Si aucun résultat n'existe
+		if rs == nil
+			return nil
 		end
 
+		# On recupère la première colonne
+		res = rs[0]
+
+		# On ferme l'instance stm pour débloquer la base
 		stm.close
+		
+		# On renvoie le résultat
 		return res
 
 	end
