@@ -24,7 +24,7 @@ class Basedonnee
 	#@myCrypt
 
 	#EmpÃªche l'utilisation de la mÃ©thode new
-	private_class_method :new
+	private_class_method :new, :verify
 
 	#MÃ©thode de crÃ©ation d'instance de la classe Basedonnee.
 	#
@@ -45,17 +45,20 @@ class Basedonnee
 	def initialize(unNom)
 		if unNom.class == String
 			@myCrypt = Crypt.creer("Password")
-    		@db = SQLite3::Database.open unNom
-    		@db.execute "CREATE TABLE IF NOT EXISTS CoupleValParamBlob(Id INTEGER PRIMARY KEY, Parametre TEXT,Valeur TEXT)"
-    		@db.execute "CREATE TABLE IF NOT EXISTS CoupleValParamInt(Id INTEGER PRIMARY KEY, Parametre TEXT,Valeur INTEGER)"
-    		@db.execute "CREATE TABLE IF NOT EXISTS CoupleValParamFloat(Id INTEGER PRIMARY KEY, Parametre TEXT,Valeur REAL)"
-    		@db.execute "CREATE TABLE IF NOT EXISTS CoupleValParamString(Id INTEGER PRIMARY KEY, Parametre TEXT,Valeur VAR_CHAR(100))"
-    		@db.execute "CREATE TABLE IF NOT EXISTS CoupleValParamBool(Id INTEGER PRIMARY KEY, Parametre TEXT,Valeur BOOLEAN)"
+    	@db = SQLite3::Database.open unNom
+			verify
 		else
 			puts "Nom invalide"
 		end
 	end
 
+	def verify
+		@db.execute "CREATE TABLE IF NOT EXISTS CoupleValParamBlob(Id INTEGER PRIMARY KEY, Parametre TEXT,Valeur TEXT)"
+		@db.execute "CREATE TABLE IF NOT EXISTS CoupleValParamInt(Id INTEGER PRIMARY KEY, Parametre TEXT,Valeur INTEGER)"
+		@db.execute "CREATE TABLE IF NOT EXISTS CoupleValParamFloat(Id INTEGER PRIMARY KEY, Parametre TEXT,Valeur REAL)"
+		@db.execute "CREATE TABLE IF NOT EXISTS CoupleValParamString(Id INTEGER PRIMARY KEY, Parametre TEXT,Valeur VAR_CHAR(100))"
+		@db.execute "CREATE TABLE IF NOT EXISTS CoupleValParamBool(Id INTEGER PRIMARY KEY, Parametre TEXT,Valeur BOOLEAN)"
+	end
 
 	#MÃ©thode d'ajout de couple parametre valeur dans une base de donnee
 	#
@@ -66,16 +69,22 @@ class Basedonnee
 	# * *Returns* :
 	# - Vrai si l'ajout a etais realiser avec succes faux sinon
 	def ajouteParamSimple(uneTable,param,valeur)
-		stm = @db.prepare "INSERT INTO \'#{uneTable}\' (Parametre, Valeur) VALUES (?, \"#{valeur}\")"
+		stm = @db.prepare "INSERT INTO \'#{uneTable}\' (Parametre, Valeur) VALUES (?, ?)"
+
 		stm.bind_param 1, param
+		stm.bind_param 2, valeur
+
 		stm.execute
 		#value = @db.last_insert_row_Valeur
 		return true
 	end
 
 	def ajouteParamDouble(uneTable,param,valeur)
-		stm = @db.prepare "UPDATE \'#{uneTable}\' SET Valeur =  \"#{valeur}\" WHERE Parametre = ?"
-		stm.bind_param 1, param
+		stm = @db.prepare "UPDATE \'#{uneTable}\' SET Valeur =  ? WHERE Parametre = ?"
+
+		stm.bind_param 1, valeur
+		stm.bind_param 2, param
+
 		stm.execute
 		return true
 	end
