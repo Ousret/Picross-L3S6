@@ -24,16 +24,16 @@ class Fenetre < ObjetGUI
 	def initialize(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
 		super(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
 	end
-	
+
 	def Fenetre.creer(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
 		new(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
 	end
 
-	def ajoutComposant(unComposantGUI)
+	def ajouterComposant(unComposantGUI)
 		Array.push(unComposantGUI)
 	end
 
-	def retireComposant(unComposantCible)
+	def retirerComposant(unComposantCible)
 
 	end
 
