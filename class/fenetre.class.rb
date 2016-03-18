@@ -10,19 +10,12 @@
 
 class Fenetre < ObjetGUI
 
-	attr_accessor :name
-
+	attr_writer :objs
 	private_class_method :new
-	#Méthode d'initialisation
-	#
-	#
-	# * *Arguments*    :
-	#
-	#   - +nom+ -> nom du plan
-	# 	- +fenetre+ -> fenetre asssocié au plan
-	#   - +options+ -> option supplementaire
+
 	def initialize(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
 		super(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
+		@objs = Array.new
 	end
 
 	def Fenetre.creer(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
@@ -30,11 +23,11 @@ class Fenetre < ObjetGUI
 	end
 
 	def ajouterComposant(unComposantGUI)
-		Array.push(unComposantGUI)
+		@objs.push(unComposantGUI)
 	end
 
 	def retirerComposant(unComposantCible)
-
+		@objs.delete(unComposantCible)
 	end
 
 end
