@@ -7,12 +7,15 @@ require 'ray'
 
 class Rendu
 
+  # La fenêtre à rendre
   attr_writer :contexte
 
   def initialize(unContexteInitial)
     @contexte = unContexteInitial
   end
 
+  # Effectue le rendu en boucle si un élement bloquant si trouve (saisie & boutton)
+  # Retourne l'objet selectionné
   def rendu()
     @contexte.listeComposant.each_char { |element|  }
   end

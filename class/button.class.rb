@@ -7,23 +7,11 @@
 #* Classe créant un bouton héritant de interfaceObject.
 #* Objet de l'interface du plan pouvant être cliqué
 
-
-load './class/interfaceObject.class.rb'
-
 class Button < ObjetGUI
 
 	private_class_method :new
 
 	attr_accessor :name, :width, :height, :posX, :posY
-
-
-	#Méthode permettant de savoir l'état de l'objet
-	#
-	# * *Return value* :
-	#   - state : boolean pour savoir si il est actif
-	def state
-	end
-
 
 	#Méthode d'initialisation
 	#
@@ -40,7 +28,7 @@ class Button < ObjetGUI
 		super(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
 	end
 
-	def creer(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
+	def Button.creer(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
 		new(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
 	end
 

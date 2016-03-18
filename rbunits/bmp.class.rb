@@ -43,11 +43,11 @@ def test_bmp_new_bmp_4
 			flag = bmp.height>0?1:0
 			assert_equal(flag,1)
 			#test chaque pixel : chaque pixel doit être égal à 0 ou 1
-			p 'kawai',bmp.width,bmp.height			
+			#p bmp.width,bmp.height			
 			0.upto(bmp.width-1) do |i|
 				0.upto(bmp.height-1) do |j|
-					p mat[i][j]
-					flag = (mat[i][j]==1||mat[j][i]==0) ? 1 : 0
+					#p mat[i][j]
+					flag = ((mat[i][j]==1||mat[i][j]==0) ? 1 : 0)
 					assert_equal(flag,1)
 				end
 			end
@@ -60,11 +60,11 @@ def test_bmp_new_bmp_4
 		
 		2.times{
 			bmp2 = BMP::Reader.creer("ressources/images/bmp.bmp")	
-			p bmp2.height
-			p bmp2.width			
+			#p bmp2.height
+			#p bmp2.width			
 			bmp1 = BMP::Reader.creer("ressources/images/bmp.bmp")
-			p bmp1.height
-			p bmp1.width
+			#p bmp1.height
+			#p bmp1.width
 			mat1=bmp1.getMatrice()
 			mat2=bmp2.getMatrice()		
 			assert_equal(bmp1.height,bmp2.height)
