@@ -14,7 +14,7 @@ class TestConfiguration< Test::Unit::TestCase
 	#test creation d'une config de jeu
 	def test_creation()
         matrice =[[0,0,1,0,1],[1,1,0,1,0],[0,0,1,0,0],[1,1,0,1,0],[0,1,1,1,1]]
-        profile = Profile.creer("codeKiller","AL-KASSOUM" ,"Houssam",227)
+        profile = Profile.creer("codeKiller","AL-KASSOUM" ,"Houssam")
         grille  = Grille.grille(matrice)
 		config = Configuration.configurer(grille,profile)
 		assert_equal(profile, config.profile)
