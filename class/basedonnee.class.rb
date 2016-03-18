@@ -54,7 +54,7 @@ class Basedonnee
 	end
 
 	def connect
-		SQLite3::Database.open @fileName
+		@db = SQLite3::Database.open @fileName
 	end
 
 	def release
