@@ -99,12 +99,17 @@ class Basedonnee
 	# * *Returns* :
 	# - La valeur lu dans la table.
 	def lireParam(uneTable,param)
-		result = nil
-		rs = @db.get_first_row "SELECT Valeur FROM \'#{uneTable}\' WHERE Parametre = \"#{param}\""
+
+		stm = @db.prepare "SELECT Valeur FROM \'#{uneTable}\' WHERE Parametre = ?"
+		stm.bind_param 1, param
+
+		rs = stm.execute
+
 		if rs != nil
 			return rs[0]
 		end
-		return result
+		
+		return rs
 
 	end
 
