@@ -55,7 +55,9 @@ class BMP
 			@pixelsbin= Array.new(@width) { Array.new(@height) }
 			0.upto(@height-1) do |y|
 				0.upto(@width-1) do |x|
+					
 					@pixelsbin[x][y] = ((@pixels[y][x]=="ffffff")?0:1)
+					#p @pixelsbin[x][y]
 				end
 			end
 			return @pixelsbin
