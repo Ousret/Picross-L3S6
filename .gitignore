@@ -18,6 +18,7 @@ build/
 ._*
 .DS_Store
 *~
+Thumbs.db
 
 ## Documentation cache and generated files:
 /.yardoc/
