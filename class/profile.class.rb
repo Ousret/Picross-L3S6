@@ -6,7 +6,6 @@
 # Version 0.1 : Date : 24/02/2016
 #
 
-require 'rubygems'
 require 'active_record'
 require_relative 'connectSqlite3.rb'
 
