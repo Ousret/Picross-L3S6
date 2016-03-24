@@ -5,19 +5,31 @@
 
 require 'ray'
 
-class Rendu
+module Rendu
+  class Scene < Ray::Scene
 
-  # La fenêtre à rendre
-  attr_writer :contexte
+    scene_name :primary
 
-  def initialize(unContexteInitial)
-    @contexte = unContexteInitial
+    def newText(unChampText)
+      text unChampText.contenu, :at => [unChampText.posx, unChampText.posy], :size => unChampText.police
+    end
+
   end
 
-  # Effectue le rendu en boucle si un élement bloquant si trouve (saisie & boutton)
-  # Retourne l'objet selectionné
-  def rendu()
-    @contexte.listeComposant.each_char { |element|  }
-  end
+  class Jeu < Ray::Game
 
+    # La fenêtre à rendre
+    attr_writer :contexte
+
+    def initialize(unContexteInitial)
+      @contexte = unContexteInitial
+    end
+
+    # Effectue le rendu en boucle si un élement bloquant si trouve (saisie & boutton)
+    # Retourne l'objet selectionné
+    def rendu()
+      @contexte.listeComposant.each_char { |element|  }
+    end
+
+  end
 end
