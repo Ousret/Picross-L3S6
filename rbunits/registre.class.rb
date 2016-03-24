@@ -1,11 +1,11 @@
 #!/usr/bin/ruby
 
 # Test unitaire Basedonnee.rb
-# Auteur : Grude Victorien
+# Auteur : Grude Victorien, TAHRI Ahmed
 
 
 require 'test/unit'
-load './class/basedonnee.class.rb'
+load './class/registre.class.rb'
 
 #Vos tests dans ce fichier
 #https://github.com/olbrich/ruby-units
