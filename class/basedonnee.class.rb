@@ -115,7 +115,7 @@ class Basedonnee
 	# - La valeur lu dans la table.
 	def getValue(uneCle)
 		connect
-		stm = @db.prepare "SELECT Valeur FROM REGISTRE WHERE key = ?"
+		stm = @db.prepare "SELECT value FROM REGISTRE WHERE key = ?"
 		stm.bind_param 1, uneCle
 
 		row = stm.execute
