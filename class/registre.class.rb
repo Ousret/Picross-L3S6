@@ -11,7 +11,7 @@
 require 'sqlite3'
 load './class/crypt.class.rb'
 
-class Basedonnee
+class Registre
 
 	#Indique la valeur de la base de donnee
 	#@db
@@ -27,7 +27,7 @@ class Basedonnee
 	# - +unNom+ -> Nom du fichier dans lequel la base de donnee est initialiser
 	# * *Returns* :
 	# - Une nouvelle instance de la classe Basedonnee.
-	def Basedonnee.creer(unNom)
+	def Registre.creer(unNom)
 		new(unNom)
 	end
 

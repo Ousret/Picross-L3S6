@@ -10,11 +10,10 @@ load './class/registre.class.rb'
 #Vos tests dans ce fichier
 #https://github.com/olbrich/ruby-units
 
-
 class Testbasedonnee < Test::Unit::TestCase
 
 	def test_bdd_creation
-		kBase = Basedonnee.creer('test.db')
+		kBase = Registre.creer('test.db')
 		assert_equal(true, File.exist?('test.db'))
 	end
 
@@ -22,14 +21,14 @@ class Testbasedonnee < Test::Unit::TestCase
 
 		i = 0
 
-		kBase = Basedonnee.creer('test.db')
+		kBase = Registre.creer('test.db')
 
 		assert(kBase.addParam('nbJours', 81))
 		assert_equal(81, kBase.getValue('nbJours'))
 
 		assert(kBase.addParam('typeCarte', 'VISA'))
 		assert_equal('VISA', kBase.getValue('typeCarte'))
-		
+
 		assert(kBase.addParam('qteArgent', 1872.21))
 		assert_equal(1872.21, kBase.getValue('qteArgent'))
 
