@@ -24,11 +24,14 @@ class Testbasedonnee < Test::Unit::TestCase
 
 		kBase = Basedonnee.creer('test.db')
 
-		5.times {
-			assert(kBase.addParam('test'+i.to_s, 3))
-			assert_equal(3, kBase.getValue('test'+i.to_s))
-			i += 1
-		}
+		assert(kBase.addParam('nbJours', 81))
+		assert_equal(81, kBase.getValue('nbJours'))
+
+		assert(kBase.addParam('typeCarte', 'VISA'))
+		assert_equal('VISA', kBase.getValue('typeCarte'))
+		
+		assert(kBase.addParam('qteArgent', 1872.21))
+		assert_equal(1872.21, kBase.getValue('qteArgent'))
 
 	end
 
