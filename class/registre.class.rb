@@ -18,10 +18,10 @@ class Basedonnee
 	#Indique la valeur de la cle de criptage
 	#@myCrypt
 
-	#EmpÃªche l'utilisation de la mÃ©thode new
+	#Empêche l'utilisation de la mÃ©thode new
 	private_class_method :new
 
-	#MÃ©thode de crÃ©ation d'instance de la classe Basedonnee.
+	#Méthode de création d'instance de la classe Basedonnee.
 	#
 	# * *Arguments* :
 	# - +unNom+ -> Nom du fichier dans lequel la base de donnee est initialiser
@@ -31,7 +31,7 @@ class Basedonnee
 		new(unNom)
 	end
 
-	#MÃ©thode de crÃ©ation d'instance de la classe Basedonnee.
+	#Méthode de crÃ©ation d'instance de la classe Basedonnee.
 	#
 	# * *Arguments* :
 	# - +unNom+ -> Nom du fichier dans lequel la base de donnee est initialiser
@@ -48,38 +48,41 @@ class Basedonnee
 		end
 	end
 
+	# Méthode de connexion SQLite3, créer une instance SQLite3.
 	def connect
 		@db = SQLite3::Database.open @fileName
 	end
 
+	# Ferme l'instance SQLite3 si déjà ouvert
 	def release
-		@db.close
+		@db.close if @db != nil
 	end
 
+	# Vérifie que la table de registre est déjà créer, sinon créer une nouvelle table
 	def verify
 		connect
 		@db.execute "CREATE TABLE IF NOT EXISTS REGISTRE(id_registre INTEGER PRIMARY KEY, key TEXT, value TEXT)"
 		release
 	end
 
+	# Encode une valeur dans le format YAML
 	def encode(uneValeur)
 		YAML.dump(@myCrypt.encrypt(uneValeur))
 	end
-
+	# Décode un buffer YAML
 	def decode(unBuffer)
 		@myCrypt.decrypt(YAML.load(unBuffer))
 	end
 
 	private :verify, :release, :connect, :encode, :decode
 
-	#MÃ©thode d'ajout de couple parametre valeur dans une base de donnee
+	#Méthode d'ajout de couple parametre valeur dans une base de donnee
 	#
 	# * *Arguments* :
-	# - +uneTable+ -> nom de la table de la table dans laquel ajouter les valeurs
-	# - +param+ -> parametre a ajouter dans la table
-	# - +valeur+ -> valeur a ajouter dans la table
+	# - +uneCle+ -> Nom du paramètre cible
+	# - +uneValeur+ -> Contenu
 	# * *Returns* :
-	# - Vrai si l'ajout a etais realiser avec succes faux sinon
+	# - bool
 	def addParam(uneCle, uneValeur)
 		connect
 		stm = @db.prepare "INSERT INTO REGISTRE (key, value) VALUES (?, ?)"
@@ -93,12 +96,19 @@ class Basedonnee
 		return true
 	end
 
-	def updateParam(unParametre, uneValeur)
+	#Méthode de mise à jour d'un paramètre dans le registre
+	#
+	# * *Arguments* :
+	# - +uneCle+ -> Nom du paramètre cible
+	# - +uneValeur+ -> Contenu
+	# * *Returns* :
+	# - bool
+	def updateParam(uneCle, uneValeur)
 		connect
 		stm = @db.prepare "UPDATE REGISTRE SET value =  ? WHERE key = ?"
 
 		stm.bind_param 1, encode(uneValeur)
-		stm.bind_param 2, unParametre
+		stm.bind_param 2, uneCle
 
 		stm.execute
 		stm.close
@@ -106,13 +116,13 @@ class Basedonnee
 		return true
 	end
 
-	#MÃ©thode d'acces en lecture a la base de donnee
+	#Méthode de lecture d'un paramètre dans le registre
 	#
 	# * *Arguments* :
-	# - +uneTable+ -> nom de la table de la table dans laquel on lis les valeurs
-	# - +param+ -> lis la valeur oÃ¹ son parametre vaut param
+	# - +uneCle+ -> Nom du paramètre cible
+	# - +uneValeur+ -> Contenu
 	# * *Returns* :
-	# - La valeur lu dans la table.
+	# - bool
 	def getValue(uneCle)
 		connect
 		stm = @db.prepare "SELECT value FROM REGISTRE WHERE key = ?"
