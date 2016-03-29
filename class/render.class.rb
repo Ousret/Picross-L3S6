@@ -29,7 +29,8 @@ class Rendu
 
     Ray.game @contexte.designation do
       register { add_hook :quit, method(:exit!) }
-
+      window.size = [@contexte.taillex, @contexte.tailley]
+      
       scene :stdout do
 
         @contexte.listeComposant.each do |composant|
@@ -40,7 +41,7 @@ class Rendu
         end
 
         always do
-          
+
         end
 
         render do |win|
