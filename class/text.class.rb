@@ -1,7 +1,7 @@
 
 class Text < ObjetGUI
 
-	attr_writer :contenu, :police
+	attr_accessor :contenu, :police
 	private_class_method :new
 
 	def initialize(uneDesignation, unContenu, uneTaillePolice, unePositionX, unePositionY, unePositionZ)

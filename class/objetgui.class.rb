@@ -9,7 +9,7 @@
 
 class ObjetGUI
 
-	attr_writer :designation, :posx, :posy, :posz, :taillex, :tailley
+	attr_accessor :designation, :posx, :posy, :posz, :taillex, :tailley
 	attr_reader :visible, :etat
 
 	private_class_method :new

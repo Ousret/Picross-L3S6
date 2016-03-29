@@ -9,7 +9,7 @@
 
 class Fenetre < ObjetGUI
 
-	attr_writer :listeComposant
+	attr_accessor :listeComposant
 	private_class_method :new
 
 	def initialize(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
