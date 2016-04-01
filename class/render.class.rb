@@ -30,7 +30,7 @@ module Render
       window.size = [@@contexte.taillex, @@contexte.tailley]
       window.title = @@contexte.designation
 
-      #Set ressource on screen
+      #Charge/prépare l'ensemble des elements pour affichage graphique
       @@contexte.listeComposant.each do |composant|
         puts "Initialisation du composant #{composant.designation}"
         if (composant.instance_of? Text)
@@ -46,6 +46,11 @@ module Render
           @sound.relative     = false
 
           @sound.play
+        elsif (composant.instance_of? Image)
+          @image = Ray::Sprite.new composant.path
+          @image.origin = @image.image.size / 2
+          @image.pos = [composant.posx, composant.posy]
+          @@vertex.push @image
         elsif (composant.instance_of? Sprite)
           @sprite = sprite composant.source
           @sprite.sheet_size = [composant.dimx, composant.dimy] # Dimention du Sprite
@@ -54,19 +59,19 @@ module Render
               # Si on appuis sur une fleche directionnel bas/gauche/droite/haut
               if holding? :down
                 # Le sprite passe de l'etat actuel a l'annimation etat[0,2]=>etat[4,2] en 0,3 seconde
-                animations << sprite_animation(:from => [0, 2], :to => [4, 2],
+                animations << sprite_animation(:from => [15, 0], :to => [15, 5],
                                                :duration => 0.3).start(@sprite)
                 animations << translation(:of => [0, 32], :duration => 0.3).start(@sprite)
               elsif holding? :left
-                animations << sprite_animation(:from => [0, 1], :to => [4, 1],
+                animations << sprite_animation(:from => [0, 14], :to => [4, 14],
                                                :duration => 0.3).start(@sprite)
                 animations << translation(:of => [-32, 0], :duration => 0.3).start(@sprite)
               elsif holding? :right
-                animations << sprite_animation(:from => [0, 3], :to => [4, 3],
+                animations << sprite_animation(:from => [0, 16], :to => [4, 16],
                                                :duration => 0.3).start(@sprite)
                 animations << translation(:of => [32, 0], :duration => 0.3).start(@sprite)
               elsif holding? :up
-                animations << sprite_animation(:from => [0, 0], :to => [4, 0],
+                animations << sprite_animation(:from => [0, 13], :to => [4, 13],
                                                :duration => 0.3).start(@sprite)
                 animations << translation(:of => [0, -32], :duration => 0.3).start(@sprite)
               end
@@ -120,5 +125,6 @@ kWindow = Fenetre.creer("Picross L3-SPI", 0, 0, 0, 800, 600)
 #kWindow.ajouterComposant(Button.creer("Aventure", 200, 50, 0, 150, 200))
 kWindow.ajouterComposant(Text.creer("Welcome-Message", "Bienvenue dans le jeu Picross L3-SPI", 12, 20, 300, 0))
 kWindow.ajouterComposant(Sprite.creer("SpriteHero", "ressources/images/sprites/Characters/MrYtdBCF.png", 13, 21, 20, 20, 0, 100, 100))
+kWindow.ajouterComposant(Image.creer("ImageTest", "test.png", 250, 20, 0))
 
 Render::Game.new.prepare kWindow
