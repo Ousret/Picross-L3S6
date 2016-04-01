@@ -17,7 +17,7 @@ end
 #==========================================================================================================
 
 require 'test/unit'
-require 'rbunits/test_helper.rb'
+require File.expand_path(File.dirname(__FILE__)) + 'test_helper.rb'
 load './class/profile.class.rb'
 require_relative 'connectSqlite3.rb'
 

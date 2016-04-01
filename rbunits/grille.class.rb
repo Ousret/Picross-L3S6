@@ -7,7 +7,7 @@
 #
 
 require 'test/unit'
-require 'rbunits/test_helper.rb'
+require File.expand_path(File.dirname(__FILE__)) + 'test_helper.rb'
 load './class/grille.class.rb'
 
 class TestGrille < Test::Unit::TestCase
