@@ -1,5 +1,5 @@
 #
-# Author::    Sakyamar https://github.com/sakymar
+# Author::    Sakyamar https://github.com/sakymar, Ousret https://github.com/Ousret
 # License::   MIT Licence
 #
 # https://github.com/Ousret/Picross-L3S6
