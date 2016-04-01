@@ -12,49 +12,61 @@ load './class/button.class.rb'
 load './class/saisie.class.rb'
 load './class/text.class.rb'
 
-class Rendu
+module Render
 
-  # La fenêtre à rendre
-  attr_writer :contexte
-  attr_reader :map
+  @@contexte = Array.new
+  @@vertex = Array.new
 
-  def initialize(unContexteInitial)
-    @contexte = unContexteInitial
-  end
+  class Scene < Ray::Scene
+    include Render
+    scene_name :stdout
+    def setup
+      window.size = [@@contexte.taillex, @@contexte.tailley]
 
-  # Effectue le rendu en boucle si un élement bloquant si trouve (saisie & boutton)
-  # Retourne l'objet selectionné
-  def rendu()
-    #@contexte.listeComposant.each_char { |element|  }
-
-    Ray.game @contexte.designation do
-      register { add_hook :quit, method(:exit!) }
-      window.size = [@contexte.taillex, @contexte.tailley]
-      
-      scene :stdout do
-
-        @contexte.listeComposant.each do |composant|
-          puts "Initialisation du composant #{composant.designation}"
-          if (composant.instance_of? Text)
-            @text = text composant.contenu, :at => [composant.posx, composant.posy], :size => composant.police
-          end
+      #Set ressource on screen
+      @@contexte.listeComposant.each do |composant|
+        puts "Initialisation du composant #{composant.designation}"
+        if (composant.instance_of? Text)
+          @text = text composant.contenu, :at => [composant.posx, composant.posy], :size => composant.police
+          @@vertex.push @text
         end
-
-        always do
-
-        end
-
-        render do |win|
-          win.draw @text
-        end
-
       end
-      scenes << :stdout
+
     end
+
+    def register
+
+    end
+
+    def render(win)
+      win.clear Ray::Color.black
+      @@vertex.each do |element|
+        win.draw element
+      end
+    end
+
   end
 
-end
+  class Game < Ray::Game
+    include Render
+    def initialize
+      super("RenderInterpret")
+      Scene.bind(self)
+      push_scene :stdout
+    end
 
+    def register
+      add_hook :quit, method(:exit!)
+    end
+
+    def prepare(unContexteCible)
+      @@contexte = unContexteCible
+      @@vertex = Array.new
+      run
+    end
+
+  end
+end
 
 # Tests
 kWindow = Fenetre.creer("Picross L3-SPI", 0, 0, 0, 800, 600)
@@ -62,5 +74,4 @@ kWindow = Fenetre.creer("Picross L3-SPI", 0, 0, 0, 800, 600)
 #kWindow.ajouterComposant(Button.creer("Aventure", 200, 50, 0, 150, 200))
 kWindow.ajouterComposant(Text.creer("Welcome-Message", "Bienvenue dans le jeu Picross L3-SPI", 12, 400, 50, 0))
 
-kRender = Rendu.new kWindow
-kRender.rendu
+Render::Game.new.prepare kWindow
