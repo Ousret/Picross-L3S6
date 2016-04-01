@@ -46,6 +46,10 @@ module Render
           @sound.relative     = false
 
           @sound.play
+        elsif (composant.instance_of? Sprite)
+          @sprite = sprite path_of(composant.source)
+          @sprite.sheet_size = [composant.dimx, composant.dimy] # Dimention du Sprite
+          @@vertex.push @sprite
         end
       end
 
