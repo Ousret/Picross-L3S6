@@ -17,17 +17,18 @@ end
 #==========================================================================================================
 
 require 'test/unit'
+require 'rbunits/test_helper.rb'
 load './class/profile.class.rb'
 require_relative 'connectSqlite3.rb'
 
 class TestProfile < Test::Unit::TestCase
 
 
-   
 
 
 
-	#test creation d'un profile 
+
+	#test creation d'un profile
 	def test_creation()
 		profile = Profile.creer("codeKiller","AL-KASSOUM" ,"Houssam")
 		assert_equal("codeKiller", profile.pseudo)
@@ -42,7 +43,7 @@ class TestProfile < Test::Unit::TestCase
 			profile = Profile.creer("codeKiller2","AL-KASSOUM2" ,"Houssam2")
             profile.sauver
 
-            #modification du profile et mise a jour dans la BDA 
+            #modification du profile et mise a jour dans la BDA
 			profile.argent=2000
             profile.mettreAJour
 
@@ -70,6 +71,6 @@ class TestProfile < Test::Unit::TestCase
             assert_equal("pseudo est deja utiliser", exception.message)
 
 	end
-    
+
 
 end

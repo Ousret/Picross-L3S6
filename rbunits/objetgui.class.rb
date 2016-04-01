@@ -1,4 +1,5 @@
 require 'test/unit'
+require 'rbunits/test_helper.rb'
 load './class/objetgui.class.rb'
 load './class/fenetre.class.rb'
 load './class/button.class.rb'

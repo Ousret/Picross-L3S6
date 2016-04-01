@@ -7,6 +7,7 @@
 #
 
 require 'test/unit'
+require 'rbunits/test_helper.rb'
 load './class/configuration.class.rb'
 
 class TestConfiguration< Test::Unit::TestCase
@@ -22,4 +23,3 @@ class TestConfiguration< Test::Unit::TestCase
 	end
 
 end
-

@@ -5,6 +5,7 @@
 
 
 require 'test/unit'
+require 'rbunits/test_helper.rb'
 load './class/registre.class.rb'
 
 #Vos tests dans ce fichier

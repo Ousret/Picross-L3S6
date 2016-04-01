@@ -7,6 +7,7 @@
 #
 
 require 'test/unit'
+require 'rbunits/test_helper.rb'
 load './class/grille.class.rb'
 
 class TestGrille < Test::Unit::TestCase
@@ -104,7 +105,7 @@ class TestGrille < Test::Unit::TestCase
 			assert_equal(grille.matriceDeJeu[2][1],0)#test si la case n'a pas été noirsi
 	end
 
-	#test si une grille est terminé 
+	#test si une grille est terminé
 	def test_terminer()
 			#matrice 2*2
 			matrice = [[1,0],[0,1]]
@@ -114,7 +115,7 @@ class TestGrille < Test::Unit::TestCase
 			assert_equal(grille.terminer?(),false)#test si la grille est terminé apres noirsissement de la 1er case
 			grille.noirsirCase(2,2)
 			assert_equal(grille.terminer?(),true)#test si la grille est terminé apres noirsissement de toute les bonnes cases
-			
+
 	end
 
 end
