@@ -1,6 +1,6 @@
 require 'test/unit'
 require 'faker'
-require File.expand_path(File.dirname(__FILE__)) + 'test_helper.rb'
+require File.expand_path(File.dirname(__FILE__)) + '/test_helper.rb'
 load './class/crypt.class.rb'
 
 class MyTest < Test::Unit::TestCase
