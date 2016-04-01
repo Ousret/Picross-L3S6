@@ -11,6 +11,9 @@ load './class/fenetre.class.rb'
 load './class/button.class.rb'
 load './class/saisie.class.rb'
 load './class/text.class.rb'
+load './class/image.class.rb'
+load './class/audio.class.rb'
+load './class/sprite.class.rb'
 
 module Render
 
@@ -33,6 +36,16 @@ module Render
         if (composant.instance_of? Text)
           @text = text composant.contenu, :at => [composant.posx, composant.posy], :size => composant.police
           @@vertex.push @text
+        elsif (composant.instance_of? Audio)
+          @sound = music path_of(composant.path)
+          @sound.attenuation  = composant.attenuation
+          @sound.min_distance = 10
+          @sound.pos          = [composant.posx, composant.posy, composant.posz]
+          @sound.looping      = composant.infinite
+          @sound.pitch        = composant.pitch
+          @sound.relative     = false
+
+          @sound.play
         end
       end
 
