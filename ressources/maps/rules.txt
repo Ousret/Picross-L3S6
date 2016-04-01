@@ -1,0 +1,11 @@
+//./automap.tmx
+./automurs1.tmx
+./automurs2.tmx
+//./automurs3.tmx
+./autounits.tmx
+./autopopulate.tmx
+
+
+
+
+//./automurs.tmx
