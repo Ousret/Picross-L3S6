@@ -7,7 +7,7 @@
 #* Classe créant un bouton héritant de interfaceObject.
 #* Objet de l'interface du plan pouvant être cliqué
 
-class Button < ObjetGUI
+class Boutton < ObjetGUI
 
 	private_class_method :new
 
@@ -28,7 +28,7 @@ class Button < ObjetGUI
 		super(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
 	end
 
-	def Button.creer(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
+	def Boutton.creer(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
 		new(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
 	end
 
