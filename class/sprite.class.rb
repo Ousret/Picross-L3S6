@@ -18,8 +18,8 @@ class Sprite < ObjetGUI
 		@etx, @ety = 0, 0
 	end
 
-	def Sprite.creer(uneDesignation, uneImage, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
-		new(uneDesignation, uneImage, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
+	def Sprite.creer(uneDesignation, uneImage, uneDimX, uneDimY, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
+		new(uneDesignation, uneImage, uneDimX, uneDimY, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
 	end
 
 	def deplacer(unEtatX, unEtatY)
