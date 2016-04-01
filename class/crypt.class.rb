@@ -76,7 +76,7 @@ class Crypt
 		#Est le mot de passe choisi et utilisé comme clé de cryptage, il est choisi lors de la création d'instance.
 		@psw = password
 
-		#Contient le hash du mot de passe 
+		#Contient le hash du mot de passe
 		@processedPsw = self.hashLeMotDePasse
 		#Type d'encryptage choisi, AES 128 bits GCM par défault : Attention, certains encryptages ne seront pas supportés
 		@cipherType = encryptionMethod
@@ -121,10 +121,10 @@ class Crypt
 		cipher.encrypt
 		cipher.key = @processedPsw
 		cipher.iv = @iv
-	
+
 		encrypted = cipher.update(yamlString)
 		#tag = cipher.auth_tag
-		
+
 		#Indique le nombre de fois que la méthode encrypt a été utilisée
 		@nbOfEncrypt=@nbOfEncrypt+1
 		return encrypted

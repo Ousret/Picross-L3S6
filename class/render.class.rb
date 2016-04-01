@@ -30,11 +30,15 @@ module Render
     scene_name :stdout
 
     # Créer un calque Texte
+    # * *Arguments*
+    #   - +unComposant+ -> Objet décrivant le texte
     def createText(unComposant)
       text unComposant.contenu, :at => [unComposant.posx, unComposant.posy], :size => unComposant.police
     end
 
     # Charge un fichier audio en mémoire (libsnd native)
+    # * *Arguments*
+    #   - +unComposant+ -> Objet décrivant la piste audio
     def createAudio(unComposant)
       @sound = music path_of(unComposant.path)
       @sound.attenuation  = unComposant.attenuation
@@ -47,6 +51,8 @@ module Render
     end
 
     # Créer un calque à partir d'une image (PNG, JPEG, BMP)
+    # * *Arguments*
+    #   - +unComposant+ -> Objet décrivant l'image
     def createImage(unComposant)
       @image = Ray::Sprite.new unComposant.path
       @image.origin = @image.image.size / 2
@@ -55,6 +61,8 @@ module Render
     end
 
     # Créer un calque sprite statique (sans translation)
+    # * *Arguments*
+    #   - +unComposant+ -> Objet décrivant l'image sprite
     def createSprite(unComposant)
       @sprite = sprite unComposant.source
       @sprite.sheet_size = [unComposant.dimx, unComposant.dimy] # Dimention du Sprite
@@ -97,11 +105,11 @@ module Render
 
     end
 
-    def register
+    def register # :nodoc:
 
     end
 
-    def render(win)
+    def render(win) # :nodoc:
       win.clear Ray::Color.black
       @@vertex.each do |element|
         win.draw element
@@ -115,7 +123,7 @@ module Render
     #Permet de partager les variables de classes entre Game et Scene
     include Render
 
-    def initialize
+    def initialize # :nodoc:
       super("RenderInterpret")
       Scene.bind(self)
       push_scene :stdout
@@ -125,6 +133,9 @@ module Render
       add_hook :quit, method(:exit!)
     end
 
+    # Prépare le rendu en assignant le contexte à une variable de module
+    # * *Arguments*
+    #   - +unContexteCible+ -> Objet décrivant la fenêtre cible
     def prepare(unContexteCible)
       @@contexte = unContexteCible
       @@vertex = Array.new

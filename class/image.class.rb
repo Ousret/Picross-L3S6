@@ -11,7 +11,7 @@ class Image < ObjetGUI
   attr_accessor :path
   private_class_method :new
 
-  def initialize(uneDesignation, unCheminRelatif, unePositionX, unePositionY, unePositionZ)
+  def initialize(uneDesignation, unCheminRelatif, unePositionX, unePositionY, unePositionZ) # :nodoc:
     super(uneDesignation, unePositionX, unePositionY, unePositionZ, -1, -1)
     @path = unCheminRelatif
   end

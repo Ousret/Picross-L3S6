@@ -6,7 +6,6 @@
 #
 #*Classe abstraite répresentant les objets de l'interface, un objet générique
 #*Tous les objets comme boutons ou textes héritent de InterfaceObject
-
 class ObjetGUI
 
 	attr_accessor :designation, :posx, :posy, :posz, :taillex, :tailley
@@ -14,22 +13,25 @@ class ObjetGUI
 
 	private_class_method :new
 
-	#Méthode d'initialisation
-	#
-	#
+	def initialize(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY) # :nodoc:
+		@designation, @posx, @posy, @posz, @taillex, @tailley = uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY
+	end
+
+	# Créer une instance d'un objet imprimable sur la sortie GL
 	# * *Arguments*    :
 	#   - +uneDesignation+ -> nom de l'objet
 	#   - +unePositionX+ -> X
 	#   - +unePositionY+ -> Y
-
-	def initialize(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
-		@designation, @posx, @posy, @posz, @taillex, @tailley = uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY
-	end
-
+	#   - +unePositionZ+ -> Plan sur lequel l'objet sera disposé
+	#   - +uneTailleX+ -> Taille axe X en pixel
+	#   - +uneTailleY+ -> Taille axe Y en pixel
 	def creer(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
 		new(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
 	end
 
+	# Change l'état du composant, actif ou inactif.
+	# * *Arguments*    :
+	#   - +unNouvelEtat+ -> Vrai/faux
 	def setEtat(unNouvelEtat)
 		@etat = unNouvelEtat
 	end

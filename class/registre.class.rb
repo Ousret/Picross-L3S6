@@ -30,14 +30,8 @@ class Registre
 	def Registre.creer(unNom)
 		new(unNom)
 	end
-
-	#Méthode de crÃ©ation d'instance de la classe Basedonnee.
-	#
-	# * *Arguments* :
-	# - +unNom+ -> Nom du fichier dans lequel la base de donnee est initialiser
-	# * *Returns* :
-	# - Une nouvelle instance de la classe Basedonnee.
-	def initialize(unNom)
+	
+	def initialize(unNom) # :nodoc:
 		if unNom.class == String
 			@myCrypt = Crypt.creer("Password")
     	@db = nil

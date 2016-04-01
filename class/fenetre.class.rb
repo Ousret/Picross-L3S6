@@ -12,7 +12,7 @@ class Fenetre < ObjetGUI
 	attr_accessor :listeComposant
 	private_class_method :new
 
-	def initialize(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
+	def initialize(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY) # :nodoc:
 		super(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
 		@listeComposant = Array.new
 	end
