@@ -18,10 +18,14 @@ module Render
   @@vertex = Array.new
 
   class Scene < Ray::Scene
+    #Partage de variable de classe avec Game
     include Render
     scene_name :stdout
+
     def setup
+
       window.size = [@@contexte.taillex, @@contexte.tailley]
+      window.title = @@contexte.designation
 
       #Set ressource on screen
       @@contexte.listeComposant.each do |composant|
@@ -48,7 +52,9 @@ module Render
   end
 
   class Game < Ray::Game
+    #Permet de partager les variables de classes entre Game et Scene
     include Render
+
     def initialize
       super("RenderInterpret")
       Scene.bind(self)
@@ -72,6 +78,6 @@ end
 kWindow = Fenetre.creer("Picross L3-SPI", 0, 0, 0, 800, 600)
 #kWindow.ajouterComposant(Button.creer("Partie rapide", 100, 50, 0, 150, 200))
 #kWindow.ajouterComposant(Button.creer("Aventure", 200, 50, 0, 150, 200))
-kWindow.ajouterComposant(Text.creer("Welcome-Message", "Bienvenue dans le jeu Picross L3-SPI", 12, 400, 50, 0))
+kWindow.ajouterComposant(Text.creer("Welcome-Message", "Bienvenue dans le jeu Picross L3-SPI", 12, 20, 300, 0))
 
 Render::Game.new.prepare kWindow
