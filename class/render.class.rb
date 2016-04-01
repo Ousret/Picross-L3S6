@@ -51,6 +51,14 @@ module Render
           @image.origin = @image.image.size / 2
           @image.pos = [composant.posx, composant.posy]
           @@vertex.push @image
+        elsif (composant.instance_of? Boutton)
+          #Charge l'image boutton
+          @image = Ray::Sprite.new "ressources/images/GUI/button_base_clicked_d1l1.png"
+          @image.origin = @image.image.size / 2
+          @image.pos = [composant.posx, composant.posy]
+          @text = text composant.designation, :at => [composant.posx+20, composant.posy+20], :size => 12
+          @@vertex.push @image
+          @@vertex.push @text
         elsif (composant.instance_of? Sprite)
           @sprite = sprite composant.source
           @sprite.sheet_size = [composant.dimx, composant.dimy] # Dimention du Sprite
@@ -121,8 +129,8 @@ end
 
 # Tests
 kWindow = Fenetre.creer("Picross L3-SPI", 0, 0, 0, 800, 600)
-#kWindow.ajouterComposant(Button.creer("Partie rapide", 100, 50, 0, 150, 200))
-#kWindow.ajouterComposant(Button.creer("Aventure", 200, 50, 0, 150, 200))
+kWindow.ajouterComposant(Boutton.creer("Partie rapide", 100, 50, 0, 150, 200))
+#kWindow.ajouterComposant(Boutton.creer("Aventure", 200, 50, 0, 150, 200))
 kWindow.ajouterComposant(Text.creer("Welcome-Message", "Bienvenue dans le jeu Picross L3-SPI", 12, 20, 300, 0))
 kWindow.ajouterComposant(Sprite.creer("SpriteHero", "ressources/images/sprites/Characters/MrYtdBCF.png", 13, 21, 20, 20, 0, 100, 100))
 kWindow.ajouterComposant(Image.creer("ImageTest", "test.png", 250, 20, 0))
