@@ -25,6 +25,8 @@ class ObjetGUI
 	#   - +unePositionZ+ -> Plan sur lequel l'objet sera disposé
 	#   - +uneTailleX+ -> Taille axe X en pixel
 	#   - +uneTailleY+ -> Taille axe Y en pixel
+	# * *Returns*
+	#   - ObjetGUI
 	def creer(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
 		new(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
 	end
@@ -32,6 +34,8 @@ class ObjetGUI
 	# Change l'état du composant, actif ou inactif.
 	# * *Arguments*    :
 	#   - +unNouvelEtat+ -> Vrai/faux
+	# * *Returns*
+	#   - nouvelEtat (bool)
 	def setEtat(unNouvelEtat)
 		@etat = unNouvelEtat
 	end

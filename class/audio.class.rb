@@ -25,6 +25,8 @@ class Audio < ObjetGUI
   #   - +unePositionX+ -> Position du son sur l'axe X du monde
   #   - +unePositionY+ -> Position du son sur l'axe Y du monde
   #   - +unePositionZ+ -> Position du son sur l'axe Z du monde
+  # * *Returns*
+  #   - Audio
   def Audio.creer(uneDesignation, unCheminRelatif, lectureInfinie, uneAttenuation, uneFrequencePitch, unePositionX, unePositionY, unePositionZ)
     new(uneDesignation, unCheminRelatif, lectureInfinie, uneAttenuation, uneFrequencePitch, unePositionX, unePositionY, unePositionZ)
   end

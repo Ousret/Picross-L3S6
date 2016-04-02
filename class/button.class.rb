@@ -24,6 +24,8 @@ class Boutton < ObjetGUI
 	#   - +unePositionZ+ -> hauteur de l'objet
 	#   - +uneTailleX+ -> position horizontale à partir du coin gauche de l'objet
 	#   - +uneTailleY+ -> position verticale à partir du coin gauche de l'objet
+	# * *Returns*
+	#   - Boutton
 	def Boutton.creer(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
 		new(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
 	end
