@@ -1,38 +1,66 @@
 #!/usr/bin/ruby
 
-# Test unitaire Basedonnee.rb
+# Tests unitaire Registre
 # Auteur : Grude Victorien, TAHRI Ahmed
-
 
 require 'test/unit'
 require File.expand_path(File.dirname(__FILE__)) + '/test_helper.rb'
 load './class/registre.class.rb'
 
-#Vos tests dans ce fichier
-#https://github.com/olbrich/ruby-units
+# Tests unitaire sur la classe Registre
+# Création, modification et suppression
+class TestRegistre < Test::Unit::TestCase
 
-class Testbasedonnee < Test::Unit::TestCase
+	# Le registre SQLite3+OpenSSL
+	@kBase = Registre.creer('database-unit.db')
 
-	def test_bdd_creation
-		kBase = Registre.creer('test.db')
-		assert_equal(true, File.exist?('test.db'))
+	#Vérifie que le fichier SQLite est bel et bien existant
+	# * *Returns* :
+	# - bool
+	def existe?
+		assert_equal(true, File.exist?('database-unit.db'))
 	end
 
-	def test_bdd_key
+	#Vérifie la création de paramètre dans le registre
+	# * *Returns* :
+	# - bool
+	def creation
+		assert(@kBase.addParam('nbJours', 81))
+		assert_equal(81, @kBase.getValue('nbJours'))
 
-		i = 0
+		assert(@kBase.addParam('typeCarte', 'VISA'))
+		assert_equal('VISA', @kBase.getValue('typeCarte'))
 
-		kBase = Registre.creer('test.db')
+		assert(@kBase.addParam('qteArgent', 1872.21))
+		assert_equal(1872.21, @kBase.getValue('qteArgent'))
+	end
 
-		assert(kBase.addParam('nbJours', 81))
-		assert_equal(81, kBase.getValue('nbJours'))
+	#Vérifie la modification de paramètre dans le registre
+	# * *Returns* :
+	# - bool
+	def changement
+		assert(@kBase.updateParam('nbJours', 99))
+		assert_equal(99, @kBase.getValue('nbJours'))
 
-		assert(kBase.addParam('typeCarte', 'VISA'))
-		assert_equal('VISA', kBase.getValue('typeCarte'))
+		assert(@kBase.updateParam('typeCarte', 'Inconnue'))
+		assert_equal('Inconnue', @kBase.getValue('typeCarte'))
 
-		assert(kBase.addParam('qteArgent', 1872.21))
-		assert_equal(1872.21, kBase.getValue('qteArgent'))
+		assert(@kBase.updateParam('qteArgent', 12.1))
+		assert_equal(12.1, @kBase.getValue('qteArgent'))
+	end
 
+	#Vérifie la suppression de paramètre dans le registre
+	# * *Returns* :
+	# - bool
+	def nettoyage
+		@kBase.deleteParam('nbJours')
+		assert_equal(nil, @kBase.getValue('nbJours'))
+
+		@kBase.deleteParam('typeCarte')
+		assert_equal(nil, @kBase.getValue('typeCarte'))
+
+		@kBase.deleteParam('qteArgent')
+		assert_equal(nil, @kBase.getValue('qteArgent'))
 	end
 
 end
