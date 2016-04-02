@@ -1,5 +1,8 @@
 #!/usr/bin/ruby
 
+require 'sqlite3'
+load './class/crypt.class.rb'
+
 # Author:: Victorien https://github.com/Twixbadevil, Ahmed @Ousret https://github.com/Ousret
 # License:: MIT Licence
 #
@@ -7,10 +10,6 @@
 #
 #* Maintient un registre avec le module SQLite 3
 #* Les données sont cryptées à l'aide d'OpenSSL (uniquement valeur de paramètre)
-
-require 'sqlite3'
-load './class/crypt.class.rb'
-
 class Registre
 
 	#Indique la valeur de la base de donnee
@@ -30,7 +29,7 @@ class Registre
 	def Registre.creer(unNom)
 		new(unNom)
 	end
-	
+
 	def initialize(unNom) # :nodoc:
 		if unNom.class == String
 			@myCrypt = Crypt.creer("Password")
@@ -108,6 +107,23 @@ class Registre
 		stm.close
 		release
 		return true
+	end
+
+	#Méthode de supression de paramètre dans le registre
+	#
+	# * *Arguments* :
+	# - +uneCle+ -> Nom du paramètre cible
+	# * *Returns* :
+	# - bool
+	def deleteParam(uneCle)
+		connect
+		stm = @db.prepare "DELETE FROM REGISTRE WHERE key = ?"
+
+		stm.bind_param 1, uneCle
+
+		stm.execute
+		stm.close
+		release
 	end
 
 	#Méthode de lecture d'un paramètre dans le registre
