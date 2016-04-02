@@ -5,7 +5,6 @@
 # https://github.com/Ousret/Picross-L3S6
 #
 #*Classe représentant un Son (3D)
-
 class Audio < ObjetGUI
 
   attr_accessor :path, :infinite, :pitch
@@ -13,19 +12,21 @@ class Audio < ObjetGUI
 
   def initialize(uneDesignation, unCheminRelatif, lectureInfinie, uneAttenuation, uneFrequencePitch, unePositionX, unePositionY, unePositionZ) # :nodoc:
     super(uneDesignation, unePositionX, unePositionY, unePositionZ, -1, -1)
-    @path = unCheminRelatif
+    @path, @infinite, @pitch = unCheminRelatif, lectureInfinie, uneFrequencePitch
   end
 
-  # Création d'un boutton imprimable sur sortie GL
+  # Représentation d'une piste audio
   # * *Arguments*    :
-  #   - +uneDesignation+ -> nom de l'objet
-  #   - +unePositionX+ -> plan auquel l'objet est associé
-  #   - +unePositionY+ -> largeur de l'objet
-  #   - +unePositionZ+ -> hauteur de l'objet
-  #   - +uneTailleX+ -> position horizontale à partir du coin gauche de l'objet
-  #   - +uneTailleY+ -> position verticale à partir du coin gauche de l'objet
-  def Audio.creer(uneDesignation, unCheminRelatif, unePositionX, unePositionY, unePositionZ)
-    new(uneDesignation, unCheminRelatif, unePositionX, unePositionY, unePositionZ)
+  #   - +uneDesignation+ -> Designation de la piste audio
+  #   - +unCheminRelatif+ -> Chemin relatif vers le fichier audio
+  #   - +lectureInfinie+ -> Lecture en boucle
+  #   - +uneAttenuation+ -> Coeff d'attenuation du son
+  #   - +uneFrequencePitch+ -> Un indice de vitesse de lecture (0..1)
+  #   - +unePositionX+ -> Position du son sur l'axe X du monde
+  #   - +unePositionY+ -> Position du son sur l'axe Y du monde
+  #   - +unePositionZ+ -> Position du son sur l'axe Z du monde
+  def Audio.creer(uneDesignation, unCheminRelatif, lectureInfinie, uneAttenuation, uneFrequencePitch, unePositionX, unePositionY, unePositionZ)
+    new(uneDesignation, unCheminRelatif, lectureInfinie, uneAttenuation, uneFrequencePitch, unePositionX, unePositionY, unePositionZ)
   end
 
 end
