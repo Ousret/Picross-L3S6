@@ -78,14 +78,22 @@ class Registre
 	# - bool
 	def addParam(uneCle, uneValeur)
 		connect
-		stm = @db.prepare "INSERT INTO REGISTRE (key, value) VALUES (?, ?)"
 
-		stm.bind_param 1, uneCle
-		stm.bind_param 2, encode(uneValeur)
+		begin
 
-		stm.execute
-		stm.close
-		release
+			stm = @db.prepare "INSERT INTO REGISTRE (key, value) VALUES (?, ?)"
+
+			stm.bind_param 1, uneCle
+			stm.bind_param 2, encode(uneValeur)
+			stm.execute
+
+		rescue SQLite3::Exception => e
+			return false
+		ensure
+			stm.close if stm
+			release if @db != nil
+		end
+
 		return true
 	end
 
@@ -98,14 +106,21 @@ class Registre
 	# - bool
 	def updateParam(uneCle, uneValeur)
 		connect
-		stm = @db.prepare "UPDATE REGISTRE SET value =  ? WHERE key = ?"
 
-		stm.bind_param 1, encode(uneValeur)
-		stm.bind_param 2, uneCle
+		begin
+			stm = @db.prepare "UPDATE REGISTRE SET value =  ? WHERE key = ?"
 
-		stm.execute
-		stm.close
-		release
+			stm.bind_param 1, encode(uneValeur)
+			stm.bind_param 2, uneCle
+
+			stm.execute
+		rescue SQLite3::Exception => e
+			return false
+		ensure
+			stm.close if stm
+			release if @db != nil
+		end
+
 		return true
 	end
 
@@ -117,13 +132,20 @@ class Registre
 	# - bool
 	def deleteParam(uneCle)
 		connect
-		stm = @db.prepare "DELETE FROM REGISTRE WHERE key = ?"
 
-		stm.bind_param 1, uneCle
+		#Procédure suceptible de lever une exception
+		begin
+			stm = @db.prepare "DELETE FROM REGISTRE WHERE key = ?"
+			stm.bind_param 1, uneCle
+			stm.execute
+		rescue SQLite3::Exception => e
+			return false
+		ensure
+			stm.close if stm
+			release if @db != nil
+		end
 
-		stm.execute
-		stm.close
-		release
+		return true
 	end
 
 	#Méthode de lecture d'un paramètre dans le registre
