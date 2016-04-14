@@ -6,7 +6,7 @@
 # Version 0.1 : Date : 24/02/2016
 #
 
-require 'test/unit'
+require 'test/unit '
 require File.expand_path(File.dirname(__FILE__)) + '/test_helper.rb'
 load './class/configuration.class.rb'
 
