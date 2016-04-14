@@ -41,7 +41,7 @@ class  Grille<ActiveRecord::Base
 			raise TypeError.new("Grille:initialize : la matrice recu est vide")
 
 		elsif matrice.length != matrice[0].length
-			print("\n longeur : "+matrice.length.to_s+" largeur : "+matrice[0].length.to_s+"\n");
+			#print("\n longeur : "+matrice.length.to_s+" largeur : "+matrice[0].length.to_s+"\n");
 			raise TypeError.new("Grille:initialize : la matrice recu n'est pas carré")
 		end 
 
