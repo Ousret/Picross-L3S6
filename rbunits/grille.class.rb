@@ -6,8 +6,8 @@
 # Version 0.1 : Date : 23/01/2016
 #
 
+
 require 'test/unit'
-require File.expand_path(File.dirname(__FILE__)) + '/test_helper.rb'
 load './class/grille.class.rb'
 
 class TestGrille < Test::Unit::TestCase

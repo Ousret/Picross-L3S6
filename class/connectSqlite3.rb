@@ -1,3 +1,12 @@
+# encoding: UTF-8
+
+##
+# Auteur HOUSSAM KHALID ALKASSOUM
+# Projet L3 SPI : picross
+# Version 0.1 : Date : 24/02/2016
+#
+
+
 #ce fichier contient les information relative a la BDA
 #on utilise active record comme interface entre la BD et le programme
 #et on utilise sqlite3 comme BD
@@ -14,16 +23,36 @@ ActiveRecord::Base.establish_connection(
 #definition du schema de la BDA utiliser
 ActiveRecord::Schema.define do
 
-  #definition de la table des profiles
-  unless ActiveRecord::Base.connection.tables.include? 'profiles'
-      create_table :profiles do |table|
-      table.column :pseudo, :string 
-      table.column :nom,    :string
-      table.column :prenom, :string
-      table.column :argent, :integer
+    unless ActiveRecord::Base.connection.tables.include? 'grilles'
+      #definition de la table des grilles
+      create_table :grilles do |table|
+        table.column :matriceComparaisonBD, :text
+        table.column :matriceDeJeuBD, :text
+        table.column :indicesHautBD , :text
+        table.column :indicesCoteBD , :text
+        
+        table.column :nbErreurBD, :integer
+      end
     end
 
-    add_index :profiles , :pseudo, unique: true
+    unless ActiveRecord::Base.connection.tables.include? 'profiles'
+      #definition de la table des profiles
+      create_table :profiles do |table|
+        table.column :pseudo, :string 
+        table.column :nom,    :string
+        table.column :prenom, :string
+        table.column :argent, :integer
+      end
+      #definition des contraintes sur les tables
+      add_index :profiles , :pseudo, unique: true
+    end
 
-  end
+     unless ActiveRecord::Base.connection.tables.include? 'parties'
+      #definition de la table des profiles
+      create_table :parties do |table|
+        table.column :grilleID,  :integer
+        table.column :profileID, :integer
+      end
+    end
+
 end

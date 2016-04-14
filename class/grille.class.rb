@@ -6,14 +6,14 @@
 # Version 0.1 : Date : 23/01/2016
 #
 
+require 'active_record'
+require_relative 'connectSqlite3.rb'
 
-class Grille
+class Grille<ActiveRecord::Base
 
 	# la Classe Grille permet d'encapsuler une matrice de boolean et de lui ajouter des fonctionnalitées
 	# class qui renvoi une grille jouable à partir d'une matrice de boolean
 	# cette classe ne gère que les matrice carre
-
-	
 	
 	#=== Variables d'instance ===
 	#@matriceComparaison	#matrice de comparaison ,on y coche aucune case
@@ -26,8 +26,17 @@ class Grille
 	#la methode new() est private pour cette classe
 	private_class_method :new 
 
+    #Définition des methodes d'accèes en lecture
+	attr_reader :matriceComparaison ,:matriceDeJeu  ,:indicesHaut  ,:indicesCote ,:nbErreur 
+
+    #Définition des methodes d'accèes en lecture
+	attr_writer :matriceComparaison ,:matriceDeJeu  ,:indicesHaut  ,:indicesCote ,:nbErreur 
+
 	def initialize(matrice)#:nodoc:
 	
+        super()
+        
+        #gestion des erreur a la  construction de l'objet grille
 		if matrice==nil
 			raise TypeError.new("Grille:initialize : la matrice recu est vide")
 
@@ -59,8 +68,7 @@ class Grille
 		
 	end
 
-	#Définition des methodes d'accèes en lecture
-	attr_reader :matriceComparaison ,:matriceDeJeu  ,:indicesHaut  ,:indicesCote ,:nbErreur 
+	
 
 
 	#=== Methode qui permet de calculer les indices logique du haut 
@@ -214,5 +222,62 @@ class Grille
 				x+=1
 		end
 		return true
+    end
+
+    #=== Methode de classe permetant de sauver un profile
+	#
+	#=== Paramètres:
+	#<b>profile</b> : profile à sauver
+    def sauver()
+        self.matriceComparaisonBD = Marshal.dump(@matriceComparaison)
+		self.indicesHautBD        = Marshal.dump(@indicesHaut)
+		self.indicesCoteBD        = Marshal.dump(@indicesCote)
+		self.matriceDeJeuBD       = Marshal.dump(@matriceDeJeu)
+		self.nbErreurBD           = @nbErreur
+        self.save
+    end
+
+
+    #=== Methode de classe permetant de charger un profile
+	#
+	#=== Paramètres:
+	#<b>pseudo</b> : pseudo du profile a charger
+    #
+    #===Return:
+    #<b>return le profile s'il a été trouver si non nil </b>
+    def Grille.charger(id)
+        grille =  Grille.find_by_id(id)
+        grille.matriceComparaison  = Marshal.load(grille.matriceComparaisonBD)
+		grille.indicesHaut         = Marshal.load(grille.indicesHautBD)
+		grille.indicesCote         = Marshal.load(grille.indicesCoteBD)
+		grille.matriceDeJeu        = Marshal.load(grille.matriceDeJeuBD)
+		grille.nbErreur            = grille.nbErreurBD
+        return grille
+    end
+
+
+    #=== Methode permetant de mettre a jour un profile modifié dans la BDA
+    #
+    #=== Note : 
+    #<b>un profile ne peut pas ètre mis ajour s'il n'a jamais été sauver</b>
+    def mettreAJour()
+        Grille.update(self.id,
+                      :matriceComparaisonBD => Marshal.dump(self.matriceComparaison) ,
+                      :indicesHautBD => Marshal.dump(self.indicesHaut) ,
+                      :indicesCoteBD => Marshal.dump(self.indicesCote),
+                      :matriceDeJeuBD  => Marshal.dump(self.matriceDeJeu ),
+                      :nbErreurBD  => self.nbErreur)
+    end
+
+    #=== Methode permetant de comparer deux profiles
+	#
+	#=== Paramètres:
+	#<b>pro</b> : profile à comparer
+    def eql(g)
+        return (g.id                    == self.id                  and
+                g.matriceComparaison    == self.matriceComparaison  and 
+                g.indicesHaut           == self.indicesHaut         and 
+                g.indicesCote           == self.indicesCote         and 
+                g.nbErreur              == self.nbErreur  )
     end
 end

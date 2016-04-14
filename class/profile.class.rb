@@ -8,7 +8,7 @@
 
 require 'active_record'
 require_relative 'connectSqlite3.rb'
-
+require_relative 'grille.class.rb'
 
 class Profile<ActiveRecord::Base
 
@@ -36,6 +36,7 @@ class Profile<ActiveRecord::Base
         self.nom    = nom       #@nom	    = nom 
         self.prenom = prenom    #@prenom	= prenom
         self.argent = 0         #@argent	= 0
+        
 		
 	end
 
