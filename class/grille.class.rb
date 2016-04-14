@@ -9,7 +9,7 @@
 require 'active_record'
 require_relative 'connectSqlite3.rb'
 
-class Grille<ActiveRecord::Base
+class  Grille<ActiveRecord::Base
 
 	# la Classe Grille permet d'encapsuler une matrice de boolean et de lui ajouter des fonctionnalitées
 	# class qui renvoi une grille jouable à partir d'une matrice de boolean
