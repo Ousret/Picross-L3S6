@@ -35,7 +35,7 @@ module Render
     # * *Arguments*
     #   - +unComposant+ -> Objet décrivant le texte
     def createText(unComposant)
-      text unComposant.contenu, :at => [unComposant.posx, unComposant.posy], :size => unComposant.police
+      text unComposant.contenu, :at => [unComposant.posx, unComposant.posy], :size => unComposant.police, :font => unComposant.ttf
     end
 
     # Charge un fichier audio en mémoire (libsnd native)
@@ -145,6 +145,7 @@ module Render
     def prepare(unContexteCible)
       @@contexte = unContexteCible
       @@vertex = Array.new
+      @@tracks = Array.new
       run
     end
 

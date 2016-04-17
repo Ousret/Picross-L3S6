@@ -2,12 +2,12 @@
 #Décrit par une chaîne de caracteres et une taille de police
 class Text < ObjetGUI
 
-	attr_accessor :contenu, :police
+	attr_accessor :contenu, :police, :ttf
 	private_class_method :new
 
 	def initialize(uneDesignation, unContenu, uneTaillePolice, unePositionX, unePositionY, unePositionZ) # :nodoc:
 		super(uneDesignation, unePositionX, unePositionY, unePositionZ, -1, -1)
-		@contenu, @police = unContenu, uneTaillePolice
+		@contenu, @police, @ttf = unContenu, uneTaillePolice, nil
 	end
 
 	#Création d'une instance Texte
@@ -22,6 +22,10 @@ class Text < ObjetGUI
 	#    - Text
 	def Text.creer(uneDesignation, unContenu, uneTaillePolice, unePositionX, unePositionY, unePositionZ)
 		new(uneDesignation, unContenu, uneTaillePolice, unePositionX, unePositionY, unePositionZ)
+	end
+
+	def setPolice(unePoliceTTF)
+		@ttf = unePoliceTTF
 	end
 
 end
