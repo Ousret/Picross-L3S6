@@ -7,49 +7,49 @@ class MyTest < Test::Unit::TestCase
 
 	def test_new_cryptOneParameter
 		20.times{
-			Crypt.creer(Faker::Hipster.sentence(15))
+			Crypt.creer(Faker::Hipster.sentence(10))
 		}
 
 	end
 	def test_new_cryptTwoParameters
 		20.times{
-			Crypt.creer(Faker::Hipster.sentence(15),Faker::Hipster.sentence(15))
+			Crypt.creer(Faker::Hipster.sentence(10),Faker::Hipster.sentence(10))
 		}
 
 	end
 	def test_new_cryptThreeParameters
 		20.times{
-			Crypt.creer(Faker::Hipster.sentence(15),Faker::Hipster.sentence(15),Faker::Hipster.sentence(15))
+			Crypt.creer(Faker::Hipster.sentence(10),Faker::Hipster.sentence(10),Faker::Hipster.sentence(10))
 		}
 
 	end
 	def test_new_cryptAes128OneParameters
 		20.times{
-			Crypt.creerAes128(Faker::Hipster.sentence(15))
+			Crypt.creerAes128(Faker::Hipster.sentence(10))
 		}
 
 	end
 	def test_new_cryptAes128TwoParameters
 		20.times{
-			Crypt.creerAes128(Faker::Hipster.sentence(15),Faker::Hipster.sentence(15))
+			Crypt.creerAes128(Faker::Hipster.sentence(10),Faker::Hipster.sentence(10))
 		}
 	end
 
 
 	def test_crypt_decrypt
-		15.times{
-			kCrypt = Crypt.creer(Faker::Hipster.sentence(15))
-			testString=Faker::Hipster.sentence(15)
+		10.times{
+			kCrypt = Crypt.creer(Faker::Hipster.sentence(10))
+			testString=Faker::Hipster.sentence(10)
 			assert_equal(testString, kCrypt.decrypt(kCrypt.encrypt(testString)) )
 		}
 	end
 
 
 	def test_encrypt
-		kCrypt = Crypt.creer(Faker::Hipster.sentence(15))
+		kCrypt = Crypt.creer(Faker::Hipster.sentence(10))
 		nbIterations=2
 		nbIterations.times{
-			kCrypt.encrypt(Faker::Hipster.sentence(15))
+			kCrypt.encrypt(Faker::Hipster.sentence(10))
 		}
 		assert_equal(kCrypt.nbOfEncrypt, nbIterations )
 	end
@@ -57,11 +57,11 @@ class MyTest < Test::Unit::TestCase
 
 	def test_decrypt
 
-		testCipherDecrypt = Crypt.creer(Faker::Hipster.sentence(15))
+		testCipherDecrypt = Crypt.creer(Faker::Hipster.sentence(10))
 		nbIterations=2
 
 		nbIterations.times{
-			testCipherDecrypt.decrypt(testCipherDecrypt.encrypt(Faker::Hipster.sentence(15)))
+			testCipherDecrypt.decrypt(testCipherDecrypt.encrypt(Faker::Hipster.sentence(10)))
 		}
 		assert_equal(testCipherDecrypt.nbOfDecrypt, nbIterations )
 
