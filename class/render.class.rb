@@ -22,6 +22,8 @@ module Render
   @@contexte = Array.new
   # Contient l'ensemble des textures prêtes au rendu GL
   @@vertex = Array.new
+  # Contient l'ensemble des sons
+  @@tracks = Array.new
 
   # Classe représentant la scene en sortie standard
   class Scene < Ray::Scene
@@ -83,8 +85,12 @@ module Render
           @@vertex.push createText composant
 
         elsif (composant.instance_of? Audio)
+          @audio = createAudio composant
+          @@tracks.push @audio
 
-          (createAudio composant).play
+          if (composant.infinite)
+            @audio.play
+          end
 
         elsif (composant.instance_of? Image)
 
@@ -153,4 +159,4 @@ kWindow.ajouterComposant(Image.creer("ImageTest", "ressources/maps/OpenWorld3.pn
 kWindow.ajouterComposant(Text.creer("Welcome-Message", "alpha-preview 1", 15, 20, 20, 0))
 kWindow.ajouterComposant(Sprite.creer("SpriteHero", "ressources/images/sprites/Characters/MrYtdBCF.png", 13, 21, 20, 20, 0, 100, 100))
 
-Render::Game.new.prepare kWindow
+Thread.new {Render::Game.new.prepare kWindow}
