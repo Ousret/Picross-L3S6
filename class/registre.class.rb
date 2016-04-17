@@ -1,7 +1,6 @@
 #!/usr/bin/ruby
 
 require 'sqlite3'
-load './class/crypt.class.rb'
 
 # Author:: Victorien https://github.com/Twixbadevil, Ahmed @Ousret https://github.com/Ousret
 # License:: MIT Licence
