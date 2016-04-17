@@ -7,38 +7,38 @@ class MyTest < Test::Unit::TestCase
 
 	def test_new_cryptOneParameter
 		20.times{
-			Crypt.creer(Faker::Hipster.sentence(10))
+			Crypt.creer(Faker::Hipster.sentence(15))
 		}
 
 	end
 	def test_new_cryptTwoParameters
 		20.times{
-			Crypt.creer(Faker::Hipster.sentence(10),Faker::Hipster.sentence(10))
+			Crypt.creer(Faker::Hipster.sentence(15),Faker::Hipster.sentence(15))
 		}
 
 	end
 	def test_new_cryptThreeParameters
 		20.times{
-			Crypt.creer(Faker::Hipster.sentence(10),Faker::Hipster.sentence(10),Faker::Hipster.sentence(10))
+			Crypt.creer(Faker::Hipster.sentence(15),Faker::Hipster.sentence(15),Faker::Hipster.sentence(15))
 		}
 
 	end
 	def test_new_cryptAes128OneParameters
 		20.times{
-			Crypt.creerAes128(Faker::Hipster.sentence(10))
+			Crypt.creerAes128(Faker::Hipster.sentence(15))
 		}
 
 	end
 	def test_new_cryptAes128TwoParameters
 		20.times{
-			Crypt.creerAes128(Faker::Hipster.sentence(10),Faker::Hipster.sentence(10))
+			Crypt.creerAes128(Faker::Hipster.sentence(15),Faker::Hipster.sentence(15))
 		}
 	end
 
 
 	def test_crypt_decrypt
-		10.times{
-			kCrypt = Crypt.creer(Faker::Hipster.sentence(10))
+		15.times{
+			kCrypt = Crypt.creer(Faker::Hipster.sentence(15))
 			testString=Faker::Hipster.sentence(10)
 			assert_equal(testString, kCrypt.decrypt(kCrypt.encrypt(testString)) )
 		}
@@ -46,7 +46,7 @@ class MyTest < Test::Unit::TestCase
 
 
 	def test_encrypt
-		kCrypt = Crypt.creer(Faker::Hipster.sentence(10))
+		kCrypt = Crypt.creer(Faker::Hipster.sentence(15))
 		nbIterations=2
 		nbIterations.times{
 			kCrypt.encrypt(Faker::Hipster.sentence(10))
@@ -57,7 +57,7 @@ class MyTest < Test::Unit::TestCase
 
 	def test_decrypt
 
-		testCipherDecrypt = Crypt.creer(Faker::Hipster.sentence(10))
+		testCipherDecrypt = Crypt.creer(Faker::Hipster.sentence(15))
 		nbIterations=2
 
 		nbIterations.times{
