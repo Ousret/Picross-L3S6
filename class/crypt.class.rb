@@ -95,9 +95,9 @@ class Crypt
 	#   - La clé de cryptage calculée selon le mot de passe
 	def hashLeMotDePasse
 		#Le salt ajoute une composante aléatoire évitant de casser l'algo d'encryption par Rainbow Tables.
-		salt = OpenSSL::Random.random_bytes(24)
+		salt = OpenSSL::Random.random_bytes(32)
 		iter = 17158
-		key_len = 128
+		key_len = 256
 		key = OpenSSL::PKCS5.pbkdf2_hmac_sha1(@psw, salt, iter, key_len)
 		return key
 	end
