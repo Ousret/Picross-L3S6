@@ -6,6 +6,10 @@ engines:
     config:
       languages:
       - ruby
+ratings:
+  paths:
+  - class/**
+  - "**.class.rb"
 exclude_paths:
   - rbunits/* 
   - ressources/**
