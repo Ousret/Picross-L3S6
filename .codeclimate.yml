@@ -1,3 +1,11 @@
+engines:
+  rubocop:
+    enabled: true
+  duplication:
+    enabled: true
+    config:
+      languages:
+      - ruby
 exclude_paths:
-- rbunits/*
-- ressources/**
+  - rbunits/* 
+  - ressources/**
