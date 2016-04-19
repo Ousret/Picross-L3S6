@@ -32,7 +32,6 @@ class Crypt
 	#Empêche l'utilisation de la méthode new pour payer nos hommages à monsieur Jacoboni
 	private_class_method :new
 
-
 	#Méthode de création d'instance de la classe Crypt.
 	#
 	# * *Arguments*    :
@@ -44,7 +43,7 @@ class Crypt
 	# * *Sample code* :
 	#   - myCipher = Crypt.creer("passwordThing")
 	#   - myCipher = Crypt.creer("passwordThing",'aes-128-gcm',"myOwnIV")
-	def Crypt.creer(unPassword,encryptionMethod='aes-256-cbc',chosenIv="NikeAdidasDiorPhilips")
+	def Crypt.creer(unPassword,encryptionMethod='aes-256-gcm',chosenIv="NikeAdidasDiorPhilips")
 		new(unPassword,encryptionMethod,chosenIv)
 	end
 
@@ -56,10 +55,10 @@ class Crypt
 	# * *Return value* :
 	#   - Une nouvelle instance de la classe Crypt.
 	# * *Usage* :
-	#   - myCipher = Crypt.creerAes128("passwordThing")
-	#   - myCipher = Crypt.creerAes128("passwordThing","myOwnIV")
-	def Crypt.creerAes128(unPassword,chosenIv="NikeAdidasDiorPhilips")
-		new(unPassword,'aes-256-cbc',chosenIv)
+	#   - myCipher = Crypt.creerAes256GCM("passwordThing")
+	#   - myCipher = Crypt.creerAes256GCM("passwordThing","myOwnIV")
+	def Crypt.creerAes256GCM(unPassword,chosenIv="NikeAdidasDiorPhilips")
+		new(unPassword,'aes-256-gcm',chosenIv)
 	end
 
 	#Méthode d'initialisation utilisée lors de la création d'instance.
@@ -77,7 +76,7 @@ class Crypt
 		@psw = password
 
 		#Contient le hash du mot de passe
-		@processedPsw = self.hashLeMotDePasse
+		@processedPsw = hashLeMotDePasse()
 		#Type d'encryptage choisi, AES 128 bits GCM par défault : Attention, certains encryptages ne seront pas supportés
 		@cipherType = encryptionMethod
 		#Vecteur d'initialisation de l'algorithme de cryptage, contient une valeur par défaut.
@@ -116,6 +115,7 @@ class Crypt
 	# * *Usage* :
 	#   - myCryptInstance.encrypt(objectToBeEncrypted)
 	def encrypt(dataToEncrypt)
+
 		yamlString=dataToEncrypt.to_yaml
 		cipher = OpenSSL::Cipher.new(@cipherType)
 		cipher.encrypt
@@ -127,7 +127,9 @@ class Crypt
 
 		#Indique le nombre de fois que la méthode encrypt a été utilisée
 		@nbOfEncrypt=@nbOfEncrypt+1
+
 		return encrypted
+
 	end
 
 	#Methode qui décrypte une donnée YAML encryptée en utilisant le type d'encryption précisé lors de la création d'instance,
@@ -149,8 +151,10 @@ class Crypt
 		decipher.iv = @iv
 
 		plain = decipher.update(dataToDecrypt)
+
 		#Indique le nombre de fois que la méthode decrypt a été utilisée
 		@nbOfDecrypt=@nbOfDecrypt+1
+
 		return YAML.load(plain)
 	end
 
