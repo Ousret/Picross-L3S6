@@ -18,7 +18,6 @@ class Registre
 
 	#Empêche l'utilisation de la mÃ©thode new
 	private_class_method :new
-	private :verify, :release, :connect, :encode, :decode
 
 	#Méthode de création d'instance de la classe Basedonnee.
 	#
@@ -171,5 +170,7 @@ class Registre
 		return decode(res)
 
 	end
+
+	private :verify, :release, :connect, :encode, :decode
 
 end
