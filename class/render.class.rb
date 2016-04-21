@@ -133,10 +133,10 @@ module Render
         @@contexte.listeComposant.each do |composant|
           if (composant.instance_of? Boutton)
             if (composant.isOver(mouse_pos.to_a[0], mouse_pos.to_a[1]) && !composant.survol)
-              animations << sprite_animation(:from => [0, 1], :to => [1, 1], :duration => 0.2).start(@@vertex[composant.id])
+              createSpriteAnimation composant.id, [0, 1], [1, 1], 0.2
               composant.survol = true
             elsif (composant.survol && !composant.isOver(mouse_pos.to_a[0], mouse_pos.to_a[1]))
-              animations << sprite_animation(:from => [1, 1], :to => [0, 1], :duration => 0.2).start(@@vertex[composant.id])
+              createSpriteAnimation composant.id, [1, 1], [0, 1], 0.2
               composant.survol = false
             end
           end
@@ -144,6 +144,10 @@ module Render
         #if animations.empty?
         #end
       end
+    end
+
+    def createSpriteAnimation(unIdentifiantVertex, desIndicesDepart, desIndicesFin, uneDuree)
+      animations << sprite_animation(:from => desIndicesDepart, :to => desIndicesFin, :duration => uneDuree).start(@@vertex[unIdentifiantVertex])
     end
 
     def register # :nodoc:
