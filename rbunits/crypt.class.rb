@@ -54,7 +54,7 @@ class MyTest < Test::Unit::TestCase
 	end
 
 	def test_encrypt_normalCrypt_creer2params
-		kCrypt = Crypt.creer(Faker::Hipster.sentence(15),'aes-256-gcm')
+		kCrypt = Crypt.creer(Faker::Hipster.sentence(15),'aes-256-cbc')
 		nbIterations=5
 		nbIterations.times{
 			kCrypt.encrypt(Faker::Hipster.sentence(10))
@@ -63,7 +63,7 @@ class MyTest < Test::Unit::TestCase
 	end
 
 	def test_encrypt_normalCrypt_creer3params
-		kCrypt = Crypt.creer(Faker::Hipster.sentence(15),'aes-256-gcm',Faker::Hipster.sentence(15))
+		kCrypt = Crypt.creer(Faker::Hipster.sentence(15),'aes-256-cbc',Faker::Hipster.sentence(15))
 		nbIterations=5
 		nbIterations.times{
 			kCrypt.encrypt(Faker::Hipster.sentence(10))

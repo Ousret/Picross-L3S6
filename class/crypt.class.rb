@@ -43,7 +43,7 @@ class Crypt
 	# * *Sample code* :
 	#   - myCipher = Crypt.creer("passwordThing")
 	#   - myCipher = Crypt.creer("passwordThing",'aes-128-gcm',"myOwnIV")
-	def Crypt.creer(unPassword,encryptionMethod='aes-256-gcm',chosenIv="NikeAdidasDiorPhilips")
+	def Crypt.creer(unPassword,encryptionMethod='aes-256-cbc',chosenIv="NikeAdidasDiorPhilips")
 		new(unPassword,encryptionMethod,chosenIv)
 	end
 
@@ -58,7 +58,7 @@ class Crypt
 	#   - myCipher = Crypt.creerAes256GCM("passwordThing")
 	#   - myCipher = Crypt.creerAes256GCM("passwordThing","myOwnIV")
 	def Crypt.creerAes256GCM(unPassword,chosenIv="NikeAdidasDiorPhilips")
-		new(unPassword,'aes-256-gcm',chosenIv)
+		new(unPassword,'aes-256-cbc',chosenIv)
 	end
 
 	#Méthode d'initialisation utilisée lors de la création d'instance.

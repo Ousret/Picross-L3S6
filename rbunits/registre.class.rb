@@ -12,6 +12,8 @@ load './class/registre.class.rb'
 # Création, modification et suppression
 class TestRegistre < Test::Unit::TestCase
 
+	self.test_order = :defined
+
 	# Le registre SQLite3+OpenSSL
 	def setup
 		@kBase = Registre.creer('database-unit.db')
