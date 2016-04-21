@@ -42,7 +42,7 @@ module Render
     # * *Arguments*
     #   - +unComposant+ -> Objet décrivant la piste audio
     def createAudio(unComposant)
-      @sound = music path_of(unComposant.path)
+      @sound = music unComposant.path
       @sound.attenuation  = unComposant.attenuation
       @sound.min_distance = 10
       @sound.pos          = [unComposant.posx, unComposant.posy, unComposant.posz]
@@ -57,7 +57,7 @@ module Render
     #   - +unComposant+ -> Objet décrivant l'image
     def createImage(unComposant)
       @image = Ray::Sprite.new unComposant.path
-      @image.origin = @image.image.size / 2
+      #@image.origin = @image.image.size / 2
       @image.pos = [unComposant.posx, unComposant.posy]
       @image
     end
@@ -105,26 +105,34 @@ module Render
           #On place un texte
           @text = text composant.designation, :at => [composant.posx+5, composant.posy+5], :size => 12
 
-          composant.taillex = @button.image.size.to_a[0]
-          composant.tailley = @button.image.size.to_a[1]
+          composant.taillex = @button.image.size.to_a[0]/2
+          composant.tailley = @button.image.size.to_a[1]/9
 
-          always do
-            if animations.empty?
-              if (composant.isOver(mouse_pos.to_a[0], mouse_pos.to_a[1]) && !composant.survol)
-                animations << sprite_animation(:from => [0, 1], :to => [1, 1], :duration => 0.2).start(@button)
-                composant.survol = true
-              elsif (composant.survol && !composant.isOver(mouse_pos.to_a[0], mouse_pos.to_a[1]))
-                animations << sprite_animation(:from => [1, 1], :to => [0, 1], :duration => 0.2).start(@button)
-                composant.survol = false
-              end
-            end
-          end
-          
           @@vertex.push @button
           @@vertex.push @text
+
+          composant.id = @@vertex.index(@button)
+
         elsif (composant.instance_of? Sprite)
           @@vertex.push createSprite composant
         end
+      end
+
+      #Boucle de rafraichissement
+      always do
+        @@contexte.listeComposant.each do |composant|
+          if (composant.instance_of? Boutton)
+            if (composant.isOver(mouse_pos.to_a[0], mouse_pos.to_a[1]) && !composant.survol)
+              animations << sprite_animation(:from => [0, 1], :to => [1, 1], :duration => 0.2).start(@@vertex[composant.id])
+              composant.survol = true
+            elsif (composant.survol && !composant.isOver(mouse_pos.to_a[0], mouse_pos.to_a[1]))
+              animations << sprite_animation(:from => [1, 1], :to => [0, 1], :duration => 0.2).start(@@vertex[composant.id])
+              composant.survol = false
+            end
+          end
+        end
+        #if animations.empty?
+        #end
       end
 
     end
@@ -171,13 +179,13 @@ module Render
 end
 
 # Tests
-kWindow = Fenetre.creer("Picross L3-SPI", 0, 0, 0, 800, 600)
+#kWindow = Fenetre.creer("Picross L3-SPI", 0, 0, 0, 800, 600)
 
-kWindow.ajouterComposant(Image.creer("ImageTest", "ressources/maps/OpenWorld3.png", 250, 20, 0))
+#kWindow.ajouterComposant(Image.creer("ImageTest", "ressources/maps/OpenWorld3.png", 250, 20, 0))
 #kWindow.ajouterComposant(Boutton.creer("Aventure", 200, 50, 0, 150, 200))
-kWindow.ajouterComposant(Text.creer("Welcome-Message", "alpha-preview 1", 15, 20, 20, 0))
-kWindow.ajouterComposant(Sprite.creer("SpriteHero", "ressources/images/sprites/Characters/MrYtdBCF.png", 13, 21, 20, 20, 0, 100, 100))
-kWindow.ajouterComposant(Boutton.creer("Partie rapide", 100, 50, 0, 150, 200))
+#kWindow.ajouterComposant(Text.creer("Welcome-Message", "alpha-preview 1", 15, 20, 20, 0))
+#kWindow.ajouterComposant(Sprite.creer("SpriteHero", "ressources/images/sprites/Characters/MrYtdBCF.png", 13, 21, 20, 20, 0, 100, 100))
+#kWindow.ajouterComposant(Boutton.creer("Partie rapide", 100, 50, 0, 150, 200))
 
-kRender = Render::Game.new
-kRender.prepare kWindow
+#kRender = Render::Game.new
+#kRender.prepare kWindow
