@@ -8,7 +8,6 @@
 class Sprite < ObjetGUI
 
 	private_class_method :new
-
 	attr_reader :source, :dimx, :dimy, :etx, :ety
 
 	def initialize(uneDesignation, uneImage, uneDimX, uneDimY, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY) # :nodoc:
