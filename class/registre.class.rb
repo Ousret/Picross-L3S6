@@ -18,6 +18,7 @@ class Registre
 
 	#Empêche l'utilisation de la mÃ©thode new
 	private_class_method :new
+	private :verify, :release, :connect, :encode, :decode
 
 	#Méthode de création d'instance de la classe Basedonnee.
 	#
@@ -30,14 +31,8 @@ class Registre
 	end
 
 	def initialize(unNom) # :nodoc:
-		if unNom.class == String
-			@myCrypt = Crypt.creer("Password")
-    	@db = nil
-			@fileName = unNom
-			verify
-		else
-			puts "Nom invalide"
-		end
+		@myCrypt, @db, @fileName = Crypt.creer("Password"), nil, unNom
+		verify
 	end
 
 	# Méthode de connexion SQLite3, créer une instance SQLite3.
@@ -61,12 +56,11 @@ class Registre
 	def encode(uneValeur)
 		YAML.dump(@myCrypt.encrypt(uneValeur))
 	end
+
 	# Décode un buffer YAML
 	def decode(unBuffer)
 		@myCrypt.decrypt(YAML.load(unBuffer))
 	end
-
-	private :verify, :release, :connect, :encode, :decode
 
 	#Méthode d'ajout de couple parametre valeur dans une base de donnee
 	#
