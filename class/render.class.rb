@@ -108,6 +108,9 @@ module Render
           composant.taillex = @button.image.size.to_a[0]/2
           composant.tailley = @button.image.size.to_a[1]/9
 
+          puts "Création boutton #{composant.designation}: TailleX = #{composant.taillex}, TailleY = #{composant.tailley}"
+          puts "PosX = #{composant.posx}, PosY = #{composant.posy}"
+
           @@vertex.push @button
           @@vertex.push @text
 
@@ -116,8 +119,15 @@ module Render
         elsif (composant.instance_of? Sprite)
           @@vertex.push createSprite composant
         end
+
       end
 
+      # Prépare la boucle de rafraichissement
+      setAnimations
+
+    end
+
+    def setAnimations
       #Boucle de rafraichissement
       always do
         @@contexte.listeComposant.each do |composant|
@@ -134,7 +144,6 @@ module Render
         #if animations.empty?
         #end
       end
-
     end
 
     def register # :nodoc:
