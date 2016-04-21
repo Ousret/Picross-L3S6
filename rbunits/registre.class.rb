@@ -13,19 +13,21 @@ load './class/registre.class.rb'
 class TestRegistre < Test::Unit::TestCase
 
 	# Le registre SQLite3+OpenSSL
-	@kBase = Registre.creer('database-unit.db')
+	def setup
+		@kBase = Registre.creer('database-unit.db')
+	end
 
 	#Vérifie que le fichier SQLite est bel et bien existant
 	# * *Returns* :
 	# - bool
-	def existe?
+	def test_existe?
 		assert_equal(true, File.exist?('database-unit.db'))
 	end
 
 	#Vérifie la création de paramètre dans le registre
 	# * *Returns* :
 	# - bool
-	def creation
+	def test_creation
 		assert(@kBase.addParam('nbJours', 81))
 		assert_equal(81, @kBase.getValue('nbJours'))
 
@@ -39,7 +41,7 @@ class TestRegistre < Test::Unit::TestCase
 	#Vérifie la modification de paramètre dans le registre
 	# * *Returns* :
 	# - bool
-	def changement
+	def test_changement
 		assert(@kBase.updateParam('nbJours', 99))
 		assert_equal(99, @kBase.getValue('nbJours'))
 
@@ -53,7 +55,7 @@ class TestRegistre < Test::Unit::TestCase
 	#Vérifie la suppression de paramètre dans le registre
 	# * *Returns* :
 	# - bool
-	def nettoyage
+	def test_nettoyage
 		@kBase.deleteParam('nbJours')
 		assert_equal(nil, @kBase.getValue('nbJours'))
 
