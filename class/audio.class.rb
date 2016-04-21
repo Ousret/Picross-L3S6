@@ -7,12 +7,12 @@
 #*Classe représentant un Son (3D)
 class Audio < ObjetGUI
 
-  attr_accessor :path, :infinite, :pitch
+  attr_accessor :path, :infinite, :pitch, :attenuation
   private_class_method :new
 
   def initialize(uneDesignation, unCheminRelatif, lectureInfinie, uneAttenuation, uneFrequencePitch, unePositionX, unePositionY, unePositionZ) # :nodoc:
     super(uneDesignation, unePositionX, unePositionY, unePositionZ, -1, -1)
-    @path, @infinite, @pitch = unCheminRelatif, lectureInfinie, uneFrequencePitch
+    @path, @infinite, @pitch, @attenuation = unCheminRelatif, lectureInfinie, uneFrequencePitch, uneAttenuation
   end
 
   # Représentation d'une piste audio
