@@ -8,13 +8,13 @@
 #*Tous les objets comme boutons ou textes héritent de InterfaceObject
 class ObjetGUI
 
-	attr_accessor :designation, :posx, :posy, :posz, :taillex, :tailley
+	attr_accessor :designation, :posx, :posy, :posz, :taillex, :tailley, :survol
 	attr_reader :visible, :etat
 
 	private_class_method :new
 
 	def initialize(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY) # :nodoc:
-		@designation, @posx, @posy, @posz, @taillex, @tailley = uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY
+		@designation, @posx, @posy, @posz, @taillex, @tailley, @survol = uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY, false
 	end
 
 	# Créer une instance d'un objet imprimable sur la sortie GL
@@ -38,6 +38,16 @@ class ObjetGUI
 	#   - nouvelEtat (bool)
 	def setEtat(unNouvelEtat)
 		@etat = unNouvelEtat
+	end
+
+	# Vérifie si le composant est survolée en précisant les coordonnées de la souris
+	# * *Arguments*
+	#   - +unePositionSourisX+ -> Coordonnée X Souris
+	#   - +unePositionSourisY+ -> Coordonnée Y Souris
+	# * *Returns*
+	#   - bool
+	def isOver(unePositionSourisX, unePositionSourisY)
+			(unePositionSourisX >= @posx && unePositionSourisY >= @posy) && (unePositionSourisX <= @posx+@taillex && unePositionSourisY <= @posy+(@tailley/8))
 	end
 
 
