@@ -12,4 +12,8 @@ group :test, :development do
   gem 'opengl'
   gem 'minitest'
   gem 'json'
+  gem 'gibberish'
+  gem 'test'
+  gem 'rake'
+  gem 'json'
 end

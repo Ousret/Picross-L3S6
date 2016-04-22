@@ -18,18 +18,7 @@ before_install:
 install:
   - sudo apt-get install -y ruby-dev
   - gem install bundler
-  - gem install openssl
-  - gem install opengl
-  - gem install ruby-units
-  - gem install sqlite3
-  - gem install rake 
-  - gem install test
-  - gem install test-unit
-  - gem install minitest
-  - gem install codeclimate-test-reporter
-  - gem install activerecord
-  - gem install gibberish
-  - gem install json
+  - bundler install
 
 # Build the module
 script:
