@@ -9,22 +9,38 @@
 
 class Fenetre < ObjetGUI
 
-	attr_writer :listeComposant
+	attr_accessor :listeComposant
 	private_class_method :new
 
-	def initialize(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
+	def initialize(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY) # :nodoc:
 		super(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
 		@listeComposant = Array.new
 	end
 
+	#Création d'une instance Fenêtre
+	#   * *Arguments*
+	#     - +uneDesignation+ -> Désignation/identificateur du texte
+	#     - +unePositionX+ -> Position de la fenêtre sur l'axe X
+	#     - +unePositionY+ -> Position de la fenêtre sur l'axe Y
+	#     - +unePositionZ+ -> Position de la fenêtre sur l'axe Z
+	#     - +uneTailleX+ -> Taille de la fenêtre sur l'axe X
+	#     - +uneTailleY+ -> Taille de la fenêtre sur l'axe Z
+	#  * *Returns*
+	#    - Fenetre
 	def Fenetre.creer(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
 		new(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
 	end
 
+	#Ajoute un composant graphique à la fenêtre
+	# * *Returns*
+	#   - Array
 	def ajouterComposant(unComposantGUI)
 		@listeComposant.push(unComposantGUI)
 	end
 
+	#Retire un composant graphique à la fenêtre
+	# * *Returns*
+	#   - Array
 	def retirerComposant(unComposantCible)
 		@listeComposant.delete(unComposantCible)
 	end

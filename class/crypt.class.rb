@@ -32,7 +32,6 @@ class Crypt
 	#Empêche l'utilisation de la méthode new pour payer nos hommages à monsieur Jacoboni
 	private_class_method :new
 
-
 	#Méthode de création d'instance de la classe Crypt.
 	#
 	# * *Arguments*    :
@@ -44,7 +43,7 @@ class Crypt
 	# * *Sample code* :
 	#   - myCipher = Crypt.creer("passwordThing")
 	#   - myCipher = Crypt.creer("passwordThing",'aes-128-gcm',"myOwnIV")
-	def Crypt.creer(unPassword,encryptionMethod='aes-128-gcm',chosenIv="NikeAdidasDiorPhilips")
+	def Crypt.creer(unPassword,encryptionMethod='aes-256-cbc',chosenIv="NikeAdidasDiorPhilips")
 		new(unPassword,encryptionMethod,chosenIv)
 	end
 
@@ -56,10 +55,10 @@ class Crypt
 	# * *Return value* :
 	#   - Une nouvelle instance de la classe Crypt.
 	# * *Usage* :
-	#   - myCipher = Crypt.creerAes128("passwordThing")
-	#   - myCipher = Crypt.creerAes128("passwordThing","myOwnIV")
-	def Crypt.creerAes128(unPassword,chosenIv="NikeAdidasDiorPhilips")
-		new(unPassword,'aes-128-gcm',chosenIv)
+	#   - myCipher = Crypt.creerAes256GCM("passwordThing")
+	#   - myCipher = Crypt.creerAes256GCM("passwordThing","myOwnIV")
+	def Crypt.creerAes256GCM(unPassword,chosenIv="NikeAdidasDiorPhilips")
+		new(unPassword,'aes-256-cbc',chosenIv)
 	end
 
 	#Méthode d'initialisation utilisée lors de la création d'instance.
@@ -76,8 +75,8 @@ class Crypt
 		#Est le mot de passe choisi et utilisé comme clé de cryptage, il est choisi lors de la création d'instance.
 		@psw = password
 
-		#Contient le hash du mot de passe 
-		@processedPsw = self.hashLeMotDePasse
+		#Contient le hash du mot de passe
+		@processedPsw = hashLeMotDePasse()
 		#Type d'encryptage choisi, AES 128 bits GCM par défault : Attention, certains encryptages ne seront pas supportés
 		@cipherType = encryptionMethod
 		#Vecteur d'initialisation de l'algorithme de cryptage, contient une valeur par défaut.
@@ -95,9 +94,9 @@ class Crypt
 	#   - La clé de cryptage calculée selon le mot de passe
 	def hashLeMotDePasse
 		#Le salt ajoute une composante aléatoire évitant de casser l'algo d'encryption par Rainbow Tables.
-		salt = OpenSSL::Random.random_bytes(24)
+		salt = OpenSSL::Random.random_bytes(32)
 		iter = 17158
-		key_len = 128
+		key_len = 256
 		key = OpenSSL::PKCS5.pbkdf2_hmac_sha1(@psw, salt, iter, key_len)
 		return key
 	end
@@ -116,18 +115,21 @@ class Crypt
 	# * *Usage* :
 	#   - myCryptInstance.encrypt(objectToBeEncrypted)
 	def encrypt(dataToEncrypt)
+
 		yamlString=dataToEncrypt.to_yaml
 		cipher = OpenSSL::Cipher.new(@cipherType)
 		cipher.encrypt
 		cipher.key = @processedPsw
 		cipher.iv = @iv
-	
+
 		encrypted = cipher.update(yamlString)
 		#tag = cipher.auth_tag
-		
+
 		#Indique le nombre de fois que la méthode encrypt a été utilisée
 		@nbOfEncrypt=@nbOfEncrypt+1
+
 		return encrypted
+
 	end
 
 	#Methode qui décrypte une donnée YAML encryptée en utilisant le type d'encryption précisé lors de la création d'instance,
@@ -149,8 +151,10 @@ class Crypt
 		decipher.iv = @iv
 
 		plain = decipher.update(dataToDecrypt)
+
 		#Indique le nombre de fois que la méthode decrypt a été utilisée
 		@nbOfDecrypt=@nbOfDecrypt+1
+
 		return YAML.load(plain)
 	end
 
