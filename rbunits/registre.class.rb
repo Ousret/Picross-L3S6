@@ -30,28 +30,28 @@ class TestRegistre < Test::Unit::TestCase
 	# * *Returns* :
 	# - bool
 	def test_creation
-		assert(@kBase.addParam('nbJours', 81))
-		assert_equal(81, @kBase.getValue('nbJours'))
+		assert(@kBase.addParam('nbJours', '81'))
+		assert_equal('81', @kBase.getValue('nbJours'))
 
 		assert(@kBase.addParam('typeCarte', 'VISA'))
 		assert_equal('VISA', @kBase.getValue('typeCarte'))
 
-		assert(@kBase.addParam('qteArgent', 1872.21))
-		assert_equal(1872.21, @kBase.getValue('qteArgent'))
+		assert(@kBase.addParam('qteArgent', '1872.21'))
+		assert_equal('1872.21', @kBase.getValue('qteArgent'))
 	end
 
 	#Vérifie la modification de paramètre dans le registre
 	# * *Returns* :
 	# - bool
 	def test_changement
-		assert(@kBase.updateParam('nbJours', 99))
-		assert_equal(99, @kBase.getValue('nbJours'))
+		assert(@kBase.updateParam('nbJours', '99'))
+		assert_equal('99', @kBase.getValue('nbJours'))
 
 		assert(@kBase.updateParam('typeCarte', 'Inconnue'))
 		assert_equal('Inconnue', @kBase.getValue('typeCarte'))
 
-		assert(@kBase.updateParam('qteArgent', 12.1))
-		assert_equal(12.1, @kBase.getValue('qteArgent'))
+		assert(@kBase.updateParam('qteArgent', '12.1'))
+		assert_equal('12.1', @kBase.getValue('qteArgent'))
 	end
 
 	#Vérifie la suppression de paramètre dans le registre
