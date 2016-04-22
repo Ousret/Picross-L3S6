@@ -82,7 +82,7 @@ class BMP
 			#colonnes par colonne pour traduire l'image en binaire
 			(@height-1).downto(0) do |y|
 				0.upto(@width - 1) do |x|
-					@pixels[y][x] = file.read(3).unpack("H6").first
+					@pixels[x][y] = file.read(3).unpack("H6").first
 				end
 				advance_to_next_row(file)
 			end
