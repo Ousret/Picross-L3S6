@@ -14,4 +14,5 @@ group :test, :development do
   gem 'ruby-units'
   gem 'opengl'
   gem 'minitest'
+  gem 'json'
 end
