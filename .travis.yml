@@ -17,7 +17,7 @@ before_install:
 # Install dependencies
 install:
   - sudo apt-get install -y ruby-dev
-  - gem install faker
+  - gem install bundler
   - gem install openssl
   - gem install opengl
   - gem install ruby-units
@@ -30,7 +30,6 @@ install:
   - gem install activerecord
   - gem install gibberish
   - gem install json
-#- gem install gosu
 
 # Build the module
 script:
