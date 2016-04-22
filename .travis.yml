@@ -5,6 +5,7 @@
 # We assume Ruby environments
 language: Ruby
 rvm:
+  - 2.3
   - 2.2
   - 2.0
 
