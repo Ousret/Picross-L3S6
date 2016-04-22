@@ -4,7 +4,6 @@ group :test, :development do
   gem 'faker'
   gem 'openssl'
   gem 'sqlite3'
-  gem 'ray'
   gem 'activerecord'
   gem 'tmx'
   gem 'codeclimate-test-reporter'
