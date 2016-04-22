@@ -8,6 +8,7 @@
 
 require 'active_record'
 require_relative 'connectSqlite3.rb'
+require_relative 'chrono.class.rb'
 
 class  Grille<ActiveRecord::Base
 
@@ -21,16 +22,18 @@ class  Grille<ActiveRecord::Base
 	#@indicesHaut			#indices logique du haut de la grille
 	#@indicesCote			#indices logique du coté de la grille
     #@nbErreur      		#compte le nombre d'erreur du joueur
+    #@chrono				#compte le temp passé sur la grille
+    #@score					#le score obtenu sur la grille (=0 t'en que la grille n'est pas terminer)
 	#============================
 
 	#la methode new() est private pour cette classe
 	private_class_method :new 
 
     #Définition des methodes d'accèes en lecture
-	attr_reader :matriceComparaison ,:matriceDeJeu  ,:indicesHaut  ,:indicesCote ,:nbErreur 
+	attr_reader :matriceComparaison ,:matriceDeJeu  ,:indicesHaut  ,:indicesCote ,:nbErreur ,:chrono ,:score
 
     #Définition des methodes d'accèes en lecture
-	attr_writer :matriceComparaison ,:matriceDeJeu  ,:indicesHaut  ,:indicesCote ,:nbErreur 
+	attr_writer :matriceComparaison ,:matriceDeJeu  ,:indicesHaut  ,:indicesCote ,:nbErreur ,:chrono
 
 	def initialize(matrice)#:nodoc:
 	
@@ -49,23 +52,56 @@ class  Grille<ActiveRecord::Base
 		@indicesHaut 	= Array.new(@matriceComparaison.length) { Array.new() }
 		@indicesCote	= Array.new(@matriceComparaison.length) { Array.new() }
 		@matriceDeJeu   = Array.new(@matriceComparaison.length,0){Array.new(@matriceComparaison.length,0)}
+		@nbErreur		= 0
+		@chrono 		= Chrono.creer()
+		@score			= 0
 
 		self.calculeIndiceCote()
 		self.calculeIndiceHaut()
 
-		@nbErreur=0
+		
 		
 	end
 
 	
-	#=== Methode de classe permetant l'initialisation ...
+	#=== Methode de classe permetant l'initialisation de la grille
 	#
 	#=== Paramètres:
 	#* <b>matrice</b>  : matrice de jeu
 	def Grille.grille(matrice)
 
-		new(matrice)
-		
+		 new(matrice)
+	end
+
+	#=== Methode  permetant de calculer le score
+	#
+	#=== Paramètres:
+	#* <b>pas de parametre</b>  :
+	def calculeScore()
+
+		@score = 1000 -(@chrono.total_time_acc * nbErreur)/60
+	end
+
+	#=== Methode  permetant de demander de l'aide
+	#
+	#=== Paramètres:
+	#* <b>pas de parametre</b>  :
+	def demanderAide(p)
+		while y < @matriceComparaison.length
+			x=0
+			while x < @matriceComparaison.length 
+				if(p.argent < 10)
+					return
+				end
+				if(@matriceComparaison[x][y] == 1 and @matriceDeJeu[x][y] == 0 ) then
+					@matriceDeJeu[x][y] = 1  #on noirsi la premierre bonne case trouvé 
+					p.argent = p.argent - 10 #chaque demande d'aide coute 10
+				end
+
+				x+=1
+			end
+			y+=1
+		end
 	end
 
 	
@@ -192,9 +228,9 @@ class  Grille<ActiveRecord::Base
 	#
 	#=== Paramètres :
 	#* <b>x</b>:coordonée x : la ligne
-    #* <b>x</b>:coordonée y : la colonne
+    #* <b>y</b>:coordonée y : la colonne
     #=== Return :
-    #return true si la case [x][y] été noirsi si non false
+    #return true si la case [x][y] été noir si non false
     def noirsirCase(x,y)
 
         if estNoir?(x,y)==false		#si la case selectionné n'est pas correcte
@@ -221,7 +257,16 @@ class  Grille<ActiveRecord::Base
 				end
 				x+=1
 		end
+		terminer()
 		return true
+    end
+
+    #=== Methode qui permet de faire les operation nécessaire à la fin d'une grille
+	#
+	#=== Paramètres :
+    def terminer()
+		@chrono.arreter
+		calculeScore()
     end
 
     #=== Methode de classe permetant de sauver un profile
@@ -229,12 +274,19 @@ class  Grille<ActiveRecord::Base
 	#=== Paramètres:
 	#<b>profile</b> : profile à sauver
     def sauver()
-        self.matriceComparaisonBD = Marshal.dump(@matriceComparaison)
-		self.indicesHautBD        = Marshal.dump(@indicesHaut)
-		self.indicesCoteBD        = Marshal.dump(@indicesCote)
-		self.matriceDeJeuBD       = Marshal.dump(@matriceDeJeu)
-		self.nbErreurBD           = @nbErreur
-        self.save
+    	if(self.new_record?)
+    		self.matriceComparaisonBD = Marshal.dump(@matriceComparaison)
+			self.indicesHautBD        = Marshal.dump(@indicesHaut)
+			self.indicesCoteBD        = Marshal.dump(@indicesCote)
+			self.matriceDeJeuBD       = Marshal.dump(@matriceDeJeu)
+			self.tempBD				  = @chrono.getTTotale()
+			self.nbErreurBD           = @nbErreur
+			self.scoreBD              = @score
+	        self.save
+    	else
+    		mettreAJour()
+    	end
+        
     end
 
 
@@ -252,6 +304,7 @@ class  Grille<ActiveRecord::Base
 		grille.indicesCote         = Marshal.load(grille.indicesCoteBD)
 		grille.matriceDeJeu        = Marshal.load(grille.matriceDeJeuBD)
 		grille.nbErreur            = grille.nbErreurBD
+		grille.chrono 			   = Chrono.charger(grille.tempBD)
         return grille
     end
 
@@ -265,7 +318,9 @@ class  Grille<ActiveRecord::Base
                       :matriceComparaisonBD => Marshal.dump(self.matriceComparaison) ,
                       :indicesHautBD => Marshal.dump(self.indicesHaut) ,
                       :indicesCoteBD => Marshal.dump(self.indicesCote),
-                      :matriceDeJeuBD  => Marshal.dump(self.matriceDeJeu ),
+                      :matriceDeJeuBD  => Marshal.dump(self.matriceDeJeu),
+                      :tempBD  => Marshal.dump(self.chrono.total_time_acc),
+                      :scoreBD  => self.score,
                       :nbErreurBD  => self.nbErreur)
     end
 
@@ -280,4 +335,13 @@ class  Grille<ActiveRecord::Base
                 g.indicesCote           == self.indicesCote         and 
                 g.nbErreur              == self.nbErreur  )
     end
+
+    #=== Methode permetant de comparer deux profiles
+	#
+	#=== Paramètres:
+	#<b>pas de paramètre</b>
+    def pause()
+        @chrono.arreter
+    end
+
 end

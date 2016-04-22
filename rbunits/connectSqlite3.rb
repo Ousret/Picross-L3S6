@@ -26,14 +26,14 @@ ActiveRecord::Schema.define do
     unless ActiveRecord::Base.connection.tables.include? 'grilles'
       #definition de la table des grilles
       create_table :grilles do |table|
-        table.column :matriceComparaisonBD, :text
-        table.column :matriceDeJeuBD, :text
-        table.column :indicesHautBD , :text
-        table.column :indicesCoteBD , :text
-        
+        table.column :matriceComparaisonBD, :string, limit: 1000
+        table.column :matriceDeJeuBD, :string, limit: 1000
+        table.column :indicesHautBD , :string, limit: 1000
+        table.column :indicesCoteBD , :string, limit: 1000
+
+        table.column :nbErreurBD, :integer
         table.column :tempBD , :integer
-        table.column :nbErreurBD, :integer
-        table.column :nbErreurBD, :integer
+        table.column :scoreBD, :integer
       end
     end
 
