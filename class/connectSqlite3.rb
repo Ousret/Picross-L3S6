@@ -31,6 +31,8 @@ ActiveRecord::Schema.define do
         table.column :indicesHautBD , :text
         table.column :indicesCoteBD , :text
         
+        table.column :tempBD , :integer
+        table.column :nbErreurBD, :integer
         table.column :nbErreurBD, :integer
       end
     end
