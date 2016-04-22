@@ -25,6 +25,8 @@ install:
   - gem install minitest
   - gem install codeclimate-test-reporter
   - gem install activerecord
+  - gem install gibberish
+  - gem install json
 #- gem install gosu
 
 # Build the module
