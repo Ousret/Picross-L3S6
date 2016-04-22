@@ -4,6 +4,10 @@
 
 # We assume Ruby environments
 language: Ruby
+rvm:
+  - 2.3
+  - 2.2
+  - 2.0
 
 before_install:
   - sudo apt-get update -qq
@@ -14,18 +18,8 @@ before_install:
 # Install dependencies
 install:
   - sudo apt-get install -y ruby-dev
-  - gem install faker
-  - gem install openssl
-  - gem install opengl
-  - gem install ruby-units
-  - gem install sqlite3
-  - gem install rake 
-  - gem install test
-  - gem install test-unit
-  - gem install minitest
-  - gem install codeclimate-test-reporter
-  - gem install activerecord
-#- gem install gosu
+  - gem install bundler
+  - bundler install
 
 # Build the module
 script:
@@ -39,11 +33,3 @@ branches:
 addons:
   code_climate:
     repo_token: e11ac50d26a935e7e20a07859592c06f17871672fc2f6466b2a1fdcf1143c503
-
-# Notify the LuaDist Dev group if needed
-#notifications:
-#  recipients:
-#    - luadist-dev@googlegroups.com
-#  email:
-#    on_success: change
-#    on_failure: always

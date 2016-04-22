@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 
 require 'sqlite3'
+require 'gibberish'
 
 # Author:: Victorien https://github.com/Twixbadevil, Ahmed @Ousret https://github.com/Ousret
 # License:: MIT Licence
@@ -30,7 +31,7 @@ class Registre
 	end
 
 	def initialize(unNom) # :nodoc:
-		@myCrypt, @db, @fileName = Crypt.creer("Password"), nil, unNom
+		@myCrypt, @db, @fileName = Gibberish::AES::CBC.new('p4ssw0rd'), nil, unNom
 		verify
 	end
 
@@ -47,18 +48,19 @@ class Registre
 	# Vérifie que la table de registre est déjà créer, sinon créer une nouvelle table
 	def verify
 		connect
-		@db.execute "CREATE TABLE IF NOT EXISTS REGISTRE(id_registre INTEGER PRIMARY KEY, key TEXT, value TEXT)"
+		@db.execute "CREATE TABLE IF NOT EXISTS REGISTRE(id_registre INTEGER PRIMARY KEY, key TEXT, value BLOB)"
 		release
 	end
 
 	# Encode une valeur dans le format YAML
 	def encode(uneValeur)
-		YAML.dump(@myCrypt.encrypt(uneValeur))
+		@myCrypt.encrypt(uneValeur)
 	end
 
 	# Décode un buffer YAML
 	def decode(unBuffer)
-		@myCrypt.decrypt(YAML.load(unBuffer))
+		puts "Try to decode #{unBuffer} to #{@myCrypt.decrypt(unBuffer)}"
+		@myCrypt.decrypt(unBuffer)
 	end
 
 	#Méthode d'ajout de couple parametre valeur dans une base de donnee
@@ -69,17 +71,19 @@ class Registre
 	# * *Returns* :
 	# - bool
 	def addParam(uneCle, uneValeur)
+		updateParam(uneCle, uneValeur) if getValue(uneCle)
 		connect
 
 		begin
 
-			stm = @db.prepare "INSERT INTO REGISTRE (key, value) VALUES (?, ?)"
+			stm = @db.prepare "INSERT INTO REGISTRE (id_registre, key, value) VALUES (NULL, ?, ?)"
 
 			stm.bind_param 1, uneCle
 			stm.bind_param 2, encode(uneValeur)
 			stm.execute
 
 		rescue SQLite3::Exception => e
+			puts "Fatal: #{e.to_s}"
 			return false
 		ensure
 			stm.close if stm
@@ -168,7 +172,6 @@ class Registre
 		release
 		# On renvoie le résultat
 		return decode(res)
-
 	end
 
 	private :verify, :release, :connect, :encode, :decode

@@ -31,7 +31,7 @@ class Jeu
     @kMainMenu.ajouterComposant(Boutton.creer("Partie rapide", 50, 100, 0, 0, 0))
     @kMainMenu.ajouterComposant(Boutton.creer("Paramétres", 50, 150, 0, 0, 0))
 
-    @kMainMenu.ajouterComposant(Audio.creer("Env", "ressources/son/BackgroundMusicLoop/BackgroundMusicLoop_BPM100.wav", true, 1, 1, 0, 0, 0))
+    #@kMainMenu.ajouterComposant(Audio.creer("Env", "ressources/son/BackgroundMusicLoop/BackgroundMusicLoop_BPM100.wav", true, 1, 1, 0, 0, 0))
 
   end
 
@@ -42,6 +42,6 @@ class Jeu
 end
 
 #Lancement
-
+#puts OpenSSL::Cipher.ciphers
 kJeu = Jeu.new
 kJeu.lanceToi
