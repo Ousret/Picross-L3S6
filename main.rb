@@ -22,16 +22,28 @@ class Jeu
 
     @kRender = Render::Game.new
 
-    @kMainMenu = Fenetre.creer("Picross B - Menu principal", 0, 0, 0, 800, 600)
+    @kMainMenu = Fenetre.creer("Menu principal", 0, 0, 0, 640, 480)
+    @kInGame = Fenetre.creer("Jeu", 0, 0, 0, 640, 480)
+    @kOpenWorld = Fenetre.creer("Aventure", 0, 0, 0, 640, 480)
 
-    @kMainMenu.ajouterComposant(Image.creer("Background", "ressources/images/GUI/Prototypes/Background.png", 0, 0, 0))
-    @kMainMenu.ajouterComposant(Text.creer("alpha-prev", "alpha-preview 1", 15, 10, 10, 0))
-
-    @kMainMenu.ajouterComposant(Boutton.creer("Aventure", 50, 50, 0, 0, 0))
-    @kMainMenu.ajouterComposant(Boutton.creer("Partie rapide", 50, 100, 0, 0, 0))
-    @kMainMenu.ajouterComposant(Boutton.creer("Paramétres", 50, 150, 0, 0, 0))
-
+    initializeMainMenu()
     #@kMainMenu.ajouterComposant(Audio.creer("Env", "ressources/son/BackgroundMusicLoop/BackgroundMusicLoop_BPM100.wav", true, 1, 1, 0, 0, 0))
+
+  end
+
+  def initializeMainMenu()
+
+    background = Image.creer("Background", "ressources/images/GUI/Prototypes/background-4.jpg", 0, 0, 0)
+    libell_alpha = Text.creer("alpha-prev", "alpha-preview 1", 15, 10, 10, 0)
+    btn_aventure = Boutton.creer("Aventure", 50, 50, 0, 0, 0)
+    btn_newGame = Boutton.creer("Partie rapide", 50, 100, 0, 0, 0)
+    btn_params = Boutton.creer("Paramétres", 50, 150, 0, 0, 0)
+
+    @kMainMenu.ajouterComposant(background)
+    @kMainMenu.ajouterComposant(libell_alpha)
+    @kMainMenu.ajouterComposant(btn_aventure)
+    @kMainMenu.ajouterComposant(btn_newGame)
+    @kMainMenu.ajouterComposant(btn_params)
 
   end
 
