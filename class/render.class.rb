@@ -68,6 +68,7 @@ module Render
     def createSprite(unComposant)
       @sprite = sprite unComposant.source
       @sprite.sheet_size = [unComposant.dimx, unComposant.dimy] # Dimention du Sprite
+      @sprite.pos = [unComposant.posx, unComposant.posy]
       @sprite
     end
 
@@ -99,7 +100,6 @@ module Render
         elsif (composant.instance_of? Boutton)
           #Charge l'image boutton
           @button = Ray::Sprite.new "ressources/images/GUI/btn_spr_m.png"
-          #@image.origin = @image.image.size / 2
           @button.pos = [composant.posx, composant.posy]
           @button.sheet_size = [2, 9]
           #On place un texte
@@ -190,15 +190,3 @@ module Render
 
   end
 end
-
-# Tests
-#kWindow = Fenetre.creer("Picross L3-SPI", 0, 0, 0, 800, 600)
-
-#kWindow.ajouterComposant(Image.creer("ImageTest", "ressources/maps/OpenWorld3.png", 250, 20, 0))
-#kWindow.ajouterComposant(Boutton.creer("Aventure", 200, 50, 0, 150, 200))
-#kWindow.ajouterComposant(Text.creer("Welcome-Message", "alpha-preview 1", 15, 20, 20, 0))
-#kWindow.ajouterComposant(Sprite.creer("SpriteHero", "ressources/images/sprites/Characters/MrYtdBCF.png", 13, 21, 20, 20, 0, 100, 100))
-#kWindow.ajouterComposant(Boutton.creer("Partie rapide", 100, 50, 0, 150, 200))
-
-#kRender = Render::Game.new
-#kRender.prepare kWindow
