@@ -1,5 +1,5 @@
 # Picross main program
-# Version 0.1.1
+# Version 0.2
 
 require 'observer'
 
@@ -25,147 +25,145 @@ class Jeu
     @kRender.game_scenes.add_observer(self) #Pattern Observable
 
     @kRegistre = Registre.creer("picross-b.db")
-
-    @unIDScene = 0
+    @currentGame = nil
 
     @kMainMenu = Fenetre.creer("Menu principal", 0, 0, 0, 640, 480)
     @kInGame = Fenetre.creer("Jeu", 0, 0, 0, 640, 480)
-    @kOpenWorld = Fenetre.creer("Aventure", 0, 0, 0, 640, 480)
 
-    initializeMainMenu()
-    initializeGame()
     #@kMainMenu.ajouterComposant(Audio.creer("Env", "ressources/son/BackgroundMusicLoop/BackgroundMusicLoop_BPM100.wav", true, 1, 1, 0, 0, 0))
 
   end
 
   def getMatrice()
     lastLevel = @kRegistre.getValue("lastLevel")
-    levels = Dir["ressources/images/imagesPicross/BMP24bitsRVB/*.bmp"]
+    levels = Dir["ressources/images/imagesPicross/BMP24bitsRVB/*.bmp"].sort
     if (lastLevel != nil)
-      BMP::Reader.creer("ressources/images/imagesPicross/BMP24bitsRVB/#{levels[lastLevel]}").getMatrice
+      BMP::Reader.creer(levels[lastLevel.to_i]).getMatrice
     else
-      BMP::Reader.creer("ressources/images/imagesPicross/BMP24bitsRVB/x5_1.bmp").getMatrice
+      @kRegistre.addParam('lastLevel', '1')
+      BMP::Reader.creer("ressources/images/imagesPicross/BMP24bitsRVB/x10_2.bmp").getMatrice
     end
   end
 
   def initializeMainMenu()
 
+    # Image de fond
     background = Image.creer("Background", "ressources/images/GUI/Prototypes/background-4.jpg", 0, 0, 0)
+
+    # Information sur version
     libell_alpha = Text.creer("alpha-prev", "alpha-preview 1", 15, 10, 10, 0)
+
+    # Placement du titre
     libell_title = Text.creer("title", "Picross B", 50, 250, 150, 0)
     libell_title.setPolice "ressources/ttf/Starjedi.ttf"
+
+    # Création des boutons
     btn_aventure = Boutton.creer("Aventure", 50, 50, 0, 0, 0)
     btn_newGame = Boutton.creer("Partie rapide", 50, 100, 0, 0, 0)
     btn_params = Boutton.creer("Parametres", 50, 150, 0, 0, 0)
     btn_quit = Boutton.creer("Quitter", 50, 200, 0, 0, 0)
 
-    @kMainMenu.ajouterComposant(background)
-    @kMainMenu.ajouterComposant(libell_alpha)
-    @kMainMenu.ajouterComposant(libell_title)
-
-    @kMainMenu.ajouterComposant(btn_aventure)
-    @kMainMenu.ajouterComposant(btn_newGame)
-    @kMainMenu.ajouterComposant(btn_params)
-    @kMainMenu.ajouterComposant(btn_quit)
+    # Ajout des composants sur la fenêtre primaire
+    @kMainMenu.ajouterComposant(background, libell_alpha, libell_title, btn_aventure, btn_newGame, btn_params, btn_quit)
 
   end
 
   def initializeGame()
     @kInGame.supprimeTout
 
-    background = Image.creer("Background", "ressources/images/GUI/Prototypes/background-4.jpg", 0, 0, 0)
-    libell_alpha = Text.creer("alpha-prev", "alpha-preview 1", 15, 10, 10, 0)
+    background = Image.creer("Background", "ressources/maps/Couloirs-Resized.png", 0, 0, 0)
+    libell_alpha = Text.creer("alpha-prev", "alpha-preview 1", 15, 50, 50, 1)
+    libell_score = Text.creer("score", "Score: 0", 15, 400, 50, 1)
 
     myMat = getMatrice
-    #puts myMat.length
+
     if (myMat.length == 10)
-      support_grille = Image.creer("Grille", "ressources/images/Grilles/v3/g10x10.png", 50, 25, 0)
+      support_grille = Image.creer("Grille", "ressources/images/Grilles/v3/g10x10.png", 120, 120, 1)
     elsif (myMat.length == 5)
-      support_grille = Image.creer("Grille", "ressources/images/Grilles/v3/g5x5.png", 50, 25, 0)
+      support_grille = Image.creer("Grille", "ressources/images/Grilles/v3/g5x5.png", 120, 120, 1)
     elsif (myMat.length == 15)
-      support_grille = Image.creer("Grille", "ressources/images/Grilles/v3/g15x15.png", 50, 25, 0)
+      support_grille = Image.creer("Grille", "ressources/images/Grilles/v3/g15x15.png", 120, 120, 1)
     elsif (myMat.length == 20)
-      support_grille = Image.creer("Grille", "ressources/images/Grilles/v3/g20x20.png", 50, 25, 0)
+      support_grille = Image.creer("Grille", "ressources/images/Grilles/v3/g20x20.png", 120, 120, 1)
     end
 
     @currentGame = Grille.grille(myMat)
 
-    btn_quit = Boutton.creer("Retour", 50, 430, 0, 0, 0)
-    btn_help = Boutton.creer("Aide", 150, 430, 0, 0, 0)
+    btn_quit = Boutton.creer("Retour", 50, 430, 1, 0, 0)
+    btn_help = Boutton.creer("Aide", 150, 430, 1, 0, 0)
 
-    @kInGame.ajouterComposant(background)
-    @kInGame.ajouterComposant(libell_alpha)
-    @kInGame.ajouterComposant(support_grille)
+    @kInGame.ajouterComposant(background, libell_alpha, libell_score, support_grille)
 
-    inHautPosX = 180
-    inHautPosY = 25
+    # On place des élements "case" pour grille
+    inHautPosX = 244
+    inHautPosY = 245
+
+    (1..myMat.length).step(1) do |n|
+
+      (1..myMat.length).step(1) do |j|
+          spriteCase = Sprite.creer("case-#{inHautPosX.to_s}-#{inHautPosY.to_s}", "ressources/images/Grilles/Cases.png", 8, 1, inHautPosX, inHautPosY, 2, 0, 0)
+          spriteCase.arr_data = [n, j]
+          spriteCase.deplacer 1, 0
+          @kInGame.ajouterComposant(spriteCase)
+
+          inHautPosX += 16
+      end
+
+      inHautPosX = 244
+      inHautPosY += 16
+
+    end
+
+    # Positionnement des indices Haut
+    inHautPosX = 250
+    inHautPosY = 120
 
     @currentGame.indicesHaut.each do |indice|
-      puts indice.to_s
       indice.each do |nb|
-        @kInGame.ajouterComposant(Text.creer("ind-#{inHautPosX.to_s}-#{inHautPosY.to_s}", "#{nb.to_s}", 15, inHautPosX, inHautPosY, 0))
-        inHautPosY += 15
+        @kInGame.ajouterComposant(Text.creer("ind-#{inHautPosX.to_s}-#{inHautPosY.to_s}", "#{nb.to_s}", 15, inHautPosX, inHautPosY, 2))
+        inHautPosY += 16
       end
-      inHautPosY = 25
-      inHautPosX += 15
+      inHautPosX += 16
+      inHautPosY = 120
     end
 
-    inHautPosX = 50
-    inHautPosY = 145
+    # Positionnement des indices Coté
+    inHautPosX = 120
+    inHautPosY = 240
 
     @currentGame.indicesCote.each do |indice|
-      puts indice.to_s
       indice.each do |nb|
-        @kInGame.ajouterComposant(Text.creer("ind-#{inHautPosX.to_s}-#{inHautPosY.to_s}", "#{nb.to_s}", 15, inHautPosX, inHautPosY, 0))
-        inHautPosX += 15
+        @kInGame.ajouterComposant(Text.creer("ind-#{inHautPosX.to_s}-#{inHautPosY.to_s}", "#{nb.to_s}", 15, inHautPosX, inHautPosY, 2))
+        inHautPosX += 16
       end
-      inHautPosX = 50
-      inHautPosY += 15
+      inHautPosY += 16
+      inHautPosX = 120
     end
 
-    @kInGame.ajouterComposant(btn_quit)
-    @kInGame.ajouterComposant(btn_help)
+    # Ajout des sprites pour case noir et blanche
+    @kInGame.ajouterComposant(btn_quit, btn_help)
   end
 
   def lanceToi
-    @kRender.prepare @kMainMenu
+    initializeMainMenu #Préparation du menu principal
+    @kRender.prepare @kMainMenu #Rendu des objets
   end
 
-  def handleActionMain(unIDComposant)
-    @kMainMenu.listeComposant.each do |composant|
-      if composant.id == unIDComposant
-        if composant.designation == "Quitter"
-          exit
-        elsif composant.designation == "Partie rapide"
-          #puts "Changement de scene.."
-          @unIDScene = 1
-          @kRender.end_scene @kInGame
+  def update(unTypeEvenement, unComposantCible)
+    puts "Attention: Evenement Trigger #{unComposantCible.designation} sur typeEvenement = #{unTypeEvenement.to_s} avec contexte = #{@kRender.getContext.designation}"
+    if (unTypeEvenement == 1)
+      if (unComposantCible.designation == 'Partie rapide')
+        # Préparation de la fenêtre partie rapide
+        initializeGame
+        @kRender.end_scene @kInGame
+      elsif (unComposantCible.designation == 'Retour')
+        @kRender.end_scene @kMainMenu
+      elsif (unComposantCible.arr_data != [-1, -1])
+        if @currentGame.noirsirCase unComposantCible.arr_data[0], unComposantCible.arr_data[1]
+          @kRender.game_scenes.animateSprite unComposantCible
         end
       end
     end
-  end
-
-  def handleActionGame(unIDComposant)
-    @kInGame.listeComposant.each do |composant|
-      #puts "#{composant.id} == #{unIDComposant} --> #{composant.designation}"
-      if composant.id == unIDComposant
-        if composant.designation == "Retour"
-          @unIDScene = 0
-          @kRender.end_scene @kMainMenu
-        end
-      end
-    end
-  end
-
-  def update(unIDComposant)
-    #puts "Attention: Evenement Trigger #{unIDComposant.to_s} sur scene = #{@unIDScene}"
-
-    if (@unIDScene == 0)
-      handleActionMain(unIDComposant)
-    elsif(@unIDScene == 1)
-      handleActionGame(unIDComposant)
-    end
-
   end
 
 end
@@ -173,5 +171,4 @@ end
 #Lancement
 #puts OpenSSL::Cipher.ciphers
 kJeu = Jeu.new
-#kJeu.test_bmp()
 kJeu.lanceToi
