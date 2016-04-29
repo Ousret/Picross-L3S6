@@ -9,11 +9,13 @@ class Sprite < ObjetGUI
 
 	private_class_method :new
 	attr_reader :source, :dimx, :dimy, :etx, :ety
+	attr_accessor :arr_data
 
 	def initialize(uneDesignation, uneImage, uneDimX, uneDimY, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY) # :nodoc:
 		super(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
 		@source, @dimx, @dimy = uneImage, uneDimX, uneDimY
 		@etx, @ety = 0, 0
+		@arr_data = [-1, -1]
 	end
 
 	#Création d'une instance Sprite
