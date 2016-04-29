@@ -45,4 +45,8 @@ class Fenetre < ObjetGUI
 		@listeComposant.delete(unComposantCible)
 	end
 
+	def supprimeTout()
+		@listeComposant = Array.new
+	end
+
 end
