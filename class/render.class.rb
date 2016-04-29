@@ -97,7 +97,12 @@ module Render
 
         elsif (composant.instance_of? Image)
 
-          @@vertex.push createImage composant
+          @image = createImage composant
+          @@vertex.push @image
+          composant.taillex = @image.image.size.to_a[0]
+          composant.tailley = @image.image.size.to_a[1]
+
+          composant.id = @@vertex.index(@image)
 
         elsif (composant.instance_of? Boutton)
           #Charge l'image boutton
