@@ -18,13 +18,14 @@ load './class/sprite.class.rb'
 
 # Module de rendu GL
 module Render
-  attr_writer :contexte
   # Contient la description en TDA de l'aspect GUI
   @@contexte = Array.new
   # Contient l'ensemble des textures prêtes au rendu GL
   @@vertex = Array.new
   # Contient l'ensemble des sons
   @@tracks = Array.new
+  # Contient l'ensemble des textures par couche Z
+  @@layers = Array.new
 
   # Classe représentant la scene en sortie standard
   class Scene < Ray::Scene
@@ -77,17 +78,22 @@ module Render
     # Préparation et interpretation du contexte
     def setup
 
+      clean_up
+      @@vertex = nil
+
       window.size = [@@contexte.taillex, @@contexte.tailley]
       window.title = @@contexte.designation
+
       @@vertex = Array.new
       #Charge/prépare l'ensemble des elements pour affichage graphique
       @@contexte.listeComposant.each do |composant|
-        puts "Initialisation du composant #{composant.designation}"
+        #puts "Initialisation du composant #{composant.designation}"
         if (composant.instance_of? Text)
 
           @@vertex.push createText composant
 
         elsif (composant.instance_of? Audio)
+
           @audio = createAudio composant
           @@tracks.push @audio
 
@@ -98,15 +104,16 @@ module Render
         elsif (composant.instance_of? Image)
 
           @image = createImage composant
-          @@vertex.push @image
           composant.taillex = @image.image.size.to_a[0]
           composant.tailley = @image.image.size.to_a[1]
+
+          @@vertex.push @image
 
           composant.id = @@vertex.index(@image)
 
         elsif (composant.instance_of? Boutton)
           #Charge l'image boutton
-          @button = Ray::Sprite.new "ressources/images/GUI/btn_spr_m.png"
+          @button = Ray::Sprite.new "ressources/images/GUI/btn_spr_m_transparent.png"
           @button.pos = [composant.posx, composant.posy]
           @button.sheet_size = [2, 9]
           #On place un texte
@@ -115,16 +122,20 @@ module Render
           composant.taillex = @button.image.size.to_a[0]/2
           composant.tailley = @button.image.size.to_a[1]/9
 
-          puts "Création boutton #{composant.designation}: TailleX = #{composant.taillex}, TailleY = #{composant.tailley}"
-          puts "PosX = #{composant.posx}, PosY = #{composant.posy}"
-
           @@vertex.push @button
           @@vertex.push @text
 
           composant.id = @@vertex.index(@button)
+          createSpriteAnimation composant.id, [0, 0], [0, 1], 0.2
 
         elsif (composant.instance_of? Sprite)
-          @@vertex.push createSprite composant
+          @sprite = createSprite composant
+          composant.taillex = @sprite.image.size.to_a[0]/@sprite.sheet_size.to_a[0]
+          composant.tailley = @sprite.image.size.to_a[1]/@sprite.sheet_size.to_a[1]
+
+          @@vertex.push @sprite
+          composant.id = @@vertex.index(@sprite)
+          createSpriteAnimation composant.id, [0, 0], [composant.etx, composant.ety], 0.2
         end
 
       end
@@ -138,35 +149,34 @@ module Render
       #Boucle de rafraichissement
       always do
         @@contexte.listeComposant.each do |composant|
-          if (composant.instance_of? Boutton)
-            if (composant.isOver(mouse_pos.to_a[0], mouse_pos.to_a[1]) && !composant.survol)
-              #changed
-              createSpriteAnimation composant.id, [0, 1], [1, 1], 0.2
-              composant.survol = true
-              #notify_observers(composant.id)
-            elsif (composant.survol && !composant.isOver(mouse_pos.to_a[0], mouse_pos.to_a[1]))
-              createSpriteAnimation composant.id, [1, 1], [0, 1], 0.2
-              composant.survol = false
-            end
-          else
-            if (composant.isOver(mouse_pos.to_a[0], mouse_pos.to_a[1]) && !composant.survol)
-              composant.survol = true
-            elsif (composant.survol && !composant.isOver(mouse_pos.to_a[0], mouse_pos.to_a[1]))
-              composant.survol = false
-            end
+
+          if (composant.isOver(mouse_pos.to_a[0], mouse_pos.to_a[1]) && !composant.survol)
+            composant.survol = true
+            createSpriteAnimation composant.id, [0, 1], [1, 1], 0.2 if (composant.instance_of? Boutton)
+          elsif (composant.survol && !composant.isOver(mouse_pos.to_a[0], mouse_pos.to_a[1]))
+            composant.survol = false
+            createSpriteAnimation composant.id, [1, 1], [0, 1], 0.2 if (composant.instance_of? Boutton)
           end
+
         end
-        #if animations.empty?
-        #end
       end
     end
 
+    def animateSprite(unComposantCible)
+      createSpriteAnimation unComposantCible.id, [unComposantCible.etx, unComposantCible.ety], [unComposantCible.etx+1, unComposantCible.ety], 0.2 if (unComposantCible.instance_of? Sprite)
+    end
+
+    # On recherche le composant survolée sur l'index Z
     def eventMouse
+      lastComposant = nil
       @@contexte.listeComposant.each do |composant|
         if composant.survol
-          changed
-          notify_observers(composant.id)
+          lastComposant = composant
         end
+      end
+      if lastComposant != nil
+        changed
+        notify_observers(1, lastComposant)
       end
     end
 
@@ -221,9 +231,15 @@ module Render
 
     def end_scene(newContext)
       @@contexte = newContext
-      pop_scene
-      push_scene :stdout
+      #@game_scenes.exit_current
+      #game_scenes.pop_scene
+      #push_scene :stdout
+      #game_scenes.setup
       run
+    end
+
+    def getContext()
+      @@contexte
     end
 
   end
