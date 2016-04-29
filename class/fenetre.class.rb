@@ -32,10 +32,14 @@ class Fenetre < ObjetGUI
 	end
 
 	#Ajoute un composant graphique à la fenêtre
+	#Tri en fonction de l'index Z
 	# * *Returns*
 	#   - Array
-	def ajouterComposant(unComposantGUI)
-		@listeComposant.push(unComposantGUI)
+	def ajouterComposant(*unComposantGUI)
+		unComposantGUI.each do |composant|
+			@listeComposant.push(composant)
+		end
+		@listeComposant.sort_by {|composant| composant.posz}
 	end
 
 	#Retire un composant graphique à la fenêtre
