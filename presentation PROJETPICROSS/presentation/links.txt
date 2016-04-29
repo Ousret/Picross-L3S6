@@ -1,1 +1,0 @@
-- Django by example : http://www.thomaswhitton.com/django-presentation/#/
