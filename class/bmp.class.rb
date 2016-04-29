@@ -14,8 +14,8 @@ class BMP
 		PIXEL_ARRAY_OFFSET = 54
 		BITS_PER_PIXEL     = 24 #défini le nombre de bit pour un pixel
 		DIB_HEADER_SIZE    = 40 #défini la taille du header
-		
-		private_class_method:new
+
+		private_class_method :new
 		#la méthode initialize est privatisée pour être renommée
 
 		#Méthode de création d'instance de la classe Crypt.
@@ -27,7 +27,7 @@ class BMP
 		# * *Sample code* :
 		#   - bmp = BMP::Reader.new("ressources/images/	bmp.bmp")
 		def Reader.creer(bmp_filename)
-			new(bmp_filename)	
+			new(bmp_filename)
 		end
 		#Méthode de création d'instance de la classe Crypt.
 		#
@@ -59,11 +59,11 @@ class BMP
 		# * *Sample code* :
 		#   - bmp = BMP::Reader.new("ressources/images/bmp.bmp")
 		#   - bmp = bmp.getMatrice()
-		def getMatrice()			
+		def getMatrice()
 			@pixelsbin= Array.new(@width) { Array.new(@height) }
 			0.upto(@height-1) do |y|
 				0.upto(@width-1) do |x|
-					
+
 					@pixelsbin[x][y] = ((@pixels[y][x]=="ffffff")?0:1)
 					#p @pixelsbin[x][y]
 				end
@@ -77,12 +77,13 @@ class BMP
 		def read_pixels(file)
 		#méthode qui défini la matrice
 		#initialisation de la matrice
-			@pixels = Array.new(@height) { Array.new(@width) }
+			@pixels = SparseArray.new
 			#parcours le tableau ligne par ligne
 			#colonnes par colonne pour traduire l'image en binaire
 			(@height-1).downto(0) do |y|
 				0.upto(@width - 1) do |x|
-					@pixels[x][y] = file.read(3).unpack("H6").first
+					data = file.read(3).unpack("H6").first
+					@pixels[x][y] = data
 				end
 				advance_to_next_row(file)
 			end
@@ -95,37 +96,37 @@ class BMP
 			return if padding_bytes == 0
 			file.pos += padding_bytes
 		end
-	
+
 		def read_bmp_header(file)
-		#méthode qui vérifie le header du file : 
+		#méthode qui vérifie le header du file :
 		#permet de vérifier si le header correspond à notre traitement
 
 			header = file.read(14)
 			magic_number, file_size, reserved1,
 			reserved2, array_location = header.unpack("A2Vv2V")
-    	  
+
 			fail "Not a bitmap file!" unless magic_number == "BM"
-			#vérifie la taille du fichier	
+			#vérifie la taille du fichier
 			unless file.size == file_size
-				fail "Corrupted bitmap: File size is not as expected" 
+				fail "Corrupted bitmap: File size is not as expected"
 			end
-			#vérifie l'allocation pour le tableau	
+			#vérifie l'allocation pour le tableau
 			unless array_location == PIXEL_ARRAY_OFFSET
 				fail "Unsupported bitmap: pixel array does not start where expected"
 			end
 		end
-	
+
 		def read_dib_header(file)
 		#méthode qui effectue des tests pour les exceptions :
 		#test si l'url est bonne
 		#test si l'image est convenable :
 		#	l'image doit être codée avec du 24bit par pixel
 			header = file.read(40)
-	
+
 			header_size, width, height, planes, bits_per_pixel,
-			compression_method, image_size, hres, 
-			vres, n_colors, i_colors = header.unpack("Vl<2v2V2l<2V2") 
-			#test si la taille du header convient	
+			compression_method, image_size, hres,
+			vres, n_colors, i_colors = header.unpack("Vl<2v2V2l<2V2")
+			#test si la taille du header convient
 			unless header_size == DIB_HEADER_SIZE
 				fail "Corrupted bitmap: DIB header does not match expected size"
 			end
@@ -149,4 +150,22 @@ class BMP
 			@width, @height = width, height
 		end
 	end
+end
+
+class SparseArray
+  attr_reader :hash
+
+  def initialize
+    @hash = {}
+  end
+
+  def [](key)
+    hash[key] ||= {}
+  end
+
+  def rows
+    hash.length
+  end
+
+  alias_method :length, :rows
 end
