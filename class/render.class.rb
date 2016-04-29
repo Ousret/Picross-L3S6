@@ -18,7 +18,7 @@ load './class/sprite.class.rb'
 
 # Module de rendu GL
 module Render
-
+  attr_writer :contexte
   # Contient la description en TDA de l'aspect GUI
   @@contexte = Array.new
   # Contient l'ensemble des textures prêtes au rendu GL
@@ -79,7 +79,7 @@ module Render
 
       window.size = [@@contexte.taillex, @@contexte.tailley]
       window.title = @@contexte.designation
-
+      @@vertex = Array.new
       #Charge/prépare l'ensemble des elements pour affichage graphique
       @@contexte.listeComposant.each do |composant|
         puts "Initialisation du composant #{composant.designation}"
@@ -217,6 +217,13 @@ module Render
     # Faire remonter la classe Scene pour pattern Observateur
     def game_scenes()
       @game_scenes.current
+    end
+
+    def end_scene(newContext)
+      @@contexte = newContext
+      pop_scene
+      push_scene :stdout
+      run
     end
 
   end
