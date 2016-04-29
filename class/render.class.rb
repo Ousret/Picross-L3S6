@@ -3,6 +3,7 @@
 # (c) 2016 - Groupe B - Picross L3 SPI Informatique
 # Université du Maine
 
+require 'observer'
 require 'ray'
 require 'tmx'
 
@@ -29,6 +30,7 @@ module Render
   class Scene < Ray::Scene
     #Partage de variable de classe avec Game
     include Render
+    include Observable
     scene_name :stdout
 
     # Créer un calque Texte
@@ -133,10 +135,18 @@ module Render
         @@contexte.listeComposant.each do |composant|
           if (composant.instance_of? Boutton)
             if (composant.isOver(mouse_pos.to_a[0], mouse_pos.to_a[1]) && !composant.survol)
+              #changed
               createSpriteAnimation composant.id, [0, 1], [1, 1], 0.2
               composant.survol = true
+              #notify_observers(composant.id)
             elsif (composant.survol && !composant.isOver(mouse_pos.to_a[0], mouse_pos.to_a[1]))
               createSpriteAnimation composant.id, [1, 1], [0, 1], 0.2
+              composant.survol = false
+            end
+          else
+            if (composant.isOver(mouse_pos.to_a[0], mouse_pos.to_a[1]) && !composant.survol)
+              composant.survol = true
+            elsif (composant.survol && !composant.isOver(mouse_pos.to_a[0], mouse_pos.to_a[1]))
               composant.survol = false
             end
           end
@@ -146,12 +156,22 @@ module Render
       end
     end
 
+    def eventMouse
+      @@contexte.listeComposant.each do |composant|
+        if composant.survol
+          changed
+          notify_observers(composant.id)
+        end
+      end
+    end
+
     def createSpriteAnimation(unIdentifiantVertex, desIndicesDepart, desIndicesFin, uneDuree)
       animations << sprite_animation(:from => desIndicesDepart, :to => desIndicesFin, :duration => uneDuree).start(@@vertex[unIdentifiantVertex])
     end
 
     def register # :nodoc:
-
+      add_hook :quit, method(:exit!)
+      add_hook :mouse_press, method(:eventMouse)
     end
 
     def render(win) # :nodoc:
@@ -167,6 +187,7 @@ module Render
   class Game < Ray::Game
     #Permet de partager les variables de classes entre Game et Scene
     include Render
+    include Observable
 
     def initialize # :nodoc:
       super("RenderInterpret")
@@ -186,6 +207,11 @@ module Render
       @@vertex = Array.new
       @@tracks = Array.new
       run
+    end
+
+    # Faire remonter la classe Scene pour pattern Observateur
+    def game_scenes()
+      @game_scenes.current
     end
 
   end
