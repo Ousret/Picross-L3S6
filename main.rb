@@ -87,7 +87,7 @@ class Jeu
     uneListeNiveau = Dir["ressources/images/imagesPicross/BMP24bitsRVB/*.bmp"].sort
     i = 1
     uneListeNiveau.each do |unNiveau|
-      @kRegistre.addParam("level_#{i}", BMP::Reader.creer("ressources/images/imagesPicross/BMP24bitsRVB/x10_2.bmp").getMatrice.to_json)
+      @kRegistre.addParam("level_#{i}", BMP::Reader.creer(unNiveau).getMatrice.to_json)
       i+=1
     end
     # On sauvegarde le nombre de niveau chargé
