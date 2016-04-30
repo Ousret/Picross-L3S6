@@ -90,7 +90,9 @@ module Render
         #puts "Initialisation du composant #{composant.designation}"
         if (composant.instance_of? Text)
 
-          @@vertex.push createText composant
+          @texte = createText composant
+          @@vertex.push @texte
+          composant.id = @@vertex.index(@texte)
 
         elsif (composant.instance_of? Audio)
 
@@ -126,7 +128,7 @@ module Render
           @@vertex.push @text
 
           composant.id = @@vertex.index(@button)
-          createSpriteAnimation composant.id, [0, 0], [0, 1], 0.2
+          createSpriteAnimation composant.id, [0, 0], [0, 1], 0.2 #Animation initiale
 
         elsif (composant.instance_of? Sprite)
           @sprite = createSprite composant

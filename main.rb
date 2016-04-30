@@ -41,7 +41,7 @@ class Jeu
     getStats
 
     # Si on ne dispose d'aucun niveau, on install ceux présent sur le disque
-    install if @nLevel == nil
+    install if @nLevel == nil || @nLevel == 0
     puts "Programme chargée avec #{@nLevel} niveau(x).."
     #@kMainMenu.ajouterComposant(Audio.creer("Env", "ressources/son/BackgroundMusicLoop/BackgroundMusicLoop_BPM100.wav", true, 1, 1, 0, 0, 0))
 
@@ -49,11 +49,11 @@ class Jeu
 
   def getStats
     # Récupération des données
-    @lastLevel = @kRegistre.getValue("lastLevel")
-    @coins = @kRegistre.getValue("coins")
-    @nTry = @kRegistre.getValue("try")
-    @nWin = @kRegistre.getValue("win")
-    @nLevel = @kRegistre.getValue("nbLevels")
+    @lastLevel = @kRegistre.getValue("lastLevel") || "1"
+    @coins = @kRegistre.getValue("coins") || "0"
+    @nTry = @kRegistre.getValue("try") || "0"
+    @nWin = @kRegistre.getValue("win") || "0"
+    @nLevel = @kRegistre.getValue("nbLevels") || "0"
     # Convertir vers fixnum
     @lastLevel = @lastLevel.to_i if @lastLevel != nil
     @coins = @coins.to_i if @coins != nil
@@ -69,7 +69,9 @@ class Jeu
 
   def addWin
     @nWin += 1
+    @lastLevel += 1
     @kRegistre.updateParam("win", @nWin.to_s)
+    @kRegistre.updateParam("lastLevel", @lastLevel.to_s)
   end
 
   def addCoin(unNombreGems)
@@ -95,6 +97,8 @@ class Jeu
     @kRegistre.addParam("nbLevels", i.to_s)
     @kRegistre.addParam("coins", "0")
     @kRegistre.addParam("try", "0")
+    @kRegistre.addParam("win", "0")
+    @kRegistre.addParam("lastLevel", "1")
   end
 
   def initializeMainMenu()
@@ -134,27 +138,21 @@ class Jeu
     @kInGame.supprimeTout
 
     background = Image.creer("Background", "ressources/maps/Couloirs-Resized.png", 0, 0, 0)
-    libell_score = Text.creer("score", "Score: 0", 15, 250, 50, 1)
+    libell_score = Text.creer("score", "Gems: 0", 12, 50, 70, 1)
+
+    libell_niveau = Text.creer("niveau", "Niveau #{@lastLevel}", 19, 50, 40, 1)
+    libell_niveau.setPolice "ressources/ttf/Starjedi.ttf"
 
     myMat = getMatrice
-    addTry
-
-    if (myMat.length == 10)
-      support_grille = Image.creer("Grille", "ressources/images/Grilles/v3/g10x10.png", 120, 120, 1)
-    elsif (myMat.length == 5)
-      support_grille = Image.creer("Grille", "ressources/images/Grilles/v3/g5x5.png", 120, 120, 1)
-    elsif (myMat.length == 15)
-      support_grille = Image.creer("Grille", "ressources/images/Grilles/v3/g15x15.png", 120, 120, 1)
-    elsif (myMat.length == 20)
-      support_grille = Image.creer("Grille", "ressources/images/Grilles/v3/g20x20.png", 120, 120, 1)
-    end
+    support_grille = Image.creer("Grille", "ressources/images/Grilles/v3/g#{myMat.length}x#{myMat.length}.png", 120, 120, 1)
 
     @currentGame = Grille.grille(myMat)
+    addTry # Ajout +1 aux essai (statistiques)
 
     btn_quit = Boutton.creer("Retour", 50, 430, 1, 0, 0)
     btn_help = Boutton.creer("Aide", 150, 430, 1, 0, 0)
 
-    @kInGame.ajouterComposant(background, libell_score, support_grille)
+    @kInGame.ajouterComposant(background, libell_score, libell_niveau, support_grille)
 
     # On place des élements "case" pour grille
     inHautPosX = 244
@@ -163,7 +161,7 @@ class Jeu
     (1..myMat.length).step(1) do |n|
 
       (1..myMat.length).step(1) do |j|
-          spriteCase = Sprite.creer("case-#{inHautPosX}-#{inHautPosY}", "ressources/images/Grilles/Cases.png", 8, 1, inHautPosX, inHautPosY, 2, 0, 0)
+          spriteCase = Sprite.creer("case", "ressources/images/Grilles/Cases.png", 8, 1, inHautPosX, inHautPosY, 2, 0, 0)
           spriteCase.arr_data = [n, j]
           spriteCase.deplacer 1, 0
           @kInGame.ajouterComposant(spriteCase)
@@ -239,12 +237,20 @@ class Jeu
       initializeMainMenu
       #On recharge le rendu
       @kRender.end_scene @kMainMenu
-    elsif (unComposantCible.arr_data != [-1, -1])
+    elsif (unComposantCible.designation == "case" && unComposantCible.arr_data != [-1, -1])
+
       # On tente de noirsir la case
       if @currentGame.noirsirCase unComposantCible.arr_data[0], unComposantCible.arr_data[1]
         @kRender.game_scenes.animateSprite unComposantCible
       end
       # On vérifie que l'état de la partie
+      if @currentGame.terminer?
+        #On ajoute une victoire
+        addWin
+        addCoin @currentGame.calculeScore
+        initializeMainMenu
+        @kRender.end_scene @kMainMenu
+      end
 
     elsif (btn_cible_libell == "Quitter")
       #On met fin au programme
@@ -253,13 +259,17 @@ class Jeu
 
   end
 
+  # Méthode de reception signal pour pattern observateur
   def update(unTypeEvenement, unComposantCible)
-    puts "Attention: Evenement Trigger #{unComposantCible.designation} sur typeEvenement = #{unTypeEvenement.to_s} avec contexte = #{@kRender.getContext.designation}"
+    puts "Attention: Evenement Trigger #{unComposantCible.designation} sur typeEvenement = #{unTypeEvenement} avec contexte = #{@kRender.getContext.designation}"
+
+    #On redirige vers la méthode concernée
     if @kRender.getContext.designation == "Menu principal"
       actionOnMenu unTypeEvenement, unComposantCible
     elsif @kRender.getContext.designation == "Jeu"
       actionOnGame unTypeEvenement, unComposantCible
     end
+
   end
 
 end
