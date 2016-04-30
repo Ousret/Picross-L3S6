@@ -163,7 +163,7 @@ class Jeu
     (1..myMat.length).step(1) do |n|
 
       (1..myMat.length).step(1) do |j|
-          spriteCase = Sprite.creer("case-#{inHautPosX.to_s}-#{inHautPosY.to_s}", "ressources/images/Grilles/Cases.png", 8, 1, inHautPosX, inHautPosY, 2, 0, 0)
+          spriteCase = Sprite.creer("case-#{inHautPosX}-#{inHautPosY}", "ressources/images/Grilles/Cases.png", 8, 1, inHautPosX, inHautPosY, 2, 0, 0)
           spriteCase.arr_data = [n, j]
           spriteCase.deplacer 1, 0
           @kInGame.ajouterComposant(spriteCase)
@@ -182,7 +182,7 @@ class Jeu
 
     @currentGame.indicesHaut.each do |indice|
       indice.each do |nb|
-        @kInGame.ajouterComposant(Text.creer("ind-#{inHautPosX.to_s}-#{inHautPosY.to_s}", "#{nb.to_s}", 15, inHautPosX, inHautPosY, 2))
+        @kInGame.ajouterComposant(Text.creer("ind-#{inHautPosX}-#{inHautPosY}", "#{nb}", 15, inHautPosX, inHautPosY, 2))
         inHautPosY += 16
       end
       inHautPosX += 16
@@ -195,7 +195,7 @@ class Jeu
 
     @currentGame.indicesCote.each do |indice|
       indice.each do |nb|
-        @kInGame.ajouterComposant(Text.creer("ind-#{inHautPosX.to_s}-#{inHautPosY.to_s}", "#{nb.to_s}", 15, inHautPosX, inHautPosY, 2))
+        @kInGame.ajouterComposant(Text.creer("ind-#{inHautPosX}-#{inHautPosY}", "#{nb}", 15, inHautPosX, inHautPosY, 2))
         inHautPosX += 16
       end
       inHautPosY += 16
