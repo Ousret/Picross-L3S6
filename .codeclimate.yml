@@ -1,6 +1,9 @@
 engines:
   rubocop:
     enabled: true
+    checks:
+      Rubocop/Metrics/ParameterLists:
+        enabled: false
   duplication:
     enabled: true
     config:
