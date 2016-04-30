@@ -59,7 +59,6 @@ class Registre
 
 	# Décode un buffer YAML
 	def decode(unBuffer)
-		puts "Try to decode #{unBuffer} to #{@myCrypt.decrypt(unBuffer)}"
 		@myCrypt.decrypt(unBuffer)
 	end
 
