@@ -2,6 +2,7 @@
 # Version 0.2
 
 require 'observer'
+require 'json'
 
 load './class/bmp.class.rb'
 load './class/crypt.class.rb'
@@ -17,6 +18,7 @@ load './class/text.class.rb'
 
 load './class/render.class.rb'
 
+# Classe de "haut-niveau" utilise les briques fondamentales
 class Jeu
 
   def initialize()
@@ -30,41 +32,96 @@ class Jeu
     @kMainMenu = Fenetre.creer("Menu principal", 0, 0, 0, 640, 480)
     @kInGame = Fenetre.creer("Jeu", 0, 0, 0, 640, 480)
 
+    # Récupère les statistiques du disque local
+    getStats
+
+    # Si on ne dispose d'aucun niveau, on install ceux présent sur le disque
+    install if @nLevel == nil
+    puts "Programme chargée avec #{@nLevel} niveau(x).."
     #@kMainMenu.ajouterComposant(Audio.creer("Env", "ressources/son/BackgroundMusicLoop/BackgroundMusicLoop_BPM100.wav", true, 1, 1, 0, 0, 0))
 
   end
 
-  def getMatrice()
-    lastLevel = @kRegistre.getValue("lastLevel")
-    levels = Dir["ressources/images/imagesPicross/BMP24bitsRVB/*.bmp"].sort
-    if (lastLevel != nil)
-      BMP::Reader.creer(levels[lastLevel.to_i]).getMatrice
-    else
-      @kRegistre.addParam('lastLevel', '1')
-      BMP::Reader.creer("ressources/images/imagesPicross/BMP24bitsRVB/x10_2.bmp").getMatrice
+  def getStats
+    # Récupération des données
+    @lastLevel = @kRegistre.getValue("lastLevel")
+    @coins = @kRegistre.getValue("coins")
+    @nTry = @kRegistre.getValue("try")
+    @nWin = @kRegistre.getValue("win")
+    @nLevel = @kRegistre.getValue("nbLevels")
+    # Convertir vers fixnum
+    @lastLevel = @lastLevel.to_i if @lastLevel != nil
+    @coins = @coins.to_i if @coins != nil
+    @nTry = @nTry.to_i if @nTry != nil
+    @nWin = @nWin.to_i if @nWin != nil
+    @nLevel = @nLevel.to_i if @nLevel != nil
+  end
+
+  def addTry
+    @nTry += 1
+    @kRegistre.updateParam("try", @nTry.to_s)
+  end
+
+  def addWin
+    @nWin += 1
+    @kRegistre.updateParam("win", @nWin.to_s)
+  end
+
+  def addCoin(unNombreGems)
+    @coins+=unNombreGems
+    @kRegistre.updateParam("coins", @coins.to_s)
+  end
+
+  def getMatrice
+    @lastLevel = 1 if @lastLevel == nil
+    JSON.load(@kRegistre.getValue("level_#{@lastLevel}"))
+  end
+
+  # Installation des niveaux présent sur le disque (local)
+  def install
+    uneListeNiveau = Dir["ressources/images/imagesPicross/BMP24bitsRVB/*.bmp"].sort
+    i = 1
+    uneListeNiveau.each do |unNiveau|
+      @kRegistre.addParam("level_#{i}", BMP::Reader.creer("ressources/images/imagesPicross/BMP24bitsRVB/x10_2.bmp").getMatrice.to_json)
+      i+=1
     end
+    # On sauvegarde le nombre de niveau chargé
+    @nLevel = i
+    @kRegistre.addParam("nbLevels", i.to_s)
+    @kRegistre.addParam("coins", "0")
+    @kRegistre.addParam("try", "0")
   end
 
   def initializeMainMenu()
 
+    @kMainMenu.supprimeTout
+
     # Image de fond
-    background = Image.creer("Background", "ressources/images/GUI/Prototypes/background-4.jpg", 0, 0, 0)
+    background = Image.creer("Background", "ressources/images/GUI/Prototypes/background-5.png", 0, 0, 0)
+    stat_support = Image.creer("Stat-background", "ressources/images/GUI/box/boxNormal.png", 480, 20, 1)
 
     # Information sur version
-    libell_alpha = Text.creer("alpha-prev", "alpha-preview 1", 15, 10, 10, 0)
+    libell_alpha = Text.creer("beta-1", "beta-preview 1", 15, 250, 170, 1)
+
+    # Statistique
+    libell_coins = Text.creer("coins", "Gems   : #{@coins||0}", 10, 500, 50, 1)
+    libell_try = Text.creer("try", "Essai    : #{@nTry||0}", 10, 500, 60, 1)
+    libell_win = Text.creer("win", "Victoire: #{@nWin||0}", 10, 500, 70, 1)
+    libell_avancement = Text.creer("avancement", "Niveau: #{@lastLevel||0}/#{@nLevel||0}", 10, 500, 80, 1)
 
     # Placement du titre
-    libell_title = Text.creer("title", "Picross B", 50, 250, 150, 0)
-    libell_title.setPolice "ressources/ttf/Starjedi.ttf"
+    libell_title = Text.creer("title", "Picross B", 50, 250, 150, 1)
+    libell_title.setPolice "ressources/ttf/Starjedi.ttf" #Police d'écriture spéciale pour le titre
 
     # Création des boutons
-    btn_aventure = Boutton.creer("Aventure", 50, 50, 0, 0, 0)
-    btn_newGame = Boutton.creer("Partie rapide", 50, 100, 0, 0, 0)
-    btn_params = Boutton.creer("Parametres", 50, 150, 0, 0, 0)
-    btn_quit = Boutton.creer("Quitter", 50, 200, 0, 0, 0)
+    btn_aventure = Boutton.creer("Aventure", 40, 50, 1, 0, 0)
+    btn_newGame = Boutton.creer("Partie rapide", 40, 100, 1, 0, 0)
+    btn_params = Boutton.creer("Parametres", 40, 150, 1, 0, 0)
+    btn_about = Boutton.creer("À propos", 40, 200, 1, 0, 0)
+    btn_quit = Boutton.creer("Quitter", 40, 250, 0, 1, 0)
 
     # Ajout des composants sur la fenêtre primaire
-    @kMainMenu.ajouterComposant(background, libell_alpha, libell_title, btn_aventure, btn_newGame, btn_params, btn_quit)
+    @kMainMenu.ajouterComposant(background, stat_support, libell_alpha, libell_coins ,libell_title,libell_try, libell_win, libell_avancement ,btn_aventure, btn_newGame, btn_params,btn_about ,btn_quit)
 
   end
 
@@ -73,9 +130,10 @@ class Jeu
 
     background = Image.creer("Background", "ressources/maps/Couloirs-Resized.png", 0, 0, 0)
     libell_alpha = Text.creer("alpha-prev", "alpha-preview 1", 15, 50, 50, 1)
-    libell_score = Text.creer("score", "Score: 0", 15, 400, 50, 1)
+    libell_score = Text.creer("score", "Score: 0", 15, 250, 50, 1)
 
     myMat = getMatrice
+    addTry
 
     if (myMat.length == 10)
       support_grille = Image.creer("Grille", "ressources/images/Grilles/v3/g10x10.png", 120, 120, 1)
