@@ -41,7 +41,7 @@ ActiveRecord::Schema.define do
     unless ActiveRecord::Base.connection.tables.include? 'profiles'
       #definition de la table des profiles
       create_table :profiles do |table|
-        table.column :pseudo, :string 
+        table.column :pseudo, :string
         table.column :nom,    :string
         table.column :prenom, :string
         table.column :argent, :integer

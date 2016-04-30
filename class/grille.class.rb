@@ -15,38 +15,38 @@ class  Grille<ActiveRecord::Base
 	# la Classe Grille permet d'encapsuler une matrice de boolean et de lui ajouter des fonctionnalitées
 	# class qui renvoi une grille jouable à partir d'une matrice de boolean
 	# cette classe ne gère que les matrice carre
-	
+
 	#=== Variables d'instance ===
 	#@matriceComparaison	#matrice de comparaison ,on y coche aucune case
-    #@matriceDeJeu  		#matrice sur laquelle le joueur interagit
+	#@matriceDeJeu  		#matrice sur laquelle le joueur interagit
 	#@indicesHaut			#indices logique du haut de la grille
 	#@indicesCote			#indices logique du coté de la grille
-    #@nbErreur      		#compte le nombre d'erreur du joueur
-    #@chrono				#compte le temp passé sur la grille
-    #@score					#le score obtenu sur la grille (=0 t'en que la grille n'est pas terminer)
+	#@nbErreur      		#compte le nombre d'erreur du joueur
+	#@chrono				#compte le temp passé sur la grille
+	#@score					#le score obtenu sur la grille (=0 t'en que la grille n'est pas terminer)
 	#============================
 
 	#la methode new() est private pour cette classe
-	private_class_method :new 
+	private_class_method :new
 
-    #Définition des methodes d'accèes en lecture
+	#Définition des methodes d'accèes en lecture
 	attr_reader :matriceComparaison ,:matriceDeJeu  ,:indicesHaut  ,:indicesCote ,:nbErreur ,:chrono ,:score
 
-    #Définition des methodes d'accèes en lecture
+	#Définition des methodes d'accèes en lecture
 	attr_writer :matriceComparaison ,:matriceDeJeu  ,:indicesHaut  ,:indicesCote ,:nbErreur ,:chrono
 
 	def initialize(matrice)#:nodoc:
-	
-        super()
-        
-        #gestion des erreur a la  construction de l'objet grille
+
+		super()
+
+		#gestion des erreur a la  construction de l'objet grille
 		if matrice==nil
 			raise TypeError.new("Grille:initialize : la matrice recu est vide")
 
 		elsif matrice.length != matrice[0].length
 			#print("\n longeur : "+matrice.length.to_s+" largeur : "+matrice[0].length.to_s+"\n");
 			raise TypeError.new("Grille:initialize : la matrice recu n'est pas carré")
-		end 
+		end
 
 		@matriceComparaison	= matrice
 		@indicesHaut 	= Array.new(@matriceComparaison.length) { Array.new() }
@@ -59,18 +59,18 @@ class  Grille<ActiveRecord::Base
 		self.calculeIndiceCote()
 		self.calculeIndiceHaut()
 
-		
-		
+
+
 	end
 
-	
+
 	#=== Methode de classe permetant l'initialisation de la grille
 	#
 	#=== Paramètres:
 	#* <b>matrice</b>  : matrice de jeu
 	def Grille.grille(matrice)
 
-		 new(matrice)
+		new(matrice)
 	end
 
 	#=== Methode  permetant de calculer le score
@@ -89,12 +89,12 @@ class  Grille<ActiveRecord::Base
 	def demanderAide(p)
 		while y < @matriceComparaison.length
 			x=0
-			while x < @matriceComparaison.length 
+			while x < @matriceComparaison.length
 				if(p.argent < 10)
 					return
 				end
 				if(@matriceComparaison[x][y] == 1 and @matriceDeJeu[x][y] == 0 ) then
-					@matriceDeJeu[x][y] = 1  #on noirsi la premierre bonne case trouvé 
+					@matriceDeJeu[x][y] = 1  #on noirsi la premierre bonne case trouvé
 					p.argent = p.argent - 10 #chaque demande d'aide coute 10
 				end
 
@@ -104,10 +104,10 @@ class  Grille<ActiveRecord::Base
 		end
 	end
 
-	
 
 
-	#=== Methode qui permet de calculer les indices logique du haut 
+
+	#=== Methode qui permet de calculer les indices logique du haut
 	#
 	#=== Paramètres:
 	#* <b>pas de paramètre</b>
@@ -121,8 +121,8 @@ class  Grille<ActiveRecord::Base
 				if(@matriceComparaison[x][y]==1) then #---------------------------------------si on tombe sur une case noir
 					nbCaseNoirConsecutif +=1 #--------------------------------------on incremente `nbCaseNoirConsecutif`
 				elsif(nbCaseNoirConsecutif != 0 ) then #-----------------------si non si `nbCaseNoirConsecutif` est differant de zero
-						@indicesCote[x].push(nbCaseNoirConsecutif) #------------------on rajoute le nombre de case noir dans le tableau des indices du coté
-						nbCaseNoirConsecutif = 0 #------------------------------------et on remet le `nbCaseNoirConsecutif` à zero
+					@indicesCote[x].push(nbCaseNoirConsecutif) #------------------on rajoute le nombre de case noir dans le tableau des indices du coté
+					nbCaseNoirConsecutif = 0 #------------------------------------et on remet le `nbCaseNoirConsecutif` à zero
 				end
 				y+=1
 			end
@@ -142,7 +142,7 @@ class  Grille<ActiveRecord::Base
 	#=== Paramètres:
 	#* <b>pas de paramètre</b>
 	def calculeIndiceHaut()
-		
+
 		nbCaseNoirConsecutif = 0 #variable qui permet de gerer les cases noir consecutifs
 		y=0
 		while y < @matriceComparaison.length #------------------------------------on parcours chaque colonne
@@ -151,8 +151,8 @@ class  Grille<ActiveRecord::Base
 				if(@matriceComparaison[x][y] == 1) then #---------------------------------------si on tombe sur une case noir
 					nbCaseNoirConsecutif +=1 #--------------------------------------on incremente `nbCaseNoirConsecutif`
 				elsif(nbCaseNoirConsecutif != 0 ) then #-----------------------si non si `nbCaseNoirConsecutif` est differant de zero
-						@indicesHaut[y].push(nbCaseNoirConsecutif) #------------------on rajoute le nombre de case noir dans le tableau des indices du haut
-						nbCaseNoirConsecutif = 0 #------------------------------------et on remet le `nbCaseNoirConsecutif` à zero
+					@indicesHaut[y].push(nbCaseNoirConsecutif) #------------------on rajoute le nombre de case noir dans le tableau des indices du haut
+					nbCaseNoirConsecutif = 0 #------------------------------------et on remet le `nbCaseNoirConsecutif` à zero
 				end
 				x+=1
 			end
@@ -161,7 +161,7 @@ class  Grille<ActiveRecord::Base
 				@indicesHaut[y].push(nbCaseNoirConsecutif) #-------------------on rajoute le nombre de case noir dans le tableau des indices du haut
 				nbCaseNoirConsecutif = 0 #-------------------------------------et on remet le `nbCaseNoirConsecutif` à zero
 			end
-			
+
 			y+=1
 		end
 
@@ -178,170 +178,170 @@ class  Grille<ActiveRecord::Base
 	def afficher(mat)
 		x=0
 		#affichache de la grille du haut
-			print("---------------------------affichache de la grille du haut---------------------------\n")
-			while x < @indicesHaut.length
-				print(@indicesHaut[x])
-				print("\n")
-				x+=1
-			end
+		print("---------------------------affichache de la grille du haut---------------------------\n")
+		while x < @indicesHaut.length
+			print(@indicesHaut[x])
+			print("\n")
+			x+=1
+		end
 		x=0
 		#affichage de la matrice
 		print("---------------------------affichage de la matrice---------------------------\n")
-			while x < mat.length
-				print(mat[x])
-				print("\n")
-				x+=1
-			end
+		while x < mat.length
+			print(mat[x])
+			print("\n")
+			x+=1
+		end
 		x=0
 		#affichage de la grille du coté
 		print("---------------------------affichage de la grille du coté---------------------------\n")
-			while x < @indicesCote.length
-				print(@indicesCote[x])
-				print("\n")
-				x+=1
-			end
+		while x < @indicesCote.length
+			print(@indicesCote[x])
+			print("\n")
+			x+=1
+		end
 
 	end
 
-    
-    #=== Methode qui permet de savoir si une case est noir 
+
+	#=== Methode qui permet de savoir si une case est noir
 	#
 	#=== Paramètres :
 	#* <b>x</b>:coordonée x : la ligne
-    #* <b>x</b>:coordonée y : la colonne
-    #=== Return :
-    #return true si la case [x][y] est noir si non false
-    def estNoir?(x,y)
-        x=x-1   #on decrémente les indices de -1 parce que le tableau commence à l'indice 0
-        y=y-1
-        if x > matriceComparaison.length
+	#* <b>x</b>:coordonée y : la colonne
+	#=== Return :
+	#return true si la case [x][y] est noir si non false
+	def estNoir?(x,y)
+		x=x-1   #on decrémente les indices de -1 parce que le tableau commence à l'indice 0
+		y=y-1
+		if x > matriceComparaison.length
 			raise RangeError.new("coordonée x en dehors de la matrice ")
-        end
-        if y > matriceComparaison.length
+		end
+		if y > matriceComparaison.length
 			raise RangeError.new("coordonée y en dehors de la matrice ")
-        end
+		end
 
-        return @matriceComparaison[x][y] == 1
-    end
+		return @matriceComparaison[x][y] == 1
+	end
 
-    #=== Methode qui permet de noircire une case 
+	#=== Methode qui permet de noircire une case
 	#
 	#=== Paramètres :
 	#* <b>x</b>:coordonée x : la ligne
-    #* <b>y</b>:coordonée y : la colonne
-    #=== Return :
-    #return true si la case [x][y] été noir si non false
-    def noirsirCase(x,y)
+	#* <b>y</b>:coordonée y : la colonne
+	#=== Return :
+	#return true si la case [x][y] été noir si non false
+	def noirsirCase(x,y)
 
-        if estNoir?(x,y)==false		#si la case selectionné n'est pas correcte
-        	@nbErreur += 1 			#on incremente le nombre d'erreur du joueur
-        	return false			#on retourne false
-    	else						#si non si la case selectionné est corecte 
+		if estNoir?(x,y)==false		#si la case selectionné n'est pas correcte
+			@nbErreur += 1 			#on incremente le nombre d'erreur du joueur
+			return false			#on retourne false
+		else						#si non si la case selectionné est corecte
 
-    		@matriceDeJeu[x-1][y-1] = 1 	# on noirsi la case selectionné
-    		return true					#retourn true
-    	end
-    end
+			@matriceDeJeu[x-1][y-1] = 1 	# on noirsi la case selectionné
+			return true					#retourn true
+		end
+	end
 
 
-    #=== Methode qui permet de savoir si la grille est terminé
+	#=== Methode qui permet de savoir si la grille est terminé
 	#
 	#=== Paramètres :
-    #=== Return :
-    #return true si la grille est terminé(toutes les bonnes cases ont été noirsi) si non false
-    def terminer?()
-    	x=0
-        while x < @matriceComparaison.length
-				if (@matriceComparaison[x] != @matriceDeJeu[x])
-						return false
-				end
-				x+=1
+	#=== Return :
+	#return true si la grille est terminé(toutes les bonnes cases ont été noirsi) si non false
+	def terminer?()
+		x=0
+		while x < @matriceComparaison.length
+			if (@matriceComparaison[x] != @matriceDeJeu[x])
+				return false
+			end
+			x+=1
 		end
 		terminer()
 		return true
-    end
+	end
 
-    #=== Methode qui permet de faire les operation nécessaire à la fin d'une grille
+	#=== Methode qui permet de faire les operation nécessaire à la fin d'une grille
 	#
 	#=== Paramètres :
-    def terminer()
+	def terminer()
 		@chrono.arreter
 		calculeScore()
-    end
+	end
 
-    #=== Methode de classe permetant de sauver un profile
+	#=== Methode de classe permetant de sauver un profile
 	#
 	#=== Paramètres:
 	#<b>profile</b> : profile à sauver
-    def sauver()
-    	if(self.new_record?)
-    		self.matriceComparaisonBD = Marshal.dump(@matriceComparaison)
+	def sauver()
+		if(self.new_record?)
+			self.matriceComparaisonBD = Marshal.dump(@matriceComparaison)
 			self.indicesHautBD        = Marshal.dump(@indicesHaut)
 			self.indicesCoteBD        = Marshal.dump(@indicesCote)
 			self.matriceDeJeuBD       = Marshal.dump(@matriceDeJeu)
 			self.tempBD				  = @chrono.getTTotale()
 			self.nbErreurBD           = @nbErreur
 			self.scoreBD              = @score
-	        self.save
-    	else
-    		mettreAJour()
-    	end
-        
-    end
+			self.save
+		else
+			mettreAJour()
+		end
+
+	end
 
 
-    #=== Methode de classe permetant de charger un profile
+	#=== Methode de classe permetant de charger un profile
 	#
 	#=== Paramètres:
 	#<b>pseudo</b> : pseudo du profile a charger
-    #
-    #===Return:
-    #<b>return le profile s'il a été trouver si non nil </b>
-    def Grille.charger(id)
-        grille =  Grille.find_by_id(id)
-        grille.matriceComparaison  = Marshal.load(grille.matriceComparaisonBD)
+	#
+	#===Return:
+	#<b>return le profile s'il a été trouver si non nil </b>
+	def Grille.charger(id)
+		grille =  Grille.find_by_id(id)
+		grille.matriceComparaison  = Marshal.load(grille.matriceComparaisonBD)
 		grille.indicesHaut         = Marshal.load(grille.indicesHautBD)
 		grille.indicesCote         = Marshal.load(grille.indicesCoteBD)
 		grille.matriceDeJeu        = Marshal.load(grille.matriceDeJeuBD)
 		grille.nbErreur            = grille.nbErreurBD
 		grille.chrono 			   = Chrono.charger(grille.tempBD)
-        return grille
-    end
+		return grille
+	end
 
 
-    #=== Methode permetant de mettre a jour un profile modifié dans la BDA
-    #
-    #=== Note : 
-    #<b>un profile ne peut pas ètre mis ajour s'il n'a jamais été sauver</b>
-    def mettreAJour()
-        Grille.update(self.id,
-                      :matriceComparaisonBD => Marshal.dump(self.matriceComparaison) ,
-                      :indicesHautBD => Marshal.dump(self.indicesHaut) ,
-                      :indicesCoteBD => Marshal.dump(self.indicesCote),
-                      :matriceDeJeuBD  => Marshal.dump(self.matriceDeJeu),
-                      :tempBD  => Marshal.dump(self.chrono.total_time_acc),
-                      :scoreBD  => self.score,
-                      :nbErreurBD  => self.nbErreur)
-    end
+	#=== Methode permetant de mettre a jour un profile modifié dans la BDA
+	#
+	#=== Note :
+	#<b>un profile ne peut pas ètre mis ajour s'il n'a jamais été sauver</b>
+	def mettreAJour()
+		Grille.update(self.id,
+		:matriceComparaisonBD => Marshal.dump(self.matriceComparaison) ,
+		:indicesHautBD => Marshal.dump(self.indicesHaut) ,
+		:indicesCoteBD => Marshal.dump(self.indicesCote),
+		:matriceDeJeuBD  => Marshal.dump(self.matriceDeJeu),
+		:tempBD  => Marshal.dump(self.chrono.total_time_acc),
+		:scoreBD  => self.score,
+		:nbErreurBD  => self.nbErreur)
+	end
 
-    #=== Methode permetant de comparer deux profiles
+	#=== Methode permetant de comparer deux profiles
 	#
 	#=== Paramètres:
 	#<b>pro</b> : profile à comparer
-    def eql(g)
-        return (g.id                    == self.id                  and
-                g.matriceComparaison    == self.matriceComparaison  and 
-                g.indicesHaut           == self.indicesHaut         and 
-                g.indicesCote           == self.indicesCote         and 
-                g.nbErreur              == self.nbErreur  )
-    end
+	def eql(g)
+		return (g.id                    == self.id                  and
+		g.matriceComparaison    == self.matriceComparaison  and
+		g.indicesHaut           == self.indicesHaut         and
+		g.indicesCote           == self.indicesCote         and
+		g.nbErreur              == self.nbErreur  )
+	end
 
-    #=== Methode permetant de comparer deux profiles
+	#=== Methode permetant de comparer deux profiles
 	#
 	#=== Paramètres:
 	#<b>pas de paramètre</b>
-    def pause()
-        @chrono.arreter
-    end
+	def pause()
+		@chrono.arreter
+	end
 
 end
