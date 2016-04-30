@@ -21,6 +21,11 @@ load './class/render.class.rb'
 # Classe de "haut-niveau" utilise les briques fondamentales
 class Jeu
 
+  FAST_GAME = "Partie rapide"
+  ADVENTURE = "Aventure"
+  QUIT = "Quitter"
+  BACK = "Retour"
+
   def initialize()
 
     @kRender = Render::Game.new
@@ -129,7 +134,6 @@ class Jeu
     @kInGame.supprimeTout
 
     background = Image.creer("Background", "ressources/maps/Couloirs-Resized.png", 0, 0, 0)
-    libell_alpha = Text.creer("alpha-prev", "alpha-preview 1", 15, 50, 50, 1)
     libell_score = Text.creer("score", "Score: 0", 15, 250, 50, 1)
 
     myMat = getMatrice
@@ -150,7 +154,7 @@ class Jeu
     btn_quit = Boutton.creer("Retour", 50, 430, 1, 0, 0)
     btn_help = Boutton.creer("Aide", 150, 430, 1, 0, 0)
 
-    @kInGame.ajouterComposant(background, libell_alpha, libell_score, support_grille)
+    @kInGame.ajouterComposant(background, libell_score, support_grille)
 
     # On place des élements "case" pour grille
     inHautPosX = 244
@@ -207,20 +211,54 @@ class Jeu
     @kRender.prepare @kMainMenu #Rendu des objets
   end
 
+  def actionOnMenu(unTypeEvenement, unComposantCible)
+    # Gestion des événements sur menu principal
+    return if unTypeEvenement != 1 # On ne recherche que le clique souris
+    btn_cible_libell = unComposantCible.designation
+
+    if (btn_cible_libell == FAST_GAME) #Si le joueur clique sur "Partie rapide"
+      #On charge le plateau
+      initializeGame
+      #On recharge le rendu
+      @kRender.end_scene @kInGame
+    elsif (btn_cible_libell == "Quitter")
+      #On met fin au programme
+      exit
+    elsif (btn_cible_libell == "À propos")
+      #On charge la fenêtre à propos
+    end
+  end
+
+  def actionOnGame(unTypeEvenement, unComposantCible)
+    # Gestion des événements sur menu principal
+    return if unTypeEvenement != 1 # On ne recherche que le clique souris
+    btn_cible_libell = unComposantCible.designation
+
+    if (btn_cible_libell == "Retour") #Si le joueur clique sur "Retour" depuis la séance de jeu
+      #On charge le menu principal
+      initializeMainMenu
+      #On recharge le rendu
+      @kRender.end_scene @kMainMenu
+    elsif (unComposantCible.arr_data != [-1, -1])
+      # On tente de noirsir la case
+      if @currentGame.noirsirCase unComposantCible.arr_data[0], unComposantCible.arr_data[1]
+        @kRender.game_scenes.animateSprite unComposantCible
+      end
+      # On vérifie que l'état de la partie
+
+    elsif (btn_cible_libell == "Quitter")
+      #On met fin au programme
+      exit
+    end
+
+  end
+
   def update(unTypeEvenement, unComposantCible)
     puts "Attention: Evenement Trigger #{unComposantCible.designation} sur typeEvenement = #{unTypeEvenement.to_s} avec contexte = #{@kRender.getContext.designation}"
-    if (unTypeEvenement == 1)
-      if (unComposantCible.designation == 'Partie rapide')
-        # Préparation de la fenêtre partie rapide
-        initializeGame
-        @kRender.end_scene @kInGame
-      elsif (unComposantCible.designation == 'Retour')
-        @kRender.end_scene @kMainMenu
-      elsif (unComposantCible.arr_data != [-1, -1])
-        if @currentGame.noirsirCase unComposantCible.arr_data[0], unComposantCible.arr_data[1]
-          @kRender.game_scenes.animateSprite unComposantCible
-        end
-      end
+    if @kRender.getContext.designation == "Menu principal"
+      actionOnMenu unTypeEvenement, unComposantCible
+    elsif @kRender.getContext.designation == "Jeu"
+      actionOnGame unTypeEvenement, unComposantCible
     end
   end
 
