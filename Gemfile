@@ -15,4 +15,5 @@ group :test, :development do
   gem 'test'
   gem 'rake'
   gem 'json'
+  gem 'curb'
 end

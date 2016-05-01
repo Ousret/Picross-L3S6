@@ -3,6 +3,7 @@
 
 require 'observer'
 require 'json'
+require 'curb'
 
 load './class/bmp.class.rb'
 load './class/crypt.class.rb'
@@ -49,6 +50,12 @@ class Jeu
 
   end
 
+  def fetchOnline
+    request = Curl.get(URL_FETCH)
+    return false if request.status != "200 OK" || request.status != "301 OK"
+    return request.body_str
+  end
+
   def getStats
     # Récupération des données
     @lastLevel = @kRegistre.getValue("lastLevel") || "1"
@@ -64,11 +71,13 @@ class Jeu
     @nLevel = @nLevel.to_i if @nLevel != nil
   end
 
+  # Ajout une tentative dans statistiques
   def addTry
     @nTry += 1
     @kRegistre.updateParam("try", @nTry.to_s)
   end
 
+  # Ajout une victoire dans statistiques
   def addWin
     @nWin += 1
     @lastLevel += 1
@@ -76,11 +85,13 @@ class Jeu
     @kRegistre.updateParam("lastLevel", @lastLevel.to_s)
   end
 
+  # Ajout de l'argent dans statistiques
   def addCoin(unNombreGems)
     @coins+=unNombreGems
     @kRegistre.updateParam("coins", @coins.to_s)
   end
 
+  # Récupére la matrice du dernier niveau
   def getMatrice
     @lastLevel = 1 if @lastLevel == nil
     JSON.load(@kRegistre.getValue("level_#{@lastLevel}"))
@@ -88,12 +99,25 @@ class Jeu
 
   # Installation des niveaux présent sur le disque (local)
   def install
+    onlineLevels = fetchOnline
     uneListeNiveau = Dir["ressources/images/imagesPicross/BMP24bitsRVB/*.bmp"].sort
     i = 1
-    uneListeNiveau.each do |unNiveau|
-      @kRegistre.addParam("level_#{i}", BMP::Reader.creer(unNiveau).getMatrice.to_json)
-      i+=1
+
+    if onlineLevels != false # Si les niveaux sont disponible en ligne
+      puts "Installation des niveaux depuis le serveur distant.."
+      arrayLevels = JSON.load(onlineLevels)
+      arrayLevels.each do |level|
+        @kRegistre.addParam("level_#{i}", level.to_json)
+        i+=1
+      end
+    else # Récupération hors ligne
+      puts "Installation des niveaux depuis le disque local.. (hors ligne)"
+      uneListeNiveau.each do |unNiveau|
+        @kRegistre.addParam("level_#{i}", BMP::Reader.creer(unNiveau).getMatrice.to_json)
+        i+=1
+      end
     end
+
     # On sauvegarde le nombre de niveau chargé
     @nLevel = i
     @kRegistre.addParam("nbLevels", i.to_s)
@@ -103,6 +127,7 @@ class Jeu
     @kRegistre.addParam("lastLevel", "1")
   end
 
+  # Prépare la boite pour affichage statistiques
   def addStatBox(unContexteCible)
 
     stat_support = Image.creer("Stat-background", "ressources/images/GUI/box/boxNormal.png", 480, 20, 1)
@@ -116,6 +141,7 @@ class Jeu
 
   end
 
+  # Préparation de la fenêtre À propos
   def initializeAbout
 
     @kAbout.supprimeTout
@@ -146,6 +172,7 @@ class Jeu
 
   end
 
+  # Préparation du menu principal
   def initializeMainMenu()
 
     @kMainMenu.supprimeTout
@@ -175,6 +202,7 @@ class Jeu
 
   end
 
+  # Préparation du jeu "rapide"
   def initializeGame
     @kInGame.supprimeTout
 
@@ -194,6 +222,7 @@ class Jeu
 
     btn_quit = Boutton.creer("Abandonner", 50, 430, 1, 0, 0)
     btn_help = Boutton.creer("Aide", 150, 430, 1, 0, 0)
+    btn_save = Boutton.creer("Sauvegarder", 250, 430, 1, 0, 0)
 
     @kInGame.ajouterComposant(background, libell_niveau, support_grille)
 
@@ -244,14 +273,16 @@ class Jeu
     end
 
     # Ajout des sprites pour case noir et blanche
-    @kInGame.ajouterComposant(btn_quit, btn_help)
+    @kInGame.ajouterComposant(btn_quit, btn_help, btn_save)
   end
 
+  # Lance le jeu avec le menu principal
   def lanceToi
     initializeMainMenu #Préparation du menu principal
     @kRender.prepare @kMainMenu #Rendu des objets
   end
 
+  # Gestion des actions sur le menu principal
   def actionOnMenu(unTypeEvenement, unComposantCible)
     # Gestion des événements sur menu principal
     return if unTypeEvenement != 1 # On ne recherche que le clique souris
@@ -272,6 +303,7 @@ class Jeu
     end
   end
 
+  # Gestion des actions sur le plateau de jeu
   def actionOnGame(unTypeEvenement, unComposantCible)
     # Gestion des événements sur menu principal
     return if unTypeEvenement != 1 # On ne recherche que le clique souris
@@ -311,10 +343,14 @@ class Jeu
     elsif (btn_cible_libell == "Quitter")
       #On met fin au programme
       exit
+    elsif (btn_cible_libell == "Sauvegarder")
+      #On sauvegarde l'état de la partie
+
     end
 
   end
 
+  # Gestion des événements sur fenêtre À propos
   def actionOnAbout(unTypeEvenement, unComposantCible)
     # Gestion des événements sur menu principal
     return if unTypeEvenement != 1 # On ne recherche que le clique souris
@@ -324,7 +360,7 @@ class Jeu
       initializeMainMenu
       @kRender.end_scene @kMainMenu
     end
-    
+
   end
 
   # Méthode de reception signal pour pattern observateur
