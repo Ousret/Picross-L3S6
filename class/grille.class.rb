@@ -51,7 +51,7 @@ class  Grille<ActiveRecord::Base
 		@matriceComparaison	= matrice
 		@indicesHaut 	= Array.new(@matriceComparaison.length) { Array.new() }
 		@indicesCote	= Array.new(@matriceComparaison.length) { Array.new() }
-		@matriceDeJeu = Array.new(@matriceComparaison.length){Array.new(@matriceComparaison.length)}
+		@matriceDeJeu = Array.new(@matriceComparaison.length, 0){Array.new(@matriceComparaison.length, 0)}
 		@nbErreur		= 0
 		#@chrono 		= Chrono.creer()
 		@score			= 0
@@ -273,7 +273,7 @@ class  Grille<ActiveRecord::Base
 			self.indicesHautBD        = Marshal.dump(@indicesHaut)
 			self.indicesCoteBD        = Marshal.dump(@indicesCote)
 			self.matriceDeJeuBD       = Marshal.dump(@matriceDeJeu)
-			self.tempBD				  = @chrono.getTTotale()
+			self.tempBD				  = nil
 			self.nbErreurBD           = @nbErreur
 			self.scoreBD              = @score
 			self.save
@@ -298,7 +298,7 @@ class  Grille<ActiveRecord::Base
 		grille.indicesCote         = Marshal.load(grille.indicesCoteBD)
 		grille.matriceDeJeu        = Marshal.load(grille.matriceDeJeuBD)
 		grille.nbErreur            = grille.nbErreurBD
-		grille.chrono 			   = Chrono.charger(grille.tempBD)
+		grille.chrono 			   = nil
 		return grille
 	end
 
@@ -313,7 +313,7 @@ class  Grille<ActiveRecord::Base
 		:indicesHautBD => Marshal.dump(self.indicesHaut) ,
 		:indicesCoteBD => Marshal.dump(self.indicesCote),
 		:matriceDeJeuBD  => Marshal.dump(self.matriceDeJeu),
-		:tempBD  => Marshal.dump(self.chrono.total_time_acc),
+		:tempBD  => nil,
 		:scoreBD  => self.score,
 		:nbErreurBD  => self.nbErreur)
 	end
