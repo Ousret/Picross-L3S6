@@ -42,6 +42,8 @@ class Jeu
     @kAbout = Fenetre.creer("À propos", 0, 0, 0, 640, 480)
     @kMessage = Fenetre.creer("Information(s)", 0, 0, 0, 640, 480)
 
+    @nombreErreurs = 10
+
     # Récupère les statistiques du disque local
     getStats
 
@@ -71,6 +73,27 @@ class Jeu
     @nTry = @nTry.to_i if @nTry != nil
     @nWin = @nWin.to_i if @nWin != nil
     @nLevel = @nLevel.to_i if @nLevel != nil
+  end
+
+  def sauvegarde
+    @kRegistre.addParam("sauvegarde-mat", @currentGame.matriceDeJeu.to_json)
+    @kRegistre.addParam("sauvegarde-err", @currentGame.nbErreur.to_s)
+  end
+
+  def reprendre
+
+    matriceJeu = @kRegistre.getValue("sauvegarde-mat")
+    nbErreur = @kRegistre.getValue("sauvegarde-err")
+
+    if (matriceJeu != nil && nbErreur != nil)
+      @kRegistre.deleteParam("sauvegarde-err")
+      @kRegistre.deleteParam("sauvegarde-mat")
+      @nombreErreurs = nbErreur.to_i
+      return JSON.load(matriceJeu)
+    else
+      return nil
+    end
+
   end
 
   # Ajout une tentative dans statistiques
@@ -237,10 +260,17 @@ class Jeu
     addStatBox @kInGame
 
     myMat = getMatrice
-    support_grille = Image.creer("Grille", "ressources/images/Grilles/v3/g#{myMat.length}x#{myMat.length}.png", 120, 120, 1)
 
     @currentGame = Grille.grille(myMat)
-    addTry # Ajout +1 aux essai (statistiques)
+
+    repriseData = reprendre
+    if repriseData != nil
+      @currentGame.restorer repriseData
+    else
+      addTry # Ajout +1 aux essai (statistiques)
+    end
+
+    support_grille = Image.creer("Grille", "ressources/images/Grilles/v3/g#{myMat.length}x#{myMat.length}.png", 120, 120, 1)
 
     btn_quit = Boutton.creer("Abandonner", 50, 430, 1, 0, 0)
     btn_help = Boutton.creer("Aide", 150, 430, 1, 0, 0)
@@ -257,7 +287,13 @@ class Jeu
       (1..myMat.length).step(1) do |j|
           spriteCase = Sprite.creer("case", "ressources/images/Grilles/Cases.png", 8, 1, inHautPosX, inHautPosY, 2, 0, 0)
           spriteCase.arr_data = [n, j]
-          spriteCase.deplacer 1, 0
+
+          if repriseData != nil && repriseData[n-1][j-1] == 1
+            spriteCase.deplacer 2, 0
+          else
+            spriteCase.deplacer 1, 0
+          end
+
           @kInGame.ajouterComposant(spriteCase)
 
           inHautPosX += 16
@@ -364,7 +400,7 @@ class Jeu
         addWin
         addCoin @currentGame.calculeScore
 
-        initializeMessage "Vous avez réussi à résoudre la grille niveau n°#{@lastLevel} !"
+        initializeMessage "Vous avez réussi à résoudre la grille niveau n°#{@lastLevel-1} !"
         @kRender.end_scene @kMessage
       end
     elsif (btn_cible_libell == "Aide")
@@ -381,7 +417,13 @@ class Jeu
       exit
     elsif (btn_cible_libell == "Sauvegarder")
       #On sauvegarde l'état de la partie
-
+      if sauvegarde
+        initializeMessage "La partie a été sauvegardée avec succès, à bientôt!"
+        @kRender.end_scene @kMessage
+      else
+        initializeMessage "Une erreur est survenue lors de la sauvegarde"
+        @kRender.end_scene @kMessage
+      end
     end
 
   end
@@ -416,7 +458,7 @@ class Jeu
 
   end
 
-  private :addWin, :addTry, :addCoin, :initializeMainMenu, :initializeMessage, :initializeGame, :initializeAbout, :actionOnMessage, :actionOnAbout, :actionOnMessage, :actionOnGame, :actionOnMenu
+  private :addWin, :addTry, :addCoin, :initializeMainMenu, :initializeMessage, :initializeGame, :initializeAbout, :actionOnMessage, :actionOnAbout, :actionOnMessage, :actionOnGame, :actionOnMenu, :sauvegarde, :reprendre
 
 end
 

@@ -234,6 +234,7 @@ module Render
 
     def render(win) # :nodoc:
       win.clear Ray::Color.black
+      return if @@vertex == nil
       @@vertex.each do |element|
         win.draw element
       end
