@@ -35,7 +35,7 @@ module Render
     end
 
     def creer(unFichierCarte)
-      
+
     end
   end
 
@@ -82,6 +82,8 @@ module Render
       @image = Ray::Sprite.new unComposant.path
       #@image.origin = @image.image.size / 2
       @image.pos = [unComposant.posx, unComposant.posy]
+      unComposant.taillex = @image.image.size.to_a[0]
+      unComposant.tailley = @image.image.size.to_a[1]
       @image
     end
 
@@ -93,7 +95,23 @@ module Render
       @sprite.sheet_size = [unComposant.dimx, unComposant.dimy] # Dimention du Sprite
       @sprite.sheet_pos = [unComposant.etx, unComposant.ety]
       @sprite.pos = [unComposant.posx, unComposant.posy]
+      unComposant.taillex = @sprite.image.size.to_a[0]/@sprite.sheet_size.to_a[0]
+      unComposant.tailley = @sprite.image.size.to_a[1]/@sprite.sheet_size.to_a[1]
       @sprite
+    end
+
+    # Met à jour un element du rendu independamment du reste
+    def updateComposant(unComposant, uneDesignation=nil)
+      return if @@vertex.length < unComposant.id
+      @@vertex[unComposant.id] = createText unComposant if unComposant.instance_of? Text
+      @@vertex[unComposant.id] = createImage unComposant if unComposant.instance_of? Image
+      @@vertex[unComposant.id] = createSprite unComposant if unComposant.instance_of? Sprite
+    end
+
+    def getVertexIDFromName(uneDesignation)
+      @@contexte.listeComposant.each do |composant|
+        return composant if composant.designation == uneDesignation
+      end
     end
 
     # Préparation et interpretation du contexte
@@ -127,9 +145,6 @@ module Render
         elsif (composant.instance_of? Image)
 
           @image = createImage composant
-          composant.taillex = @image.image.size.to_a[0]
-          composant.tailley = @image.image.size.to_a[1]
-
           @@vertex.push @image
 
           composant.id = @@vertex.index(@image)
@@ -150,13 +165,9 @@ module Render
           @@vertex.push @text
 
           composant.id = @@vertex.index(@button)
-          #createSpriteAnimation composant.id, [0, 0], [0, 1], 0.2 #Animation initiale
 
         elsif (composant.instance_of? Sprite)
           @sprite = createSprite composant
-          composant.taillex = @sprite.image.size.to_a[0]/@sprite.sheet_size.to_a[0]
-          composant.tailley = @sprite.image.size.to_a[1]/@sprite.sheet_size.to_a[1]
-
           @@vertex.push @sprite
           composant.id = @@vertex.index(@sprite)
         end
@@ -203,6 +214,11 @@ module Render
       end
     end
 
+    def eventKeyboard(unTexte)
+      changed
+      notify_observers(2, nil, Ray::TextHelper.convert(unTexte))
+    end
+
     def createSpriteAnimation(unIdentifiantVertex, desIndicesDepart, desIndicesFin, uneDuree)
       animations << sprite_animation(:from => desIndicesDepart, :to => desIndicesFin, :duration => uneDuree).start(@@vertex[unIdentifiantVertex])
     end
@@ -215,6 +231,7 @@ module Render
     def register # :nodoc:
       add_hook :quit, method(:exit!)
       add_hook :mouse_press, method(:eventMouse)
+      add_hook :text_entered, method(:eventKeyboard)
     end
 
     def render(win) # :nodoc:
