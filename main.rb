@@ -20,6 +20,7 @@ load './class/text.class.rb'
 load './class/render.class.rb'
 
 # Classe de "haut-niveau" utilise les briques fondamentales
+# Permet de jouer au Picross
 class Jeu
 
   FAST_GAME = "Partie rapide"
@@ -414,6 +415,8 @@ class Jeu
     end
 
   end
+
+  private :addWin, :addTry, :addCoin, :initializeMainMenu, :initializeMessage, :initializeGame, :initializeAbout, :actionOnMessage, :actionOnAbout, :actionOnMessage, :actionOnGame, :actionOnMenu
 
 end
 
