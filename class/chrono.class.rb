@@ -21,7 +21,7 @@ class  Chrono
 	#@thread        #thread pour le calcule du temp
 	#@enPause  		#boolean qui permet de savoir si le chono est en pause
 	#============================
-	
+
 	#la methode new() est private pour cette classe
 	private_class_method :new
 
@@ -37,21 +37,6 @@ class  Chrono
 		@nbSeconde	= 0
 		@total_time_acc = t
 		@enPause	= true
-
-		@thr = Thread.new {
-
-			while true do
-
-				if(!@enPause)
-					@total_time = Time.now - @start_time
-					@nbSeconde = (@total_time + @total_time_acc).to_i
-					@nbHeure   = @nbSeconde / 3600
-					@nbMinute  = (@nbSeconde - 3600*@nbHeure)/60
-					@nbSeconde = (@nbSeconde - 3600*@nbHeure -@nbMinute*60)
-				end
-
-			end
-		}
 
 	end
 
@@ -97,6 +82,12 @@ class  Chrono
 	#=== Paramètres:
 	#* <b>pas de paramètre</b>
 	def getTTotale()
+		@total_time = Time.now - @start_time
+		@nbSeconde = (@total_time + @total_time_acc).to_i
+		@nbHeure   = @nbSeconde / 3600
+		@nbMinute  = (@nbSeconde - 3600*@nbHeure)/60
+		@nbSeconde = (@nbSeconde - 3600*@nbHeure -@nbMinute*60)
+
 		return (@total_time + @total_time_acc).to_i
 	end
 
