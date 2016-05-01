@@ -30,7 +30,7 @@ class  Grille<ActiveRecord::Base
 	private_class_method :new
 
 	#Définition des methodes d'accèes en lecture
-	attr_reader :matriceComparaison ,:matriceDeJeu  ,:indicesHaut  ,:indicesCote ,:nbErreur ,:chrono ,:score
+	attr_reader :matriceComparaison ,:matriceDeJeu  ,:indicesHaut  ,:indicesCote ,:nbErreur ,:chrono ,:score, :nbErreur
 
 	#Définition des methodes d'accèes en lecture
 	attr_writer :matriceComparaison ,:matriceDeJeu  ,:indicesHaut  ,:indicesCote ,:nbErreur ,:chrono
@@ -51,15 +51,13 @@ class  Grille<ActiveRecord::Base
 		@matriceComparaison	= matrice
 		@indicesHaut 	= Array.new(@matriceComparaison.length) { Array.new() }
 		@indicesCote	= Array.new(@matriceComparaison.length) { Array.new() }
-		@matriceDeJeu   = Array.new(@matriceComparaison.length,0){Array.new(@matriceComparaison.length,0)}
+		@matriceDeJeu = Array.new(@matriceComparaison.length){Array.new(@matriceComparaison.length)}
 		@nbErreur		= 0
-		@chrono 		= Chrono.creer()
+		#@chrono 		= Chrono.creer()
 		@score			= 0
 
 		self.calculeIndiceCote()
 		self.calculeIndiceHaut()
-
-
 
 	end
 
@@ -69,7 +67,6 @@ class  Grille<ActiveRecord::Base
 	#=== Paramètres:
 	#* <b>matrice</b>  : matrice de jeu
 	def Grille.grille(matrice)
-
 		new(matrice)
 	end
 
@@ -78,8 +75,7 @@ class  Grille<ActiveRecord::Base
 	#=== Paramètres:
 	#* <b>pas de parametre</b>  :
 	def calculeScore()
-
-		@score = 1000 -(@chrono.total_time_acc * nbErreur)/60
+		@score = 1000 - (@nbErreur * 100)
 	end
 
 	#=== Methode  permetant de demander de l'aide
@@ -264,7 +260,6 @@ class  Grille<ActiveRecord::Base
 	#
 	#=== Paramètres :
 	def terminer()
-		@chrono.arreter
 		calculeScore()
 	end
 
@@ -335,12 +330,8 @@ class  Grille<ActiveRecord::Base
 		g.nbErreur              == self.nbErreur  )
 	end
 
-	#=== Methode permetant de comparer deux profiles
-	#
-	#=== Paramètres:
-	#<b>pas de paramètre</b>
-	def pause()
-		@chrono.arreter
+	def restorer(uneMatriceCible)
+		@matriceDeJeu = uneMatriceCible
 	end
 
 end
