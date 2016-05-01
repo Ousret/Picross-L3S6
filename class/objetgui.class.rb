@@ -8,6 +8,8 @@
 #*Tous les objets comme boutons ou textes héritent de InterfaceObject
 class ObjetGUI
 
+	include Comparable
+
 	attr_accessor :designation, :posx, :posy, :posz, :taillex, :tailley, :survol, :id
 	attr_reader :visible, :etat
 
@@ -49,6 +51,10 @@ class ObjetGUI
 	def isOver(unePositionSourisX, unePositionSourisY)
 			(unePositionSourisX >= @posx && unePositionSourisY >= @posy) && (unePositionSourisX <= @posx+@taillex && unePositionSourisY <= @posy+@tailley)
 	end
+
+	def <=>(other)
+    @posz <=> other.posz
+  end
 
 
 end
