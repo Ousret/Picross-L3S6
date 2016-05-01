@@ -39,6 +39,7 @@ class Jeu
     @kMainMenu = Fenetre.creer("Menu principal", 0, 0, 0, 640, 480)
     @kInGame = Fenetre.creer("Jeu", 0, 0, 0, 640, 480)
     @kAbout = Fenetre.creer("À propos", 0, 0, 0, 640, 480)
+    @kMessage = Fenetre.creer("Information(s)", 0, 0, 0, 640, 480)
 
     # Récupère les statistiques du disque local
     getStats
@@ -139,6 +140,26 @@ class Jeu
 
     unContexteCible.ajouterComposant(stat_support, libell_coins, libell_try, libell_win, libell_avancement)
 
+  end
+
+  def initializeMessage(unMessage)
+    @kMessage.supprimeTout
+
+    # Image de fond
+    background = Image.creer("Background", "ressources/images/GUI/Prototypes/background-6.png", 0, 0, 0)
+    # Information sur version
+    libell_alpha = Text.creer("beta-1", "beta-preview 1", 15, 100, 120, 1)
+    # Placement du titre
+    libell_title = Text.creer("title", "Picross B", 50, 100, 100, 1)
+    libell_title.setPolice "ressources/ttf/Starjedi.ttf" #Police d'écriture spéciale pour le titre
+
+    libell_message = Text.creer("message", unMessage, 20, 100, 230, 1)
+
+    btn_ok = Boutton.creer("OK", 50, 400, 1, 0, 0)
+
+    addStatBox @kMessage
+
+    @kMessage.ajouterComposant background, libell_alpha, libell_title, libell_message, btn_ok
   end
 
   # Préparation de la fenêtre À propos
@@ -282,6 +303,16 @@ class Jeu
     @kRender.prepare @kMainMenu #Rendu des objets
   end
 
+  def actionOnMessage(unTypeEvenement, unComposantCible, unTexteEntree=nil)
+    return if unTypeEvenement != 1 # On ne recherche que le clique souris
+    btn_cible_libell = unComposantCible.designation
+
+    if (btn_cible_libell == "OK")
+      initializeMainMenu
+      @kRender.prepare @kMainMenu
+    end
+  end
+
   # Gestion des actions sur le menu principal
   def actionOnMenu(unTypeEvenement, unComposantCible, unTexteEntree=nil)
     # Gestion des événements sur menu principal
@@ -300,6 +331,9 @@ class Jeu
       #On charge la fenêtre à propos
       initializeAbout
       @kRender.end_scene @kAbout
+    elsif (btn_cible_libell == "Aventure")
+      initializeMessage "Désolé, le mode aventure à été désactivée!"
+      @kRender.end_scene @kMessage
     end
   end
 
@@ -328,8 +362,9 @@ class Jeu
         #On ajoute une victoire
         addWin
         addCoin @currentGame.calculeScore
-        initializeMainMenu
-        @kRender.end_scene @kMainMenu
+
+        initializeMessage "Vous avez réussi à résoudre la grille niveau n°#{@lastLevel} !"
+        @kRender.end_scene @kMessage
       end
     elsif (btn_cible_libell == "Aide")
       #On vérifie que le joueur a suffisament de credit
@@ -374,6 +409,8 @@ class Jeu
       actionOnGame unTypeEvenement, unComposantCible
     elsif @kRender.getContext.designation == "À propos"
       actionOnAbout unTypeEvenement, unComposantCible
+    elsif @kRender.getContext.designation == "Information(s)"
+      actionOnMessage unTypeEvenement, unComposantCible
     end
 
   end
