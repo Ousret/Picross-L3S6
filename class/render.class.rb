@@ -47,10 +47,8 @@ module Render
     scene_name :stdout
 
     def clean_up
-      @@vertex.each do |element|
-        element = nil
-      end
       @@contexte = nil
+      @@vertex = nil
       Ray::ImageSet.clear
     end
 
@@ -101,7 +99,7 @@ module Render
     end
 
     # Met à jour un element du rendu independamment du reste
-    def updateComposant(unComposant, uneDesignation=nil)
+    def updateComposant(unComposant)
       return if @@vertex.length < unComposant.id
       @@vertex[unComposant.id] = createText unComposant if unComposant.instance_of? Text
       @@vertex[unComposant.id] = createImage unComposant if unComposant.instance_of? Image
