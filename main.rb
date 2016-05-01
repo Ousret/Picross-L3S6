@@ -268,15 +268,17 @@ class Jeu
       @currentGame.restorer repriseData
     else
       addTry # Ajout +1 aux essai (statistiques)
+      @nombreErreurs = 10
     end
 
+    libell_erreur = Text.creer("essais", "Essai(s): #{@nombreErreurs} restant(s)", 15, 50, 90, 1)
     support_grille = Image.creer("Grille", "ressources/images/Grilles/v3/g#{myMat.length}x#{myMat.length}.png", 120, 120, 1)
 
     btn_quit = Boutton.creer("Abandonner", 50, 430, 1, 0, 0)
     btn_help = Boutton.creer("Aide", 150, 430, 1, 0, 0)
     btn_save = Boutton.creer("Sauvegarder", 250, 430, 1, 0, 0)
 
-    @kInGame.ajouterComposant(background, libell_niveau, support_grille)
+    @kInGame.ajouterComposant(background, libell_niveau, libell_erreur, support_grille)
 
     # On place des élements "case" pour grille
     inHautPosX = 244
@@ -393,6 +395,15 @@ class Jeu
         @kRender.game_scenes.instantSound "ressources/son/pop.wav"
       else
         @kRender.game_scenes.instantSound "ressources/son/beep.wav"
+        @nombreErreurs -= 1
+        if @nombreErreurs == 0
+          initializeMessage "Vous avez perdu, votre nombre de tentative est écoulée!"
+          @kRender.end_scene @kMessage
+        else
+          nouveauLibellEssais = @kRender.game_scenes.getVertexIDFromName("essais")
+          nouveauLibellEssais.contenu = "Essai(s): #{@nombreErreurs} restant(s)"
+          @kRender.game_scenes.updateComposant nouveauLibellEssais
+        end
       end
       # On vérifie que l'état de la partie
       if @currentGame.terminer?
@@ -400,7 +411,7 @@ class Jeu
         addWin
         addCoin @currentGame.calculeScore
 
-        initializeMessage "Vous avez réussi à résoudre la grille niveau n°#{@lastLevel-1} !"
+        initializeMessage "Vous avez réussi à résoudre la grille niveau n°#{@lastLevel-1} ! (+ #{@currentGame.calculeScore} Gems)"
         @kRender.end_scene @kMessage
       end
     elsif (btn_cible_libell == "Aide")
