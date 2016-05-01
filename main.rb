@@ -77,7 +77,7 @@ class Jeu
 
   def sauvegarde
     @kRegistre.addParam("sauvegarde-mat", @currentGame.matriceDeJeu.to_json)
-    @kRegistre.addParam("sauvegarde-err", @currentGame.nbErreur.to_s)
+    @kRegistre.addParam("sauvegarde-err", @nombreErreurs.to_s)
   end
 
   def reprendre
