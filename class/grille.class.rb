@@ -8,7 +8,6 @@
 
 require 'active_record'
 require_relative 'connectSqlite3.rb'
-require_relative 'chrono.class.rb'
 
 class  Grille<ActiveRecord::Base
 
