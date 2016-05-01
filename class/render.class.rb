@@ -27,12 +27,32 @@ module Render
   # Contient l'ensemble des textures par couche Z
   @@layers = Array.new
 
+  class Map
+    private_class_method :new
+
+    def initialize(unFichierCarte)
+
+    end
+
+    def creer(unFichierCarte)
+      
+    end
+  end
+
   # Classe représentant la scene en sortie standard
   class Scene < Ray::Scene
     #Partage de variable de classe avec Game
     include Render
     include Observable
     scene_name :stdout
+
+    def clean_up
+      @@vertex.each do |element|
+        element = nil
+      end
+      @@contexte = nil
+      Ray::ImageSet.clear
+    end
 
     # Créer un calque Texte
     # * *Arguments*
@@ -71,6 +91,7 @@ module Render
     def createSprite(unComposant)
       @sprite = sprite unComposant.source
       @sprite.sheet_size = [unComposant.dimx, unComposant.dimy] # Dimention du Sprite
+      @sprite.sheet_pos = [unComposant.etx, unComposant.ety]
       @sprite.pos = [unComposant.posx, unComposant.posy]
       @sprite
     end
@@ -78,7 +99,7 @@ module Render
     # Préparation et interpretation du contexte
     def setup
 
-      clean_up
+      @scene_loops_per_second = 24
       @@vertex = nil
 
       window.size = [@@contexte.taillex, @@contexte.tailley]
@@ -118,6 +139,7 @@ module Render
           @button = Ray::Sprite.new "ressources/images/GUI/btn_spr_m_transparent.png"
           @button.pos = [composant.posx, composant.posy]
           @button.sheet_size = [2, 9]
+          @button.sheet_pos = [0, 1]
           #On place un texte
           @text = text composant.designation, :at => [composant.posx+5, composant.posy+5], :size => 12
 
@@ -128,7 +150,7 @@ module Render
           @@vertex.push @text
 
           composant.id = @@vertex.index(@button)
-          createSpriteAnimation composant.id, [0, 0], [0, 1], 0.2 #Animation initiale
+          #createSpriteAnimation composant.id, [0, 0], [0, 1], 0.2 #Animation initiale
 
         elsif (composant.instance_of? Sprite)
           @sprite = createSprite composant
@@ -137,7 +159,6 @@ module Render
 
           @@vertex.push @sprite
           composant.id = @@vertex.index(@sprite)
-          createSpriteAnimation composant.id, [0, 0], [composant.etx, composant.ety], 0.2
         end
 
       end
@@ -186,6 +207,11 @@ module Render
       animations << sprite_animation(:from => desIndicesDepart, :to => desIndicesFin, :duration => uneDuree).start(@@vertex[unIdentifiantVertex])
     end
 
+    def instantSound(unFichierCible)
+      audio = createAudio Audio.creer("instantSound", unFichierCible, false, 1, 1, 0, 0, 0)
+      audio.play
+    end
+
     def register # :nodoc:
       add_hook :quit, method(:exit!)
       add_hook :mouse_press, method(:eventMouse)
@@ -232,11 +258,11 @@ module Render
     end
 
     def end_scene(newContext)
+      game_scenes.clean_up
       @@contexte = newContext
       #@game_scenes.exit_current
       #game_scenes.pop_scene
       #push_scene :stdout
-      #game_scenes.setup
       run
     end
 
