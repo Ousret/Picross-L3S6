@@ -86,22 +86,21 @@ class  Grille<ActiveRecord::Base
 	#
 	#=== Paramètres:
 	#* <b>pas de parametre</b>  :
-	def demanderAide(p)
+	def demanderAide()
 		while y < @matriceComparaison.length
 			x=0
 			while x < @matriceComparaison.length
-				if(p.argent < 10)
-					return
-				end
 				if(@matriceComparaison[x][y] == 1 and @matriceDeJeu[x][y] == 0 ) then
-					@matriceDeJeu[x][y] = 1  #on noirsi la premierre bonne case trouvé
-					p.argent = p.argent - 10 #chaque demande d'aide coute 10
+					#@matriceDeJeu[x][y] = 1  #on noirsi la premierre bonne case trouvé
+					return [x, y]
+					#p.argent = p.argent - 10 #chaque demande d'aide coute 10
 				end
 
 				x+=1
 			end
 			y+=1
 		end
+		return [-1, -1]
 	end
 
 
