@@ -39,7 +39,7 @@ class Fenetre < ObjetGUI
 		unComposantGUI.each do |composant|
 			@listeComposant.push(composant)
 		end
-		@listeComposant.sort_by {|composant| composant.posz}
+		@listeComposant.sort!
 	end
 
 	#Retire un composant graphique à la fenêtre
