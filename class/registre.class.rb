@@ -70,7 +70,10 @@ class Registre
 	# * *Returns* :
 	# - bool
 	def addParam(uneCle, uneValeur)
-		updateParam(uneCle, uneValeur) if getValue(uneCle)
+		if getValue(uneCle) != nil
+			return updateParam(uneCle, uneValeur)
+		end
+
 		connect
 
 		begin
