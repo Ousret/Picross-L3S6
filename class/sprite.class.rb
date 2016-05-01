@@ -10,6 +10,7 @@ class Sprite < ObjetGUI
 	private_class_method :new
 	attr_reader :source, :dimx, :dimy, :etx, :ety
 	attr_accessor :arr_data
+	attr_reader :sound
 
 	def initialize(uneDesignation, uneImage, uneDimX, uneDimY, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY) # :nodoc:
 		super(uneDesignation, unePositionX, unePositionY, unePositionZ, uneTailleX, uneTailleY)
