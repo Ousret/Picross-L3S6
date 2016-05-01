@@ -283,7 +283,7 @@ class Jeu
   end
 
   # Gestion des actions sur le menu principal
-  def actionOnMenu(unTypeEvenement, unComposantCible)
+  def actionOnMenu(unTypeEvenement, unComposantCible, unTexteEntree=nil)
     # Gestion des événements sur menu principal
     return if unTypeEvenement != 1 # On ne recherche que le clique souris
     btn_cible_libell = unComposantCible.designation
@@ -304,7 +304,7 @@ class Jeu
   end
 
   # Gestion des actions sur le plateau de jeu
-  def actionOnGame(unTypeEvenement, unComposantCible)
+  def actionOnGame(unTypeEvenement, unComposantCible, unTexteEntree=nil)
     # Gestion des événements sur menu principal
     return if unTypeEvenement != 1 # On ne recherche que le clique souris
     btn_cible_libell = unComposantCible.designation
@@ -351,7 +351,7 @@ class Jeu
   end
 
   # Gestion des événements sur fenêtre À propos
-  def actionOnAbout(unTypeEvenement, unComposantCible)
+  def actionOnAbout(unTypeEvenement, unComposantCible, unTexteEntree=nil)
     # Gestion des événements sur menu principal
     return if unTypeEvenement != 1 # On ne recherche que le clique souris
     btn_cible_libell = unComposantCible.designation
@@ -364,7 +364,7 @@ class Jeu
   end
 
   # Méthode de reception signal pour pattern observateur
-  def update(unTypeEvenement, unComposantCible)
+  def update(unTypeEvenement, unComposantCible, unTexteEntree=nil)
     #puts "Attention: Evenement Trigger #{unComposantCible.designation} sur typeEvenement = #{unTypeEvenement} avec contexte = #{@kRender.getContext.designation}"
 
     #On redirige vers la méthode concernée
