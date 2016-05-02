@@ -103,7 +103,7 @@ class Registre
 	# * *Returns* :
 	# - bool
 	def updateParam(uneCle, uneValeur)
-		if getValue uneCle == nil
+		if getValue(uneCle) == nil
 			return addParam uneCle, uneValeur
 		end
 		connect
@@ -133,7 +133,7 @@ class Registre
 	# * *Returns* :
 	# - bool
 	def deleteParam(uneCle)
-		return false if getValue uneCle == nil
+		return false if getValue(uneCle) == nil
 		connect
 
 		#Procédure suceptible de lever une exception
