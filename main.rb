@@ -28,6 +28,7 @@ class Jeu
   QUIT = "Quitter"
   BACK = "Retour"
   URL_FETCH = "http://hop3x.univ-lemans.fr/picross/levels.json"
+  NOMBRE_ESSAIS_AUTORISE = 10
 
   def initialize()
 
@@ -42,7 +43,7 @@ class Jeu
     @kAbout = Fenetre.creer("À propos", 0, 0, 0, 640, 480)
     @kMessage = Fenetre.creer("Information(s)", 0, 0, 0, 640, 480)
 
-    @nombreErreurs = 10
+    @nombreErreurs = NOMBRE_ESSAIS_AUTORISE
 
     # Récupère les statistiques du disque local
     getStats
@@ -268,7 +269,7 @@ class Jeu
       @currentGame.restorer repriseData
     else
       addTry # Ajout +1 aux essai (statistiques)
-      @nombreErreurs = 10
+      @nombreErreurs = NOMBRE_ESSAIS_AUTORISE
     end
 
     libell_erreur = Text.creer("essais", "Essai(s): #{@nombreErreurs} restant(s)", 15, 50, 90, 1)
@@ -287,7 +288,7 @@ class Jeu
     (1..myMat.length).step(1) do |n|
 
       (1..myMat.length).step(1) do |j|
-          spriteCase = Sprite.creer("case", "ressources/images/Grilles/Cases.png", 8, 1, inHautPosX, inHautPosY, 2, 0, 0)
+          spriteCase = Sprite.creer("case-#{n}-#{j}", "ressources/images/Grilles/Cases.png", 8, 1, inHautPosX, inHautPosY, 2, 0, 0)
           spriteCase.arr_data = [n, j]
 
           if repriseData != nil && repriseData[n-1][j-1] == 1
@@ -387,7 +388,7 @@ class Jeu
       initializeMainMenu
       #On recharge le rendu
       @kRender.end_scene @kMainMenu
-    elsif (unComposantCible.designation == "case" && unComposantCible.arr_data != [-1, -1])
+    elsif (unComposantCible.designation.match(/case-[0-9]{1,2}-[0-9]{1,2}/) && unComposantCible.arr_data != [-1, -1])
 
       # On tente de noirsir la case
       if @currentGame.noirsirCase unComposantCible.arr_data[0], unComposantCible.arr_data[1]
@@ -419,7 +420,22 @@ class Jeu
       if (@coins > 100*@lastLevel)
         caseCible = @currentGame.demanderAide
         if (caseCible != [-1, -1])
+          # On noirsi la case cible
           @currentGame.noirsirCase caseCible[0], caseCible[1]
+          # On effectue l'animation sur la scene
+          nouvelEtatCase = @kRender.game_scenes.getVertexIDFromName("case-#{caseCible[0]+1}-#{caseCible[1]+1}")
+          #puts nouvelEtatCase
+          nouvelEtatCase.deplacer 2,0
+          @kRender.game_scenes.updateComposant nouvelEtatCase
+
+          # On retire la somme du compte
+          addCoin(-100*@lastLevel)
+
+          # On actualise le montant aka. "solde"
+          nouvelEtatSolde = @kRender.game_scenes.getVertexIDFromName("coins")
+          nouvelEtatSolde.contenu = "Gems:   #{@coins}"
+          @kRender.game_scenes.updateComposant nouvelEtatSolde
+
           @kRender.game_scenes.instantSound "ressources/son/pop.wav"
         end
       end
