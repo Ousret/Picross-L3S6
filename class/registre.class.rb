@@ -103,6 +103,9 @@ class Registre
 	# * *Returns* :
 	# - bool
 	def updateParam(uneCle, uneValeur)
+		if getValue uneCle == nil
+			return addParam uneCle, uneValeur
+		end
 		connect
 
 		begin
@@ -113,6 +116,7 @@ class Registre
 
 			stm.execute
 		rescue SQLite3::Exception => e
+			puts "<SQLite> #{e}"
 			return false
 		ensure
 			stm.close if stm
@@ -129,6 +133,7 @@ class Registre
 	# * *Returns* :
 	# - bool
 	def deleteParam(uneCle)
+		return false if getValue uneCle == nil
 		connect
 
 		#Procédure suceptible de lever une exception
@@ -137,6 +142,7 @@ class Registre
 			stm.bind_param 1, uneCle
 			stm.execute
 		rescue SQLite3::Exception => e
+			puts "<SQLite3> #{e}"
 			return false
 		ensure
 			stm.close if stm
